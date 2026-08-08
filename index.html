@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>高级 Java · 可迁移能力白皮书</title>
-<meta name="description" content="面向高级 Java 外包开发者的周末深度学习技术白皮书：并发 JVM、Spring、一致性、MySQL、Redis、系统设计、AI 提效与可带走能力。">
+<title>高级 Java · 下单正逆向闭环白皮书</title>
+<meta name="description" content="需求驱动：下单正向（优惠/支付/OMS/WMS）× 逆向售后维修；餐饮/跨境为配置；T 层与 S-MS 为零件。可迁移、可讲解、可落地。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -325,6 +325,29 @@ td { background: rgba(0,0,0,.15); }
   font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
   color: var(--accent); margin-bottom: .3rem;
 }
+.spine-pos {
+  margin: .9rem 0 1.2rem; padding: .85rem 1.1rem; border-radius: 12px;
+  border: 1px solid rgba(91,157,255,.4); background: rgba(91,157,255,.08);
+  color: #d5e4f8; font-size: .95rem; line-height: 1.65;
+}
+.spine-pos .label {
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--accent-3); margin-bottom: .35rem;
+}
+.case-loop {
+  margin: 1rem 0 1.4rem; border: 1px solid var(--line); border-radius: 14px;
+  overflow: hidden; background: rgba(0,0,0,.18);
+}
+.case-loop .cl-item {
+  padding: .65rem .95rem; border-bottom: 1px solid var(--line); color: #d5e1f0;
+}
+.case-loop .cl-item:last-child { border-bottom: none; }
+.case-loop .cl-item b { color: var(--accent); display: inline; margin-right: .35rem; }
+.sys-id {
+  display: inline-block; font-family: var(--font-mono); font-size: .72rem;
+  padding: .12rem .4rem; border-radius: 5px; margin-right: .4rem;
+  background: rgba(61,207,182,.15); color: var(--accent); font-weight: 700;
+}
 
 .footer-note {
   margin-top: 3rem; padding: 1.5rem; border-top: 1px solid var(--line);
@@ -384,7 +407,7 @@ td { background: rgba(0,0,0,.15); }
 <button class="mobile-toc-btn" id="tocToggle" type="button">目录</button>
 <div class="app">
 <aside class="toc" id="toc">
-  <div class="toc-brand">高级 Java · <span>可迁移</span></div>
+  <div class="toc-brand">高级 Java · <span>闭环 OS</span></div>
   <div class="progress-wrap">
     <div class="progress-label"><span>阅读进度</span><span id="progressPct">0%</span></div>
     <div class="progress-bar"><i id="progressBar"></i></div>
@@ -406,41 +429,351 @@ td { background: rgba(0,0,0,.15); }
 
 <article id="exportRoot">
 <header class="hero" id="hero">
-  <div class="hero-kicker">Production-Grade · Deep &amp; Plain · Portable Skills</div>
-  <h1>高级 Java · <em>可迁移能力</em>白皮书</h1>
-  <p class="hero-lead">给「项目短、预算紧、代码债多」的高级外包同学：生产级厚度（Runbook / 故障模式 / 容量 SLO）+ 通俗讲法（先人话再术语）。每个硬概念按「人话→原理→生产例子→面试怎么说」展开；每道面试题后附超详细参考答案。</p>
+  <div class="hero-kicker">Requirement-Driven · Order Forward/Reverse · Closed Loop</div>
+  <h1>高级 Java · <em>下单正逆向闭环</em>白皮书</h1>
+  <p class="hero-lead">主线只有一条：<b>买成 → 履约 → 退成/修好</b>。优惠分摊、支付 OMS/WMS、售后寄修换新都挂在这条线上。餐饮/跨境是行业旋钮；银行/大厂是横向借鉴。需求驱动，拒绝技术拼凑。</p>
   <div class="hero-meta">
-    <span class="chip"><b>受众</b> 高级开发 / 外包</span>
-    <span class="chip"><b>风格</b> 深且好懂</span>
-    <span class="chip"><b>形态</b> 单文件 · 可导出 · 可反思</span>
-    <span class="chip"><b>验收</b> 能止血 · 能讲透 · 能带走</span>
+    <span class="chip"><b>主线</b> 正逆向+售后</span>
+    <span class="chip"><b>纪律</b> 需求→验收</span>
+    <span class="chip"><b>横向</b> T 能力 / S-MS</span>
+    <span class="chip"><b>配置</b> 餐饮·跨境·中厂</span>
   </div>
 </header>
 
-<section class="block" id="how-to-use" data-toc="怎么用这份白皮书" data-prio="">
-  <h2>怎么用这份白皮书</h2>
-  <div class="plain"><div class="label">人话版</div>这不是教材堆砌，而是「资深带资深」的笔记本：出事时按 Runbook 查，面试时按详答讲，平时用反思框把经验变成自己的。</div>
-  <div class="why"><strong>外包语境：</strong>知识必须可迁移——同一套判断框架带到下个甲方，而不是只记住当前项目的配置路径。</div>
-  <ol>
-    <li><b>先扫「人话版 / 口诀」</b>：建立直觉，再往下钻原理与命令。</li>
-    <li><b>出事用 Runbook</b>：直接跳「故障模式 / 生产 Runbook」，按步骤跑命令。</li>
-    <li><b>周末加深</b>：P0 半天一个主题；周日闭卷答面试题，对照五层详答，差距写进反思框。</li>
-    <li><b>作品集</b>：每个案例 1 页复盘（现象→根因→决策→指标→模板）。</li>
-    <li><b>导出</b>：MD / PDF / Word；反思框进 localStorage，导出会带上。</li>
-  </ol>
+<section class="block" id="s0-system" data-toc="S0 · 体系总图与能力模型" data-prio="p0">
+  <h2><span class="sys-id">S0</span>体系总图与能力模型</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>操作系统入口：先认主线，再认方法与零件。旁支不得盖过 B0。<br><b>挂回：</b>学习闭环起点</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：你不是来收集中间件贴纸的。你是来保证「客人买成、退成、修好」时钱货券积分对得上账的。</div>
+
+
+  <h3>能力模型（三可）</h3>
   <table>
-    <thead><tr><th>优先级</th><th>投入</th><th>验收（人话）</th></tr></thead>
+    <thead><tr><th>能力</th><th>验收</th><th>落点</th></tr></thead>
     <tbody>
-      <tr><td><span class="prio prio-p0">P0</span></td><td>先吃透</td><td>半夜能止血；面试能讲清为什么；知道什么不该做</td></tr>
-      <tr><td><span class="prio prio-p1">P1</span></td><td>建骨架</td><td>能选型、能画图、能指出坑与容量边界</td></tr>
-      <tr><td><span class="prio prio-p2">P2</span></td><td>补协作资产</td><td>有清单、有模板、和前端/安全/老板对齐得上</td></tr>
+      <tr><td>可迁移</td><td>换行业仍用同一正逆向模板</td><td>B0 + S2</td></tr>
+      <tr><td>可讲解</td><td>能按需求讲清为何用某技术</td><td>需求溯源表</td></tr>
+      <tr><td>可落地</td><td>有对账/幂等/回滚验收</td><td>B-F / B-R Runbook</td></tr>
     </tbody>
   </table>
-  <div class="koujue"><div class="label">口诀</div>先人话，再原理；先止血，再复盘；先证据，再调参；先幂等，再重试。</div>
+
+  <div class="mermaid-wrap" id="diag-system-spine">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-system-spine">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  S0[S0 目标三可]
+  S1[S1 问题域=正逆向主线]
+  S2[S2 方法:需求→约束→方案→验收]
+  BF[B-F 下单正向]
+  BR[B-R 逆向售后维修]
+  BI[B-Ind 餐饮/跨境配置]
+  T[T 横向零件 JVM/一致性/Redis/MQ…]
+  MS[S-MS 微服务卡点难点亮点]
+  V[V1 大厂高配 / 中厂MVP]
+  S3[S3 E2E 路考]
+  S4[S4 复习自测]
+  S0-->S1-->S2
+  S2-->BF-->BR
+  BR-->BI
+  T-->BF
+  T-->BR
+  MS-->BF
+  MS-->BR
+  V-->BF
+  BF-->S3
+  BR-->S3
+  S3-->S4
+  S4-.->|补洞|S2
+
+    </pre>
+  </div>
+
+
+  <h3>编号导航</h3>
+  <table>
+    <thead><tr><th>ID</th><th>职责</th></tr></thead>
+    <tbody>
+      <tr><td><code>S0–S4</code></td><td>脊柱：目标→问题域→方法→路考→复习</td></tr>
+      <tr><td><code>B0 / B-F / B-R / B-Ind</code></td><td><b>业务主线</b></td></tr>
+      <tr><td><code>B-L / V1</code></td><td>横向借鉴与配置（降级）</td></tr>
+      <tr><td><code>T*</code></td><td>技术零件，必须标注服务主线哪段</td></tr>
+      <tr><td><code>S-MS</code></td><td>拆分卡点，服务主线边界</td></tr>
+    </tbody>
+  </table>
+  <div class="koujue"><div class="label">口诀</div>主线一句话：加购到签收是正向；退款到寄修翻新是逆向；行业只改旋钮。</div>
+
+  <div class="reflect" data-reflect="s0-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
 </section>
 
-<section class="block" id="p0-jvm" data-toc="P0 · 并发与 JVM 调优" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>并发与 JVM 调优实战</h2>
+<section class="block" id="s1-domains" data-toc="S1 · 问题域=正逆向主线" data-prio="p0">
+  <h2><span class="sys-id">S1</span>问题域：围绕下单正逆向（不是摊位市场）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>选定主线赛道；旁支（纯银行/纯推荐）默认不进主战场。<br><b>挂回：</b>S0 → 本页 → S2</div>
+
+  <table>
+    <thead><tr><th>问题域</th><th>主线位置</th><th>章节</th></tr></thead>
+    <tbody>
+      <tr><td>优惠/拼团/券/积分/分摊</td><td>正向结算</td><td>B-F F1/F2</td></tr>
+      <tr><td>风控·支付·OMS·WMS·物流</td><td>正向履约</td><td>B-F F3</td></tr>
+      <tr><td>仅退款/退货/价保/寄修/换新/翻新</td><td>逆向</td><td>B-R</td></tr>
+      <tr><td>餐饮高峰·餐损</td><td>主线配置</td><td>B-Ind</td></tr>
+      <tr><td>跨境清关·国际退</td><td>主线配置</td><td>B-Ind</td></tr>
+      <tr><td>资金热点·大厂治理</td><td>横向借鉴</td><td>B-L / V1</td></tr>
+    </tbody>
+  </table>
+  <div class="qa">
+    <div class="q">【需求】甲方同时要推荐系统和售后寄修，你先做哪个？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>寄修在资损与主线闭环上；推荐是增长旁路。先 B-R/B-F 验收。</div>
+      <div class="layer"><b>② 场景</b>范围膨胀。</div>
+      <div class="layer"><b>③ 坑</b>两线并行无主次。</div>
+      <div class="layer"><b>④ 怎么落地</b>用 B0 图排优先级。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「主线资损优先。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s1-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="s1-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s2-method" data-toc="S2 · 需求驱动方法论" data-prio="p0">
+  <h2><span class="sys-id">S2</span>方法论：需求 → 约束 → 方案 → 验收</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>全书驾驶动作；B-F/B-R 每个小节都按此填空。详见「拒绝技术拼凑」。<br><b>挂回：</b>S1 → 本页 → B0</div>
+
+  <ol>
+    <li><b>PRD 切片</b>：谁、要什么、约束、验收口径</li>
+    <li><b>需求拆解</b>：功能 / 非功能 / 资损 / 合规</li>
+    <li><b>技术溯源</b>：每一项技术对应哪条需求（无需求则删除）</li>
+    <li><b>方案</b>：模式 + 架构 + 并发，只为验收</li>
+    <li><b>验收</b>：用例 / 对账口径 / 监控告警 / 回滚</li>
+    <li><b>练手</b>：需求变更或线上故障形式，不考纯名词</li>
+  </ol>
+  <div class="koujue"><div class="label">口诀</div>没有验收口径的架构图，一律当草稿。</div>
+
+  <div class="qa">
+    <div class="q">【故障】方案里有 Kafka、分库、网格，但说不清验收，怎么办？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>打回：先写 B-F/B-R 验收句，再反选技术。</div>
+      <div class="layer"><b>② 场景</b>评审。</div>
+      <div class="layer"><b>③ 坑</b>继续补框。</div>
+      <div class="layer"><b>④ 怎么落地</b>用技术溯源表删无主线项。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「先验收句，后中间件。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s2-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="s2-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="biz-4d-hub" data-toc="S2+ · 四维结合总览" data-prio="p0">
+  <h2><span class="sys-id">S2+</span>四维结合设计：模式 × 架构 × 业务 × 并发</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>挂在 S2 方法论之下：每个 B 域填空时强制四维同时出现，禁止只背模式或只画微服务框。<br><b>挂回：</b>S2 → 本页 → B 域 / S-MS</div>
+
+  <div class="why"><strong>为什么重要：</strong>外包面试与落地最怕「只会背名词」或「只会写 CRUD」。资深标准是：同一个业务故事里，能同时讲清用了什么模式、选了什么架构、资损点在哪、并发怎么扛。</div>
+  <div class="plain"><div class="label">人话版</div>人话：别把设计模式、架构图、业务状态机、并发题拆成四本互不相干的书。一个下单接口里，责任链在审风控、状态机在推订单、Outbox 在发领域事件、线程池在护回调——这才是「结合设计」。</div>
+
+  <div class="koujue"><div class="label">口诀</div>一案四问：用啥模式？分层谁负责？钱/状态怎么丢？并发打哪？</div>
+
+
+  <h3>四维怎么绑在一起（读法）</h3>
+  <table>
+    <thead><tr><th>维度</th><th>你要回答的问题</th><th>交付物（可带走）</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 设计模式</b></td><td>变化点在哪？谁替换谁？</td><td>类图/包结构：Strategy / Chain / State / Template / ACL / Gateway</td></tr>
+      <tr><td><b>② 架构思想</b></td><td>边界怎么切？一致到什么程度？</td><td>分层/六边形、CQRS、EDA、舱壁、韧性矩阵、一致性选型表</td></tr>
+      <tr><td><b>③ 业务深度</b></td><td>真实链路、状态、资损、审计</td><td>状态机、对账点、合规触点、降级开关清单</td></tr>
+      <tr><td><b>④ 并发常问</b></td><td>热点、可见性、池、消息并发</td><td>锁粒度/CAS/幂等键/分区键设计 + 压测数字直觉</td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-4d-bind">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-4d-bind">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Biz[业务链路与资损点] --> Pat[设计模式落地]
+  Biz --> Arch[架构边界与一致性]
+  Biz --> Conc[并发热点与韧性]
+  Pat --> Code[包/类/接口结构]
+  Arch --> Runtime[部署/队列/缓存/限流]
+  Conc --> Runtime
+  Code --> Story[面试口述：一案讲透四维]
+  Runtime --> Story
+
+    </pre>
+  </div>
+
+
+  <h3>模式 ↔ 代码结构 ↔ 业务对象（速记）</h3>
+  <table>
+    <thead><tr><th>模式</th><th>代码结构直觉</th><th>业务对象例子</th></tr></thead>
+    <tbody>
+      <tr><td>策略 Strategy</td><td><code>XxxStrategy</code> 接口 + 多实现 + 工厂/Spring Map 注入</td><td>计价、渠道路由、优惠互斥规则</td></tr>
+      <tr><td>模板 Template Method</td><td>抽象流程 <code>execute()</code>，钩子可覆盖</td><td>支付回调：验签→幂等→入账→通知</td></tr>
+      <tr><td>责任链 Chain</td><td>有序 Handler 列表，可短路</td><td>下单校验、同步风控、参数/库存/限额</td></tr>
+      <tr><td>状态 State / 状态机</td><td>合法迁移表 + 非法拒绝打点</td><td>订单/售后/运单/支付单</td></tr>
+      <tr><td>领域事件 + Outbox</td><td>聚合内抬事件，同事务落 outbox</td><td>OrderPaid、StockReserved</td></tr>
+      <tr><td>防腐层 ACL</td><td>对外 DTO→对内模型翻译</td><td>三方物流/银行/清关回执</td></tr>
+      <tr><td>网关 Gateway / 门面</td><td>聚合外部调用与超时舱壁</td><td>PaymentGateway、WmsGateway</td></tr>
+    </tbody>
+  </table>
+  <div class="callout danger"><div class="label">踩坑</div>模式不是目的：没有变化点就别硬上策略；没有跨系统就不硬上 Saga。外包项目里「过度设计」比「少一个接口」更常见。</div>
+
+
+  <h3>架构思想检查清单（每个案例都要过一遍）</h3>
+  <ul>
+    <li><b>分层 / 六边形</b>：领域不依赖框架；端口进、适配器出。</li>
+    <li><b>CQRS（克制）</b>：写模型保不变量；复杂查询走宽表/ES，接受短暂延迟。</li>
+    <li><b>事件驱动</b>：跨限界上下文用事件，别远程双写。</li>
+    <li><b>舱壁</b>：线程池/连接池/限流按关键路径隔离。</li>
+    <li><b>幂等即契约</b>：所有「至少一次」入口（回调/MQ/重试）先定幂等键。</li>
+    <li><b>韧性</b>：超时预算 → 有限重试 → 熔断 → 降级 → 对账补偿。</li>
+    <li><b>一致性选择</b>：本地事务 &gt; Outbox 最终一致 &gt; TCC；写清权威源与对账 SLO。</li>
+  </ul>
+  <div class="callout warn"><div class="label">声明（公开知识归纳）</div>
+    下文美团/阿里/字节/京东等对照均为<strong>业界公开技术分享与博客中的常见套路归纳</strong>，不涉及未公开内部数据或机密实现细节；数字为「数量级直觉」非某厂真实大盘。
+  </div>
+  <div class="reflect" data-reflect="biz-4d-hub-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="biz-matrix" data-toc="S2+ · 四维对照矩阵" data-prio="p0">
+  <h2><span class="sys-id">S2+</span>对照矩阵：业务场景 × 设计模式 × 架构选型 × 并发考点</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>矩阵是导航仪：选行=选问题域，四列=四维；与 V1 裁剪表配套使用。<br><b>挂回：</b>S1 问题域 → 本矩阵 → B/V1</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：这张表是「导航仪」。面试被追问时，先落到某一行，再按四列展开；写方案时也按行勾选，避免只画微服务框不讲并发。</div>
+
+
+  <table>
+    <thead>
+      <tr><th>业务场景</th><th>设计模式（常用）</th><th>架构选型（公开常见套路）</th><th>并发考点（必问）</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>大促 / 秒杀</td>
+        <td>策略(活动规则)、责任链(校验)、门面(下单入口)</td>
+        <td>动静分离、多级缓存、队列削峰、统一限流降级、热点隔离</td>
+        <td>热点 Key、库存超卖、Lua/CAS、线程池隔离、缓存击穿</td>
+      </tr>
+      <tr>
+        <td>外卖 / 闪购高峰</td>
+        <td>状态机(订单)、策略(调度/ETA)、舱壁线程池</td>
+        <td>核心链路优先、超时熔断、降级非核心、灰度发布</td>
+        <td>峰值 QPS、慢依赖拖垮、半开熔断、队列堆积</td>
+      </tr>
+      <tr>
+        <td>支付 / 账务</td>
+        <td>模板方法(回调)、状态机、Outbox 事件</td>
+        <td>本地消息表/事务消息、日终对账、幂等契约</td>
+        <td>回调重复、可见性、热点账户、金额精度</td>
+      </tr>
+      <tr>
+        <td>银行账户记账</td>
+        <td>策略(记账规则)、状态(冲正)、命令模式(记账指令)</td>
+        <td>分户/分片、借贷平衡、日终批次、审计流水</td>
+        <td>余额热点行锁、乐观锁版本、冲正并发、日切窗口</td>
+      </tr>
+      <tr>
+        <td>风控决策</td>
+        <td>责任链、策略(规则集)、装饰器(名单增强)</td>
+        <td>同步短链路 + 异步补判、规则引擎、特征缓存</td>
+        <td>规则耗时、线程池、缓存穿透、降级默认策略</td>
+      </tr>
+      <tr>
+        <td>OMS 订单</td>
+        <td>状态机、策略(拆合单)、领域事件</td>
+        <td>聚合根订单、库存预占、与支付/WMS 集成</td>
+        <td>状态乱序、预占超卖、取消竞态、消息重复</td>
+      </tr>
+      <tr>
+        <td>下单 + 物流</td>
+        <td>ACL(承运商)、观察者/事件、状态机(运单)</td>
+        <td>下单核心同步、履约异步、轨迹最终一致</td>
+        <td>创单并发、运单回调乱序、仓配协同延迟</td>
+      </tr>
+      <tr>
+        <td>优惠券 / 红包</td>
+        <td>策略(核销)、状态、唯一约束作底线</td>
+        <td>预发库存、核销幂等、超发对账</td>
+        <td>超发、重复核销、热点券批次</td>
+      </tr>
+      <tr>
+        <td>跨境电商</td>
+        <td>策略(税费/币种)、ACL(清关)、状态机</td>
+        <td>多仓路由、汇率锁定、清关异步状态</td>
+        <td>多仓库存、汇率并发读、清关回执乱序</td>
+      </tr>
+      <tr>
+        <td>长链路查询</td>
+        <td>装饰器(缓存层)、网关聚合</td>
+        <td>Cache-Aside、多级缓存、CQRS 读模型</td>
+        <td>穿透/击穿/雪崩、单飞、大 Key</td>
+      </tr>
+      <tr>
+        <td>中厂 MVP 裁剪</td>
+        <td>宁可模板+状态机，少微服务</td>
+        <td>模块化单体、Redis+MQ、网关限流、日终对账</td>
+        <td>连接池、慢 SQL、回调幂等、发布回滚</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="depth-note">使用法：方案评审打开本表 → 勾「本场景四列」→ 缺哪列就补 ADR；面试抽一行用 STAR 讲 90 秒。</div>
+  <div class="qa">
+    <div class="q">Q：如何用一张矩阵说服老板「先不上异地多活」？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>多活解决的是机房级容灾与就近接入；成本是数据同步冲突、研发约束（单元化）、运维复杂度。中厂流量与 SLO 未证明时，先把同城高可用+备份恢复+演练做扎实。</div>
+      <div class="layer"><b>② 场景</b>老板看了大厂博客要求「单元化多活」。</div>
+      <div class="layer"><b>③ 坑</b>把多活当银弹；忽略数据冲突与团队编制。</div>
+      <div class="layer"><b>④ 怎么落地</b>用矩阵指出：当前痛点是慢 SQL/幂等/限流，不在跨城容灾；给出分阶段：单机房 HA → 同城双活读 → 再评估单元化。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「多活是组织与数据能力，不是开关；我先用矩阵对齐真实瓶颈。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="biz-matrix-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：同一「下单」场景，大厂与中厂在矩阵上差在哪一列？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>模式列往往相似（状态机+责任链）；差在架构列规模（单元化/全链路压测平台）与并发列工程化（热点自动发现、统一限流中心）。</div>
+      <div class="layer"><b>② 场景</b>外包要给中厂做大促。</div>
+      <div class="layer"><b>③ 坑</b>照搬中间件全家桶。</div>
+      <div class="layer"><b>④ 怎么落地</b>模式与幂等契约对齐大厂；架构选模块化+Redis+MQ；并发用网关限流+库存预扣+对账。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「模式可对齐，平台能力要裁剪。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="biz-matrix-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：责任链和策略怎么选，别混用？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>策略：同一抽象多种算法选一；责任链：多个独立检查按序执行可短路。下单既有「支付渠道路由（策略）」又有「校验链（责任链）」。</div>
+      <div class="layer"><b>② 场景</b>有人把所有 if-else 塞进一条链。</div>
+      <div class="layer"><b>③ 坑</b>链过长难测；策略无统一接口。</div>
+      <div class="layer"><b>④ 怎么落地</b>变化点分类：互斥算法→策略；流水线校验→链；流程骨架→模板。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「策略选算法，责任链做安检门。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="biz-matrix-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：CQRS 一定要上两套库吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>否。本质是读写模型分离；初期可以同库不同查询对象/宽表视图，读压力上来再接 ES。</div>
+      <div class="layer"><b>② 场景</b>OMS 列表查询拖垮写库。</div>
+      <div class="layer"><b>③ 坑</b>一上来双写两套库无同步策略。</div>
+      <div class="layer"><b>④ 怎么落地</b>先只读副本/宽表；同步用 Outbox；接受秒级延迟并产品说明。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「CQRS 先分离模型，再分离存储。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="biz-matrix-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="biz-matrix-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="p0-jvm" data-toc="T1 · 并发与JVM" data-prio="p0">
+  <h2><span class="sys-id">T1</span>并发与 JVM 调优实战</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：为所有 B 域提供线程/锁/GC 零件。<br><b>服务业务闭环：</b>大促线程池、支付回调隔离、微服务舱壁<br><b>挂回：</b>S2 并发段 → 本层 → S3 并发库</div>
+
   <div class="why"><strong>为什么重要：</strong>外包线上救火 Top3：线程池打满、Full GC、锁竞争拖垮接口。30 分钟内分清「线程/锁/GC/下游」哪一层，是可带走的硬通货。</div>
   <div class="plain"><div class="label">人话版</div>并发不是「多开线程就快」，而是「共享数据什么时候能安全看见」。JVM 调优也不是玄学参数，而是先看症状再动刀。</div>
 
@@ -630,8 +963,10 @@ flowchart TD
 
 </section>
 
-<section class="block" id="p0-spring" data-toc="P0 · Spring Boot / Cloud" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>Spring Boot / Spring Cloud 核心与生产问题</h2>
+<section class="block" id="p0-spring" data-toc="T2 · Spring Boot/Cloud" data-prio="p0">
+  <h2><span class="sys-id">T2</span>Spring Boot / Spring Cloud 核心与生产问题</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：事务代理、超时、配置与云组件纪律。<br><b>服务业务闭环：</b>支付回调、OMS 服务、S-MS 治理<br><b>挂回：</b>S2 → 本层 → S-MS</div>
+
   <div class="why"><strong>为什么重要：</strong>外包 80% 是 Boot 单体或轻度 Cloud。拉开差距的是：自动配置、Bean 生命周期、事务失效、循环依赖、超时与重试风暴。</div>
   <div class="plain"><div class="label">人话版</div>Spring 人话：它是「装配车间」。自动配置=按条件搬设备；Bean 生命周期=零件从创建到销毁；事务=车间质检门禁，没走代理门禁就等于没质检。</div>
 
@@ -758,8 +1093,10 @@ flowchart TB
 
 </section>
 
-<section class="block" id="p0-consistency" data-toc="P0 · 数据一致性" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>数据一致性：事务、分布式事务、最终一致、Outbox、幂等</h2>
+<section class="block" id="p0-consistency" data-toc="T3 · 数据一致性" data-prio="p0">
+  <h2><span class="sys-id">T3</span>数据一致性：事务、分布式事务、最终一致、Outbox、幂等</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：Outbox/幂等/对账——资金与订单域核心零件。<br><b>服务业务闭环：</b>B2 银行、B4 OMS、支付<br><b>挂回：</b>S2 一致性选型 → 本层 → B 域</div>
+
   <div class="why"><strong>为什么重要：</strong>支付对账、库存、积分——「看似成功实则不一致」是外包高发资损。能讲清强一致代价并落地 Outbox/幂等，才是架构判断力。</div>
   <div class="plain"><div class="label">人话版</div>一致性人话：两本账不能各记各的。单库事务像「同一本账一次改完」；跨系统就要么一起成功（贵），要么先记待办再对账（最终一致）。</div>
 
@@ -879,8 +1216,10 @@ sequenceDiagram
 
 </section>
 
-<section class="block" id="p0-mysql" data-toc="P0 · MySQL 索引与分库分表" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>MySQL：索引 / 执行计划 / 慢查询 / 分库分表边界</h2>
+<section class="block" id="p0-mysql" data-toc="T4 · MySQL与分库分表" data-prio="p0">
+  <h2><span class="sys-id">T4</span>MySQL：索引 / 执行计划 / 慢查询 / 分库分表边界</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：索引/锁/分片边界，服务 OMS 与账务写入。<br><b>服务业务闭环：</b>B2/B4 写模型、报表读<br><b>挂回：</b>S2 → 本层 → V1 裁剪</div>
+
   <div class="why"><strong>为什么重要：</strong>外包性能问题一半在 SQL。会看 EXPLAIN、会判断该不该分库分表，比背 B+ 树值钱。</div>
   <div class="plain"><div class="label">人话版</div>B+ 树人话：字典按拼音排序的目录——叶子串成链表，范围查很快。索引=多造几本目录；目录太多，每次改书都要改很多目录。</div>
 
@@ -976,8 +1315,10 @@ flowchart TD
 
 </section>
 
-<section class="block" id="p0-redis" data-toc="P0 · Redis 缓存与分布式锁" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>Redis：缓存模式、击穿/穿透/雪崩、分布式锁</h2>
+<section class="block" id="p0-redis" data-toc="T5 · Redis缓存与锁" data-prio="p0">
+  <h2><span class="sys-id">T5</span>Redis：缓存模式、击穿/穿透/雪崩、分布式锁</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：缓存与原子预扣，服务大促与热点账户旁路。<br><b>服务业务闭环：</b>B1 大促、B3 特征缓存<br><b>挂回：</b>S2 → 本层 → B1</div>
+
   <div class="why"><strong>为什么重要：</strong>缓存是加速器也是一致性负债；分布式锁用错等于「看起来安全其实裸奔」。</div>
   <div class="plain"><div class="label">人话版</div>Redis 人话：超快的小黑板。单线程执行命令避免同键复杂锁；慢在网络与大 key。IO 多路复用让一个线程盯很多连接。</div>
 
@@ -1078,8 +1419,10 @@ flowchart LR
 
 </section>
 
-<section class="block" id="p0-sre" data-toc="P0 · 系统设计与可观测性" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>系统设计与可观测性：限流熔断、链路追踪、SLO</h2>
+<section class="block" id="p0-sre" data-toc="T6 · 可观测限流熔断" data-prio="p0">
+  <h2><span class="sys-id">T6</span>系统设计与可观测性：限流熔断、链路追踪、SLO</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：韧性与 SLO，服务高峰与 S-MS 雪崩防护。<br><b>服务业务闭环：</b>B1/B3、S-MS 治理<br><b>挂回：</b>S2 验证段 → 本层</div>
+
   <div class="why"><strong>为什么重要：</strong>「能上线」和「能守住大促」差一套过载保护与可观测性。会谈 SLO，比只会加机器高级。</div>
   <div class="plain"><div class="label">人话版</div>人话：限流=门口保安数人头；熔断=对面商店着火先别派人进去；隔离=贵宾通道和普通通道分开；降级=今天不卖甜点但主餐还在。</div>
 
@@ -1167,8 +1510,10 @@ flowchart TB
 
 </section>
 
-<section class="block" id="p0-arch" data-toc="P0 · 架构决策：何时不该拆" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>架构决策：单体 → 模块化 → 微服务（何时不该拆）</h2>
+<section class="block" id="p0-arch" data-toc="T7 · 架构决策何时不拆" data-prio="p0">
+  <h2><span class="sys-id">T7</span>架构决策：单体 → 模块化 → 微服务（何时不该拆）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：与 S-MS「何时不该拆」双生；模块化优先。<br><b>服务业务闭环：</b>V1 中厂、S-MS 亮点<br><b>挂回：</b>S-MS → 本层 → V1</div>
+
   <div class="why"><strong>为什么重要：</strong>外包最贵错误是「为简历拆服务」。可迁移能力=能说服干系人选更便宜的正确架构。</div>
   <div class="plain"><div class="label">人话版</div>人话：房子先隔断（模块化），真有一间要 24 小时单独水电再拆成公寓（服务）。一上来拆成公寓小区，物业（平台）跟不上就灾难。</div>
 
@@ -1232,8 +1577,10 @@ flowchart LR
 
 </section>
 
-<section class="block" id="p0-ai" data-toc="P0 · AI for Senior Java" data-prio="p0">
-  <h2><span class="tag prio-p0">P0</span>AI for Senior Java：生产向提效、审查、测试、RAG、红线</h2>
+<section class="block" id="p0-ai" data-toc="T8 · AI生产向提效" data-prio="p0">
+  <h2><span class="sys-id">T8</span>AI for Senior Java：生产向提效、审查、测试、RAG、红线</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：提效服从闭环，禁止无审计改生产。<br><b>服务业务闭环：</b>全域辅助<br><b>挂回：</b>S4 作品集</div>
+
   <div class="why"><strong>为什么重要：</strong>外包拼单位时间交付质量。资深用法=把 AI 编进评审/测试/知识沉淀，并守住安全边界——不是「生成完就提交」。</div>
   <div class="plain"><div class="label">人话版</div>人话：AI 是副驾，你是司机。副驾可以读地图、提醒盲区，但方向盘、刹车、法律责任是你的。</div>
 
@@ -1346,8 +1693,10 @@ flowchart TB
 
 </section>
 
-<section class="block" id="p1-mq" data-toc="P1 · Kafka / RocketMQ" data-prio="p1">
-  <h2><span class="tag prio-p1">P1</span>Kafka / RocketMQ：可靠投递、顺序、ISR/HW</h2>
+<section class="block" id="p1-mq" data-toc="T9 · Kafka/RocketMQ" data-prio="p1">
+  <h2><span class="sys-id">T9</span>Kafka / RocketMQ：可靠投递、顺序、ISR/HW</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：可靠投递与顺序，服务 Outbox 与状态事件。<br><b>服务业务闭环：</b>B4/B5、支付通知<br><b>挂回：</b>T3 → 本层 → B 域</div>
+
   <div class="why"><strong>为什么重要：</strong>异步解耦是救命稻草，但丢消息、重复、乱序会变成资损。要讲清投递语义与顺序键。</div>
   <div class="plain"><div class="label">人话版</div>消息队列人话：邮局。至少一次=可能寄两封，所以收件人要能去重；顺序=同一地址的信按编号拆；ISR=活着且跟上进度的副本小组。</div>
 
@@ -1433,8 +1782,10 @@ flowchart TB
 
 </section>
 
-<section class="block" id="p1-gateway" data-toc="P1 · 网关鉴权零信任" data-prio="p1">
-  <h2><span class="tag prio-p1">P1</span>网关、鉴权、零信任基本面</h2>
+<section class="block" id="p1-gateway" data-toc="T10 · 网关鉴权" data-prio="p1">
+  <h2><span class="sys-id">T10</span>网关、鉴权、零信任基本面</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：入口限流与信任边界。<br><b>服务业务闭环：</b>B1 入口、S-MS<br><b>挂回：</b>T6 → 本层</div>
+
   <div class="why"><strong>为什么重要：</strong>「内网=可信」一旦跳板失守就全盘皆输。资深推动最小必要信任。</div>
   <div class="plain"><div class="label">人话版</div>人话：网关是大楼前台；零信任=即使进了大楼，每间房仍要刷卡，且卡会过期。</div>
 
@@ -1479,8 +1830,10 @@ flowchart LR
 
 </section>
 
-<section class="block" id="p1-ddd" data-toc="P1 · DDD 克制落地" data-prio="p1">
-  <h2><span class="tag prio-p1">P1</span>DDD 落地：防腐层、聚合边界（克制）</h2>
+<section class="block" id="p1-ddd" data-toc="T11 · DDD克制落地" data-prio="p1">
+  <h2><span class="sys-id">T11</span>DDD 落地：防腐层、聚合边界（克制）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：聚合与限界上下文，服务拆分边界。<br><b>服务业务闭环：</b>S-MS 卡点、B4<br><b>挂回：</b>S-MS → 本层</div>
+
   <div class="why"><strong>为什么重要：</strong>完整战术 DDD 在短项目易过度设计。可迁移的是：通用语言、聚合、防腐层——20% 概念解决 80% 混乱。</div>
   <div class="plain"><div class="label">人话版</div>人话：聚合=一次事务只改一棵「业务树」；防腐层=翻译官，别让外部 SOAP 字段污染你满嘴。</div>
 
@@ -1519,8 +1872,10 @@ flowchart TB
 
 </section>
 
-<section class="block" id="p1-k8s" data-toc="P1 · 云原生 K8s" data-prio="p1">
-  <h2><span class="tag prio-p1">P1</span>云原生：探针、发布、资源、回滚</h2>
+<section class="block" id="p1-k8s" data-toc="T12 · 云原生K8s" data-prio="p1">
+  <h2><span class="sys-id">T12</span>云原生：探针、发布、资源、回滚</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：发布回滚与容量，服务灰度。<br><b>服务业务闭环：</b>S-MS 发布卡点<br><b>挂回：</b>S-MS → 本层</div>
+
   <div class="why"><strong>为什么重要：</strong>不写 Operator 也要懂探针、配额、滚动/金丝雀、ConfigMap vs Secret。</div>
   <div class="plain"><div class="label">人话版</div>人话：liveness=还活着吗？活死人就重启；readiness=能接客吗？没就绪别导入流量。堆内存必须小于容器 limit，否则被 OOMKill。</div>
 
@@ -1574,8 +1929,10 @@ flowchart LR
 
 </section>
 
-<section class="block" id="p1-perf" data-toc="P1 · 性能工程" data-prio="p1">
-  <h2><span class="tag prio-p1">P1</span>性能工程：压测、火焰图、容量</h2>
+<section class="block" id="p1-perf" data-toc="T13 · 性能工程" data-prio="p1">
+  <h2><span class="sys-id">T13</span>性能工程：压测、火焰图、容量</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>横向能力层：证据链调优，服务所有域的 P99。<br><b>服务业务闭环：</b>全域<br><b>挂回：</b>T1/T4 → 本层 → S4</div>
+
   <div class="why"><strong>为什么重要：</strong>「感觉够快」不是工程。上线前给出容量数字，信任感拉满。</div>
   <div class="plain"><div class="label">人话版</div>人话：压测像给桥过卡车——阶梯加重量，找到断裂点；火焰图告诉你热量在哪一层木板。</div>
 
@@ -2234,6 +2591,1495 @@ mq_consumer_lag{group="order"}
 
 </section>
 
+<section class="block" id="s-ms" data-toc="S-MS · 微服务卡点难点亮点" data-prio="p0">
+  <h2><span class="sys-id">S-MS</span>分布式微服务：卡点 · 难点 · 亮点</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>脊柱扩展模块：在 S2 模板下专门回答「拆了之后为什么卡住」。服务全部 B 域与 V1 裁剪；与 T-一致性 / T-可观测 / T-MQ 交叉引用，不重复长文。<br><b>服务业务闭环：</b>下单/支付/OMS/银行拆分场景<br><b>挂回：</b>S2 方法论 → 本模块 → B 域落地 / V1 裁剪</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：微服务不是越多越高级。卡点是「项目推不动」，难点是「线上说不清」，亮点是「你知道何时不该拆，以及拆了怎么用模式和架构把一致性/并发按住」。</div>
+
+  <div class="koujue"><div class="label">口诀</div>先模块化单体跑通闭环，再按资损边界拆；拆之前先有幂等、超时、追踪、回滚。</div>
+
+
+  <div class="mermaid-wrap" id="diag-ms-govern">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-ms-govern">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph Entry[接入]
+    GW[网关限流鉴权]
+  end
+  subgraph Runtime[运行时治理]
+    Disc[发现/配置]
+    CB[超时重试熔断]
+    Lim[隔离舱壁]
+  end
+  subgraph Data[数据与一致]
+    Own[数据归属]
+    OB[Outbox/对账]
+  end
+  subgraph Rel[发布韧性]
+    Gray[灰度]
+    Roll[一键回滚]
+  end
+  U[用户请求] --> GW --> Disc --> CB --> Lim
+  Lim --> Own
+  Own --> OB
+  GW --> Gray --> Roll
+
+    </pre>
+  </div>
+
+
+  <h3>总览：卡点 / 难点 / 亮点一张图</h3>
+  <table>
+    <thead><tr><th>类型</th><th>是什么</th><th>闭环落点</th></tr></thead>
+    <tbody>
+      <tr><td><b>卡点</b></td><td>最容易让项目停摆的组织+技术摩擦</td><td>边界、事务、治理、发布、数据归属、协作</td></tr>
+      <tr><td><b>难点</b></td><td>技术深水区，出事故难复盘</td><td>一致、重试风暴、雪崩、幂等、追踪、配置密钥、测试</td></tr>
+      <tr><td><b>亮点</b></td><td>面试/方案加分：化解路径+何时不拆</td><td>模式+架构+业务案例+并发考点连讲</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="block" id="s-ms-blockers" data-toc="S-MS · 卡点详解" data-prio="p0">
+  <h2><span class="sys-id">S-MS</span>卡点详解（最容易卡住项目）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>卡点篇：对应 S2 的「业务约束 + 架构选型 + 落地」；每个卡点用统一闭环填空。<br><b>挂回：</b>S-MS 总览 → 卡点 → 难点 → 亮点</div>
+
+
+  <h3>卡点 A · 拆分边界说不清</h3>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 业务目标与约束</b>要「服务化」但领域语言混乱；多团队抢同一张订单表。</div>
+    <div class="cl-item"><b>2. 流量与一致性矛盾</b>流量不大也拆，调用链变长，RT 与故障面上升。</div>
+    <div class="cl-item"><b>3. 架构选型（思想）</b>按业务能力/资损边界拆，不是按代码目录拆；先模块化单体。</div>
+    <div class="cl-item"><b>4. 设计模式落点</b>防腐层 ACL 防模型污染；门面聚合跨模块用例。</div>
+    <div class="cl-item"><b>5. 并发模型与考点</b>跨服务同步编排放大锁等待与线程占用。</div>
+    <div class="cl-item"><b>6. 落地步骤与 Runbook</b>画上下文图→标写模型归属→禁止跨服务 join→必要时复制只读。</div>
+    <div class="cl-item"><b>7. 验证（指标/演练/回滚）</b>指标：跨服务事务数、循环依赖次数；演练：禁止直接访问他库。</div>
+    <div class="cl-item"><b>8. 面试表达</b>「我们按库存预占与支付入账的资损边界拆，而不是按 Controller 拆。」</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q：如何判断一个边界拆早了？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>出现大量分布式事务、跨库 join、双向频繁同步调用，或团队仍共用一库。</div>
+      <div class="layer"><b>② 场景</b>拆完三个月事故率升。</div>
+      <div class="layer"><b>③ 坑</b>以服务数 KPI 驱动拆分。</div>
+      <div class="layer"><b>④ 怎么落地</b>合并回模块化；保留独立进程仅留给异变频率/扩展性真正不同的部分。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「拆分验收看调用形态，不看服务个数。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-a1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：订单与库存该不该互相调用写？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>写路径应用领域事件/Outbox 单向通知；同步双写极易不一致。</div>
+      <div class="layer"><b>② 场景</b>下单既写订单又 RPC 扣库存。</div>
+      <div class="layer"><b>③ 坑</b>没有幂等与补偿。</div>
+      <div class="layer"><b>④ 怎么落地</b>订单聚合内预占意图→Outbox→库存服务幂等扣减；查询可同步。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「写用事件，读可 RPC。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-a2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：中厂两人团队如何定边界？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>默认不拆进程；用包边界+数据库 schema 边界模拟未来拆分。</div>
+      <div class="layer"><b>② 场景</b>老板要求对齐大厂微服务。</div>
+      <div class="layer"><b>③ 坑</b>人手不够还上服务网格全家桶。</div>
+      <div class="layer"><b>④ 怎么落地</b>模块化单体 + 清晰接口 + 日志 traceId；等团队与流量证明再拆。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「边界先落在代码，再落在进程。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-a3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>卡点 B · 分布式事务卡住交付</h3>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 业务目标与约束</b>支付成功必须出库通知，跨库「要么都成功」。</div>
+    <div class="cl-item"><b>2. 流量与一致性矛盾</b>要强一致则锁与协调成本高；要吞吐则只能最终一致。</div>
+    <div class="cl-item"><b>3. 架构选型（思想）</b>本地事务+Outbox 优先；TCC 仅资金高一致短流程；禁默认 XA。</div>
+    <div class="cl-item"><b>4. 设计模式落点</b>模板方法固化「写业务+写 outbox」；状态机表达补偿。</div>
+    <div class="cl-item"><b>5. 并发模型与考点</b>回调与消费者并发导致重复；需要幂等键。</div>
+    <div class="cl-item"><b>6. 落地步骤与 Runbook</b>见 T-一致性 Runbook；对账 SLO 必建。</div>
+    <div class="cl-item"><b>7. 验证（指标/演练/回滚）</b>差异率、outbox 堆积、补偿成功率。</div>
+    <div class="cl-item"><b>8. 面试表达</b>「我用最终一致+对账闭环替代空谈强一致。」</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q：Seata AT 卡住外包项目的典型原因？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>TC 运维、脏写、长事务锁行、与批量 ORM 不兼容。</div>
+      <div class="layer"><b>② 场景</b>想「注解搞定分布式事务」。</div>
+      <div class="layer"><b>③ 坑</b>无压测上生产。</div>
+      <div class="layer"><b>④ 怎么落地</b>无平台组则 Outbox；有则小范围试点。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「AT 不是免费强一致。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-b1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：如何向产品解释「会短暂不一致」？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>用业务语言：支付成功后库存 1–3 秒内对齐，超时进对账与客服工具。</div>
+      <div class="layer"><b>② 场景</b>产品要求页面瞬时绝对准。</div>
+      <div class="layer"><b>③ 坑</b>隐瞒最终一致。</div>
+      <div class="layer"><b>④ 怎么落地</b>定义可见性 SLA + 补偿入口。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「把一致性做成带 SLO 的产品能力。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-b2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：Saga 什么时候才值得？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>长流程多参与方、可补偿、步骤天然异步（如跨境履约）。</div>
+      <div class="layer"><b>② 场景</b>五六个本地更新硬上编排。</div>
+      <div class="layer"><b>③ 坑</b>无补偿动作设计。</div>
+      <div class="layer"><b>④ 怎么落地</b>先画补偿表再选编排/舞蹈。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「无补偿表，不谈 Saga。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-b3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>卡点 C · 服务治理缺失</h3>
+  <div class="plain"><div class="label">人话版</div>人话：没有超时预算和舱壁，微服务只是「分布式单体」——故障传播更快。</div>
+
+  <div class="mermaid-wrap" id="diag-ms-fail-cascade">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-ms-fail-cascade">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as 用户
+  participant O as 订单服务
+  participant P as 支付服务
+  participant R as 风控
+  participant DB as 慢DB
+  U->>O: 下单
+  O->>R: 同步风控(无超时)
+  R->>DB: 慢查询
+  Note over O: 线程池耗尽
+  O-->>U: 大量超时
+  U->>O: 重试风暴
+  O->>P: 连带拖垮
+
+    </pre>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q：超时如何分层设置？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>端到端预算倒推：网关 > 聚合 > 下游；下游超时之和小于上游。</div>
+      <div class="layer"><b>② 场景</b>所有 Feign 默认 5s。</div>
+      <div class="layer"><b>③ 坑</b>层层 5s 导致用户等 20s。</div>
+      <div class="layer"><b>④ 怎么落地</b>超时矩阵表进仓库；压测校准。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「超时是预算，不是默认值。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-c1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：重试怎样避免风暴？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>仅幂等且可安全重试；指数退避+抖动；限次数；熔断后停。</div>
+      <div class="layer"><b>② 场景</b>支付回调失败疯狂重试。</div>
+      <div class="layer"><b>③ 坑</b>非幂等 POST 自动重试。</div>
+      <div class="layer"><b>④ 怎么落地</b>重试策略进网关/SDK 统一；业务幂等托底。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「重试是特权，不是默认。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-c2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：中厂治理 MVP 最小集？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>统一超时、网关限流、关键路径隔离线程池、结构化日志+traceId、一键回滚。</div>
+      <div class="layer"><b>② 场景</b>抄服务网格。</div>
+      <div class="layer"><b>③ 坑</b>只加监控大盘不改超时。</div>
+      <div class="layer"><b>④ 怎么落地</b>四件套先落地再谈网格。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「治理最小集比中间件清单重要。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-c3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>卡点 D · 发布与回滚</h3>
+  <div class="ba">
+    <div class="before"><h5>Before（事故前/错误做法）</h5><ul><li>全量发布</li><li>回滚要开会</li><li>无黄金指标门禁</li></ul></div>
+    <div class="after"><h5>After（止血后/正确做法）</h5><ul><li>灰度/金丝雀</li><li>预设回滚条件</li><li>错误率/P99 自动或一键回滚</li></ul></div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q：微服务发布为何比单体更怕？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>多服务版本组合、契约不兼容、配置不同步。</div>
+      <div class="layer"><b>② 场景</b>只回滚一个服务仍失败。</div>
+      <div class="layer"><b>③ 坑</b>无契约测试。</div>
+      <div class="layer"><b>④ 怎么落地</b>兼容发布策略+配置同版本绑定+消费者驱动契约。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「发布是组合问题。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-d1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：配置中心卡点怎么解？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>配置分级、审计、灰度推送、密钥不进仓库。</div>
+      <div class="layer"><b>② 场景</b>错配把限流关掉。</div>
+      <div class="layer"><b>③ 坑</b>所有环境共用一套配置。</div>
+      <div class="layer"><b>④ 怎么落地</b>变更双人复核；关键开关单独面板。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「配置是生产代码。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-d2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：数据归属卡点：服务能否直连他库？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>否。破坏封装与事务边界，形成隐蔽耦合。</div>
+      <div class="layer"><b>② 场景</b>报表方便直连。</div>
+      <div class="layer"><b>③ 坑</b>「暂时先连」。</div>
+      <div class="layer"><b>④ 怎么落地</b>提供只读 API/数据同步；紧急只读账号也要审计。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「库表归属=服务边界的真理。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-d3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>卡点 E · 团队协作</h3>
+  <div class="qa">
+    <div class="q">Q：多团队接口怎么协作不卡？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>契约优先、版本化、示例报文、错误码字典、周会只对变更。</div>
+      <div class="layer"><b>② 场景</b>口头约定字段。</div>
+      <div class="layer"><b>③ 坑</b>共享数据库当接口。</div>
+      <div class="layer"><b>④ 怎么落地</b>OpenAPI/契约测试进 CI。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「接口是产品，不是顺便。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-e1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：外包嵌入方阵如何避免扯皮？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>写清：谁拥有写模型、谁拥有告警、谁拥有回滚按钮。</div>
+      <div class="layer"><b>② 场景</b>事故时无人认领。</div>
+      <div class="layer"><b>③ 坑</b>只认代码提交者。</div>
+      <div class="layer"><b>④ 怎么落地</b>RACI + Oncall 轮换写进 README。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「所有权比架构图重要。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-b-e2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="ms-blockers-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s-ms-hard" data-toc="S-MS · 难点深水区" data-prio="p0">
+  <h2><span class="sys-id">S-MS</span>难点深水区（技术）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>难点篇：对应 S2「并发模型 + 验证」与 T 层零件；强调失败传播与可观测。<br><b>挂回：</b>卡点未解先别深潜；难点服务 B 域资损场景</div>
+
+
+  <h3>难点 1 · 一致性与幂等</h3>
+  <div class="callout danger"><div class="label">踩坑</div>至少一次投递 + 非幂等消费者 = 资损定时炸弹。幂等键必须落库唯一约束，不能只靠「先查后改」。</div>
+
+  <div class="qa">
+    <div class="q">Q：微服务下如何定义幂等契约？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>每个写入口声明幂等键来源（业务单号/Idempotency-Key）、重复请求响应语义、状态机合法迁移。</div>
+      <div class="layer"><b>② 场景</b>支付回调、OMS 取消、券核销。</div>
+      <div class="layer"><b>③ 坑</b>各服务自己解释「重复」。</div>
+      <div class="layer"><b>④ 怎么落地</b>契约文档+集成测试+唯一索引。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「幂等是跨团队契约。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-1a"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：并发下如何保证「恰好一次业务效果」？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>基础设施至多做到至少一次；恰好一次=去重表/唯一键+事务状态机。</div>
+      <div class="layer"><b>② 场景</b>面试追问 exactly-once。</div>
+      <div class="layer"><b>③ 坑</b>吹 MQ 自带精确一次。</div>
+      <div class="layer"><b>④ 怎么落地</b>业务层去重；Kafka 幂等生产者只解决生产者重试。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「恰好一次在业务层完成。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-1b"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：可见性与分布式有何关系？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>单进程靠 HB；跨服务靠「写后读自己的」路由、版本号、或接受延迟。</div>
+      <div class="layer"><b>② 场景</b>下单后立刻读列表看不到。</div>
+      <div class="layer"><b>③ 坑</b>以为事务提交就全局可见。</div>
+      <div class="layer"><b>④ 怎么落地</b>读主/版本戳/产品提示处理中。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「跨服务没有免费的可见性。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-1c"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>难点 2 · 超时、重试风暴与雪崩</h3>
+  <div class="failbox"><div class="label">故障模式 · 重试风暴</div><p><b>症状：</b>下游已慢，上游重试倍增，线程池与连接池打满。</p><p><b>止血：</b>降超时、断重试、熔断、入口限流、扩容只作辅助。</p></div>
+
+  <div class="qa">
+    <div class="q">Q：雪崩链路如何用舱壁切开？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>按依赖拆线程池/隔离仓；批量与在线分离；非核心降级。</div>
+      <div class="layer"><b>② 场景</b>风控慢拖死下单。</div>
+      <div class="layer"><b>③ 坑</b>共用默认 forkjoin/共享池。</div>
+      <div class="layer"><b>④ 怎么落地</b>下单/支付/导出分池；拒绝策略可观测。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「舱壁让火烧在一间房。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-2a"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：熔断半开为何误伤？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>窗口/最小请求数不合理，或把业务 4xx 当失败。</div>
+      <div class="layer"><b>② 场景</b>依赖恢复后仍全开。</div>
+      <div class="layer"><b>③ 坑</b>复制粘贴阈值。</div>
+      <div class="layer"><b>④ 怎么落地</b>区分错误类型；半开放行；手开关。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「熔断是保险丝不是总闸。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-2b"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：大促时微服务并发考点？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>热点参数限流、库存预扣原子性、缓存击穿单飞、线程池拒绝打点。</div>
+      <div class="layer"><b>② 场景</b>秒杀。</div>
+      <div class="layer"><b>③ 坑</b>只加机器。</div>
+      <div class="layer"><b>④ 怎么落地</b>见 B-大促闭环；与 T-Redis/SRE 联调。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「流量治理先于扩容。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-2c"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>难点 3 · 分布式追踪与复盘</h3>
+  <div class="qa">
+    <div class="q">Q：没有追踪时如何最小可用？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>强制 traceId 进日志 MDC，网关生成，下游透传；关键路径日志关联单号。</div>
+      <div class="layer"><b>② 场景</b>中厂无 SkyWalking。</div>
+      <div class="layer"><b>③ 坑</b>各服务各自打日志无关联。</div>
+      <div class="layer"><b>④ 怎么落地</b>先日志关联，再上 APM。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「能串起来比工具品牌重要。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-3a"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：如何定位「哪一段」拖垮 P99？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>看跨度耗时直方图、依赖 RT、饱和度（池/队列/DB）。</div>
+      <div class="layer"><b>② 场景</b>只看 CPU。</div>
+      <div class="layer"><b>③ 坑</b>平均 RT 掩盖尾部。</div>
+      <div class="layer"><b>④ 怎么落地</b>P99+饱和指标+慢查询三联。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「尾部与饱和度。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-3b"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：配置与密钥难点？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>密钥进保险柜/KMS；配置变更审计；禁止日志打印密钥。</div>
+      <div class="layer"><b>② 场景</b>容器环境变量明文传遍。</div>
+      <div class="layer"><b>③ 坑</b>配置当聊天记录改。</div>
+      <div class="layer"><b>④ 怎么落地</b>最小权限+轮换+审计。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「密钥不是配置项。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-3c"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>难点 4 · 测试金字塔在微服务下失效</h3>
+  <div class="plain"><div class="label">人话版</div>人话：单测绿了，联调爆了——因为真实难点在契约、超时、幂等与数据归属。</div>
+
+  <div class="qa">
+    <div class="q">Q：微服务测试策略怎么改？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>单测保领域不变量；契约测试保接口；测试容器/组件测 Outbox；少量 E2E 保主路径。</div>
+      <div class="layer"><b>② 场景</b>只有 UI E2E。</div>
+      <div class="layer"><b>③ 坑</b>只靠人工联调。</div>
+      <div class="layer"><b>④ 怎么落地</b>金字塔改「菱形」：中间契约与组件加厚。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「用契约补回集成信心。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-4a"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：如何测重试与幂等？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>故意重复投递、超时注入、乱序消息；断言终态唯一。</div>
+      <div class="layer"><b>② 场景</b>支付/OMS。</div>
+      <div class="layer"><b>③ 坑</b>只测 happy path。</div>
+      <div class="layer"><b>④ 怎么落地</b>故障注入清单进 CI 夜间任务。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「把坏运气自动化。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-4b"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：数据层测试最大坑？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>共用测试库导致并行污染；时钟与日切难测。</div>
+      <div class="layer"><b>② 场景</b>银行日终。</div>
+      <div class="layer"><b>③ 坑</b>随机失败当 flaky 忽略。</div>
+      <div class="layer"><b>④ 怎么落地</b>隔离库/容器；冻结时钟；日切脚本可重放。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「可重放才叫测到。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-h-4c"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="ms-hard-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s-ms-highlights" data-toc="S-MS · 亮点与何时不该拆" data-prio="p0">
+  <h2><span class="sys-id">S-MS</span>亮点（可讲加分）与「何时不该拆」</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>亮点篇：把卡点/难点收束为面试与方案叙事；V1 中厂裁剪直接复用本节。<br><b>挂回：</b>S-MS → V1 → S3 E2E</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：亮点不是「我们上了多少服务」，而是「我们如何用架构思想与设计模式，把一致性与并发变成可验证闭环；以及敢于不拆」。</div>
+
+
+  <h3>亮点话术骨架（绑业务）</h3>
+  <table>
+    <thead><tr><th>案例</th><th>模式+架构化解</th><th>并发一击</th></tr></thead>
+    <tbody>
+      <tr><td>下单</td><td>责任链校验 + 状态机 + Outbox</td><td>库存预占 CAS/唯一约束</td></tr>
+      <tr><td>支付</td><td>模板方法回调 + 幂等契约</td><td>回调并发去重</td></tr>
+      <tr><td>OMS</td><td>领域事件驱动仓储</td><td>取消与发货竞态</td></tr>
+      <tr><td>银行</td><td>记账命令 + 分片降热点</td><td>热点账户队列化</td></tr>
+    </tbody>
+  </table>
+
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 业务目标与约束</b>中厂要「微服务化转型」但 8 人团队、日峰值有限。</div>
+    <div class="cl-item"><b>2. 流量与一致性矛盾</b>拆分带来的调用与事务成本大于收益。</div>
+    <div class="cl-item"><b>3. 架构选型（思想）</b>模块化单体 + 清晰边界 + 网关限流 + MQ 异步；进程拆分延后。</div>
+    <div class="cl-item"><b>4. 设计模式落点</b>包级门面/ACL；状态机与 Outbox 仍保留（为未来拆做准备）。</div>
+    <div class="cl-item"><b>5. 并发模型与考点</b>池隔离、慢 SQL、回调幂等——这些与是否多进程无关，必须先做。</div>
+    <div class="cl-item"><b>6. 落地步骤与 Runbook</b>先达成 S2 闭环与对账；再按热点服务拆读或拆写。</div>
+    <div class="cl-item"><b>7. 验证（指标/演练/回滚）</b>故障率、交付周期、回滚时间；未改善则停止再拆。</div>
+    <div class="cl-item"><b>8. 面试表达</b>「不该拆的判断力，本身就是架构亮点。」</div>
+  </div>
+
+
+  <div class="qa">
+    <div class="q">Q：面试问「微服务经验」，如何避免背组件名？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>用一次故障或一次边界决策 STAR：卡点→难点→模式/架构动作→指标。</div>
+      <div class="layer"><b>② 场景</b>简历写了 Spring Cloud 全家桶。</div>
+      <div class="layer"><b>③ 坑</b>只报中间件名词。</div>
+      <div class="layer"><b>④ 怎么落地</b>准备下单链路失败传播图口述。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「我讲决策与验证，不报购物清单。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-l-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：大厂治理与中厂裁剪差在哪？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>大厂有统一限流/配置/全链路压测平台；中厂用开源子集+纪律（超时矩阵、幂等、回滚）。</div>
+      <div class="layer"><b>② 场景</b>对照美团/阿里公开分享。</div>
+      <div class="layer"><b>③ 坑</b>照搬平台。</div>
+      <div class="layer"><b>④ 怎么落地</b>见 V1 配置表。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「同一闭环，不同配置。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-l-2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：如何把设计模式讲成亮点而不是教科书？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>绑定变化点：风控规则常变→策略+链；订单状态复杂→状态机；三方物流→ACL。</div>
+      <div class="layer"><b>② 场景</b>评审被问为什么这么多类。</div>
+      <div class="layer"><b>③ 坑</b>为模式而模式。</div>
+      <div class="layer"><b>④ 怎么落地</b>每个模式对应一个变更频率或资损点。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「模式跟着变化点与资损点走。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-l-3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：何时必须拆进程？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>独立扩展、故障隔离、异构技术、合规数据隔离、组织清晰且平台具备。</div>
+      <div class="layer"><b>② 场景</b>流量与团队都不够。</div>
+      <div class="layer"><b>③ 坑</b>为简历拆。</div>
+      <div class="layer"><b>④ 怎么落地</b>书面 ADR：收益、成本、回滚、数据归属。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「拆分是 ADR，不是口号。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-l-4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">Q：微服务并发常问：一次调用占多少资源？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>Little's Law：并发≈QPS×RT；RT 被下游拖长则占满线程。</div>
+      <div class="layer"><b>② 场景</b>池打满。</div>
+      <div class="layer"><b>③ 坑</b>只加线程。</div>
+      <div class="layer"><b>④ 怎么落地</b>降 RT、隔离开、限流、异步化非核心。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「线程是租来的，RT 是租金。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ms-l-5"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <div class="callout"><div class="label">生产 Runbook · 微服务故障 15 分钟</div>
+    <ol>
+      <li>看入口错误率/P99 → 是否发布窗口。</li>
+      <li>按 traceId/单号串调用链，找第一个饱和依赖。</li>
+      <li>止血：限流、熔断、降级、回滚（预设条件）。</li>
+      <li>查重试风暴与线程池拒绝。</li>
+      <li>数据面：幂等冲突、outbox 堆积、对账差异。</li>
+      <li>复盘写回 S2 模板，更新超时矩阵。</li>
+    </ol>
+</div>
+
+  <div class="reflect" data-reflect="ms-highlights-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s-req-manifesto" data-toc="S2+ · 拒绝技术拼凑" data-prio="p0">
+  <h2><span class="sys-id">S2+</span>拒绝技术拼凑：需求 → 约束 → 方案 → 验收</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>方法论纪律层：主线业务写案前必读。无 PRD 切片不得堆中间件。<br><b>挂回：</b>S2 模板 → 本宣言 → B-主线填空</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：先问「谁要什么、怎样算验收过」，再问用不用 Kafka。技术是零件，需求是图纸；没有图纸的零件箱叫仓库，不叫方案。</div>
+
+  <table>
+    <thead><tr><th>反模式（禁止）</th><th>正模式（本书）</th></tr></thead>
+    <tbody>
+      <tr><td>为了微服务而微服务</td><td>先模块化跑通正逆向闭环，资损边界清晰再拆</td></tr>
+      <tr><td>先上 Kafka 再找场景</td><td>有「支付成功通知履约」的验收，才上 Outbox/MQ</td></tr>
+      <tr><td>架构图只有框没有验收</td><td>每框对应验收用例或对账口径</td></tr>
+      <tr><td>优惠/售后写成 CRUD Demo</td><td>状态机 + 分摊回退 + 并发幂等 + 财务口径</td></tr>
+      <tr><td>行业章节各自为政</td><td>餐饮/跨境只是正逆向闭环上的配置差异</td></tr>
+    </tbody>
+  </table>
+  <div class="koujue"><div class="label">口诀</div>一案五问：需求？约束？为何要这门技术？如何验收？坏了如何补偿？</div>
+
+  <div class="qa">
+    <div class="q">【需求变更】产品说「先把微服务拆了，优惠以后再说」你怎么拦？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>优惠分摊与逆向回退是资损主路径；无主线闭环先拆进程只会放大不一致。</div>
+      <div class="layer"><b>② 场景</b>转型口号压力。</div>
+      <div class="layer"><b>③ 坑</b>用服务数当 KPI。</div>
+      <div class="layer"><b>④ 怎么落地</b>出示主线验收：未成团退款、售后分摊回退；未过验收不拆。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「先闭环资损，再谈拆分。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="req-m-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【线上故障】上了消息队列但售后仍重复退款，根因通常是？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>MQ 只解决传递，不解决业务幂等；缺退款单唯一约束与状态机。</div>
+      <div class="layer"><b>② 场景</b>重复回调/重复消费。</div>
+      <div class="layer"><b>③ 坑</b>怪 MQ 不可靠。</div>
+      <div class="layer"><b>④ 怎么落地</b>退款申请号+渠道退款号双幂等；重复返回成功。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「队列不是幂等。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="req-m-2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="req-m-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="b-main-spine" data-toc="B0 · 正逆向主线总图" data-prio="p0">
+  <h2><span class="sys-id">B0</span>业务主线总图：下单正向 × 逆向售后</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>全书业务主脊柱。后续 B-F / B-R / B-Ind 都是本图放大；银行与大厂对照降为横向借鉴，不另起主线。<br><b>挂回：</b>S0/S1 → 本图 → B-F / B-R</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：这本书的「生意」就一件事：客人怎么买成、怎么退成、怎么修好——钱、货、券、积分、权益始终对得上账。</div>
+
+
+  <div class="mermaid-wrap" id="diag-b0-main">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-b0-main">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph F[正向 Forward]
+    Cart[加购/结算] --> Promo[优惠计算与分摊]
+    Promo --> Risk[风控短链]
+    Risk --> Pay[支付]
+    Pay --> OMS[OMS]
+    OMS --> WMS[WMS仓配]
+    WMS --> Log[物流签收]
+  end
+  subgraph R[逆向 Reverse]
+    Aft[售后申请] --> Type{{类型}}
+    Type --> RF[仅退款/退货]
+    Type --> RP[价保补差]
+    Type --> RM[寄修/维修/换新]
+    Type --> RN[翻新再售]
+    RF --> Money[钱券积分回退]
+    RF --> Stock[质检回库]
+    RM --> Right[权益回收/迁移]
+  end
+  Log -.->|售后期| Aft
+  Pay -.->|支付超时/未成团| Money
+
+    </pre>
+  </div>
+
+
+  <table>
+    <thead><tr><th>主线段</th><th>章节</th><th>核心验收（人话）</th></tr></thead>
+    <tbody>
+      <tr><td>正向优惠→支付→履约</td><td><a href="#b-forward">B-F</a></td><td>买成、分摊落单、仓配状态可追</td></tr>
+      <tr><td>逆向售后维修</td><td><a href="#b-reverse">B-R</a></td><td>退成、分摊回退、权益不悬空</td></tr>
+      <tr><td>行业配置</td><td><a href="#b-industry">B-Ind</a></td><td>同一闭环，餐饮/跨境旋钮不同</td></tr>
+      <tr><td>横向借鉴</td><td>B2 银行 / V1 大厂</td><td>资金并发与高峰治理「借经验」</td></tr>
+    </tbody>
+  </table>
+  <div class="reflect" data-reflect="b0-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="b-forward" data-toc="B-F · 下单正向闭环" data-prio="p0">
+  <h2><span class="sys-id">B-F</span>下单正向：优惠 → 风控 → 支付 → OMS → WMS → 物流</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>主线正向放大。技术选型必须回溯到本页 PRD；T 层零件按需引用。<br><b>服务业务闭环：</b>电商/餐饮/跨境的「买成」<br><b>挂回：</b>B0 → 本页 → B-R</div>
+
+
+  <h3 id="bf-group">F1 · 拼团/拼单（生产案例·归纳）</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>大促期间拼团未成团要自动退款，且券、积分回退不错账；成团后库存与支付超时要协同。</p>
+    <p><b>谁：</b>C 端用户 / 营销运营 / 财务　<b>要什么：</b>到期未满员自动解散并原路退款；已领券/已扣积分恢复正确状态</p>
+    <p><b>约束：</b>支付回调乱序；成团临界并发；退款渠道限流；大促峰值</p>
+    <p><b>验收口径：</b>未成团订单 100% 进入退款成功或可对账挂账；券积分无悬挂；超卖=0</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>功能：开团/参团/成团/失败解散。非功能：峰值、回调幂等。资损：重复退、漏退、券超退。合规：退款凭证可审计。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b><ul><li>状态机 ← 成团生命周期验收</li><li>库存预占+TTL ← 防超卖与超时释放</li><li>Outbox ← 成团/失败事件必达履约与退款</li><li>退款幂等键 ← 渠道重复回调</li><li>限流 ← 大促峰值（非功能）</li></ul>不需要：无关的大数据推荐链路。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>团单聚合根；人数阶梯用策略；支付成功仅「占座」，成团才「确认」；失败走退款命令；与支付超时共用释放预占。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>状态机(团单)；策略(人数阶梯价)；模板方法(退款指令)。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>临界成团 CAS/版本；退款并发去重；预占原子扣减。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>用例：差1人超时→全员退款；成团瞬间超员→拒绝；支付成功晚到已解散→自动退。监控：未成团退款成功率、券悬挂数、预占超时释放。对账：团单↔支付↔券流水日终。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>单库状态机+定时扫到期团+退款幂等表；MQ 可降级为 Outbox 表轮询。</div>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-bf-group">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-bf-group">导出 PNG</button></div>
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Open
+  Open --> Locked: 满员成团
+  Open --> Failed: 超时未满
+  Locked --> PaidConfirm: 全员支付确认
+  Failed --> Refunding: 自动退款
+  PaidConfirm --> Fulfilling: 下发OMS
+  Refunding --> Closed
+
+    </pre>
+  </div>
+
+  <div class="qa">
+    <div class="q">【需求变更】运营要把成团时限从 24h 改 2h，你改什么？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>时限是团单策略配置；改配置+存量开团是否追溯的产品规则；定时扫描水位。</div>
+      <div class="layer"><b>② 场景</b>大促中途。</div>
+      <div class="layer"><b>③ 坑</b>硬编码常量满地改。</div>
+      <div class="layer"><b>④ 怎么落地</b>配置中心+对在途团的明确规则（不追溯/按新时限）。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「时限是配置，追溯是产品决策。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-g1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【线上故障】成团失败但券已核销未回退？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>核销与成团成功绑错事件；失败路径未发券回退命令或回退非幂等失败。</div>
+      <div class="layer"><b>② 场景</b>客服投诉。</div>
+      <div class="layer"><b>③ 坑</b>手工改券库无单号。</div>
+      <div class="layer"><b>④ 怎么落地</b>冻结→确认核销/回退；失败强制回退命令+对账扫悬挂。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「券有冻结态，不只核销态。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-g2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【并发】最后两个名额同时参团？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>团单 version/名额原子扣；失败者走失败态或挤入下一团策略。</div>
+      <div class="layer"><b>② 场景</b>热点团。</div>
+      <div class="layer"><b>③ 坑</b>先读后写。</div>
+      <div class="layer"><b>④ 怎么落地</b>WHERE remain&gt;0 更新或 Lua。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「名额是库存模型。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-g3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【验收】如何证明「不错账」？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>日终：团失败单数=退款成功+挂账；券流水借贷平衡；抽检单号级三联。</div>
+      <div class="layer"><b>② 场景</b>财务验收。</div>
+      <div class="layer"><b>③ 坑</b>只看页面提示。</div>
+      <div class="layer"><b>④ 怎么落地</b>对账任务+差异工单。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「验收看对账不是看 Demo。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-g4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3 id="bf-promo">F2 · 券 / 积分 / 叠加互斥 / 最优 / 分摊</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>结算页要在 &lt;200ms 级给出「平台券+店铺券+会员价+积分」的可售组合；落单后每行商品有优惠分摊，供退款与发票。</p>
+    <p><b>谁：</b>用户 / 商家 / 财务　<b>要什么：</b>算得快、算得明白、退得回去、账对得上</p>
+    <p><b>约束：</b>组合爆炸；互斥规则常变；金额分厘；退款部分退</p>
+    <p><b>验收口径：</b>分摊行合计=订单优惠合计；部分退按行回退误差≤1分规则闭合；规则变更可回滚</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>功能：领券/核销状态机、互斥组、最优解、分摊落单。资损：超发券、重复核销、退款多分摊。非功能：结算 RT。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b><ul><li>责任链/策略 ← 规则互斥与优先级需求</li><li>近似贪心或限深搜索 ← RT 约束下的最优（工程取舍写进 ADR）</li><li>分摊表 order_discount_allocation ← 退款与发票口径</li><li>券状态机+唯一核销键 ← 防超发重复核销</li><li>积分冻结/确认/回退 ← 与订单生命周期绑定</li></ul></div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>报价服务无副作用试算；下单事务：锁券/冻积分/写分摊/创单；权威优惠在订单，不在缓存。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>策略(券类型)；责任链(校验)；装饰器(会员价叠加层)。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>领券库存原子；核销唯一约束；结算试算只读可降级。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>用例：互斥券不能同用；积分+券边界金额；1分钱分摊进位到最后一行；部分退两行按比例。监控：试算 P99、核销失败率、分摊不平衡告警。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>互斥表+优先级排序贪心；分摊比例法+尾差打在最后一行；不做完整约束求解器。</div>
+  </div>
+
+  <div class="callout danger"><div class="label">踩坑</div>优惠分摊是生产真实痛点：不会算「退款退多少券/积分/行优惠」，财务与客服系统全部失真。</div>
+
+  <div class="qa">
+    <div class="q">【需求】售后仅退款后优惠分摊要按行回退，财务能对上——方案要点？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>退款单引用原 allocation；按退货行回退金额；券/积分按原分摊比例或产品规则回退；落退款分摊流水。</div>
+      <div class="layer"><b>② 场景</b>财务对账。</div>
+      <div class="layer"><b>③ 坑</b>整单优惠平均拍脑袋。</div>
+      <div class="layer"><b>④ 怎么落地</b>退款前校验 allocation 存在；无则拒绝自动退转人工。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「退款跟分摊走，不跟感觉走。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-p1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】平台券+店铺券叠加超优惠？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>互斥组未配置或试算与落单规则不一致。</div>
+      <div class="layer"><b>② 场景</b>资损。</div>
+      <div class="layer"><b>③ 坑</b>只修展示不修落单。</div>
+      <div class="layer"><b>④ 怎么落地</b>试算与落单同一领域服务；落单再校验一遍。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「试算非权威，落单再校验。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-p2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【变更】要上「兑换券」新类型？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>新增券策略实现+状态机是否允许部分退；分摊是否占商品行。</div>
+      <div class="layer"><b>② 场景</b>营销。</div>
+      <div class="layer"><b>③ 坑</b>在巨型 if 加分支。</div>
+      <div class="layer"><b>④ 怎么落地</b>策略注册+用例矩阵。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「新券类型=新策略+验收矩阵。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-p3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【并发】积分扣减与支付回调谁先？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>下单冻积分；支付成功确认扣减；失败/超时回退；回调幂等。</div>
+      <div class="layer"><b>② 场景</b>悬挂积分。</div>
+      <div class="layer"><b>③ 坑</b>支付成功再扣导致超卖积分。</div>
+      <div class="layer"><b>④ 怎么落地</b>冻结态必扫超时。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「积分三态：冻/扣/回。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-p4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【取舍】最优解为何常用贪心？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>完整组合优化在 SKU×券 下爆炸，RT 与可解释性不达标；贪心+规则剪枝可验收。</div>
+      <div class="layer"><b>② 场景</b>面试。</div>
+      <div class="layer"><b>③ 坑</b>上未经验证的求解器。</div>
+      <div class="layer"><b>④ 怎么落地</b>ADR 写清近似误差与运营接受度。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「可解释可验收大过理论最优。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-p5"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3 id="bf-pay-oms-wms">F3 · 风控 → 支付 → OMS → WMS → 物流</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>支付成功后必须进入可履约订单；仓配缺货/拆波次要可补偿；签收前状态可追问客服。</p>
+    <p><b>谁：</b>交易 / 仓储 / 客服　<b>要什么：</b>钱货状态一致；缺货能取消或拆单补发；轨迹可查</p>
+    <p><b>约束：</b>回调重复；WMS 异步；拣货缺货；服务间超时</p>
+    <p><b>验收口径：</b>支付成功→OMS 可见延迟 SLO；缺货补偿闭环；禁止支付成功却永久无履约单</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>风控短链预算；支付幂等；OMS 状态机；WMS 下发/拣货/缺货/波次；物流运单 ACL。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b><ul><li>同步风控超时 ← 不拖垮下单 RT</li><li>支付回调幂等+状态机 ← 资金需求</li><li>Outbox ← 支付成功必达 OMS</li><li>OMS↔WMS 命令/回执状态机 ← 缺货补偿需求</li><li>舱壁线程池 ← 拣货回传高峰不拖支付</li></ul></div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>正向主事件：OrderPaid → Allocate → Wave → Pick → Ship → Sign；缺货：短拣→拆单/取消→释放/退款命令。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>模板(支付回调)；状态机(OMS/WMS)；ACL(承运商)；领域事件。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>回调并发；下发重试幂等；库存预占与 WMS 实扣对账。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>用例：回调两次只履约一次；WMS 缺货回执→用户可取消；波次合并不丢单。监控：Outbox 堆积、下发失败、缺货率、签收时效。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>OMS/WMS 同库模块化+出站表；人工波次；轨迹对接一家承运商 ACL。</div>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-bf-wms">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-bf-wms">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant Pay as 支付
+  participant OMS as OMS
+  participant WMS as WMS
+  Pay->>OMS: OrderPaid(幂等)
+  OMS->>WMS: 下发发货单
+  WMS-->>OMS: 接单/拣货中
+  alt 缺货
+    WMS-->>OMS: 短拣缺货
+    OMS->>OMS: 拆单或取消补偿
+  else 出库
+    WMS-->>OMS: 出库
+    OMS->>OMS: 待收货/签收
+  end
+
+    </pre>
+  </div>
+
+  <div class="qa">
+    <div class="q">【故障】支付成功 OMS 无单？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>Outbox 未投递或消费失败；或回调未进状态机。</div>
+      <div class="layer"><b>② 场景</b>客诉已扣款。</div>
+      <div class="layer"><b>③ 坑</b>人工插单无支付号。</div>
+      <div class="layer"><b>④ 怎么落地</b>按支付号补建+告警堆积；修幂等。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「支付号是补单钥匙。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-o1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【需求】增值服务（刻字/延保）随履约流转？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>权益绑定订单行与履约单；出库确认生效；取消未出库回收；售后解绑/迁移。</div>
+      <div class="layer"><b>② 场景</b>买赠/延保。</div>
+      <div class="layer"><b>③ 坑</b>只存在营销标记里。</div>
+      <div class="layer"><b>④ 怎么落地</b>权益状态机+履约事件。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「权益是有状态资产。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-o2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【并发】取消与拣货同时发生？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>OMS 版本；WMS 接取消令牌；已下架则转逆向。</div>
+      <div class="layer"><b>② 场景</b>竞态。</div>
+      <div class="layer"><b>③ 坑</b>最后写覆盖。</div>
+      <div class="layer"><b>④ 怎么落地</b>合法迁移+人工工单兜底。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「仓内状态决定取消是否还能秒退。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-o3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【微服务卡点】OMS 与库存是否同步双写？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>否；预占在库存服务/模块，OMS 发命令；见 S-MS。</div>
+      <div class="layer"><b>② 场景</b>拆分争议。</div>
+      <div class="layer"><b>③ 坑</b>两处各改库存。</div>
+      <div class="layer"><b>④ 怎么落地</b>单一写权威+对账。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「库存一个笔杆子。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bf-o4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="bf-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="b-reverse" data-toc="B-R · 逆向售后维修闭环" data-prio="p0">
+  <h2><span class="sys-id">B-R</span>逆向与售后维修：钱 · 货 · 券 · 积分 · 权益</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>主线逆向放大。与 B-F 分摊/支付/WMS 强耦合；是资损高发区。<br><b>服务业务闭环：</b>仅退款到翻新再售全谱<br><b>挂回：</b>B-F → 本页 → B-Ind / S3</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：逆向不是「再写个退款接口」。是同时把钱退对、货收回、券积分归位、延保关掉——还得防用户连点两次。</div>
+
+
+  <h3 id="br-spectrum">R1 · 逆向全谱状态机（生产案例·归纳）</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>支持仅退款、退货退款、价保补差、寄修/维修/换新、翻新再售；每类路径钱货券积分运费险交叉不错账。</p>
+    <p><b>谁：</b>用户 / 售后 / 财务 / 仓储质检　<b>要什么：</b>申请可追踪；审核/寄回/质检/退款/关单可运营；重复申请不重复退</p>
+    <p><b>约束：</b>与支付渠道退款异步；WMS 质检结果乱序；部分退；并发重复提交</p>
+    <p><b>验收口径：</b>同一订单行退款总额不超额；重复申请幂等；质检不合格有明确分支</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>类型策略+共享售后聚合；交叉资源：现金、券、积分、运费险、增值权益；库存回库。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b><ul><li>售后状态机 ← 全谱流转验收</li><li>策略模式 ← 类型差异（寄修≠仅退款）</li><li>退款幂等（申请号+渠道号）← 重复退需求</li><li>引用正向分摊 ← 按行回退</li><li>WMS 质检回执 ACL ← 货状态</li></ul></div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>AfterSale 聚合：申请→审核→待寄回→质检→退款中→完成；维修分支：待寄修→维修中→寄回/换新；翻新：质检→再售入库另开生命周期。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>策略(售后类型)；状态机；模板(退款指令)；ACL(质检/渠道)。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>重复申请唯一；退款中状态防重入；回执乱序用版本。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>用例：重复点申请；部分退两行；价保补差不影响库存；寄修超时；质检驳回重寄。监控：退款成功率、在途售后时长、重复退拦截次数、分摊回退不平衡。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>先上仅退款+退货退款+价保；寄修/翻新用工单系统+半自动状态；仍要幂等与分摊回退。</div>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-br-as">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-br-as">导出 PNG</button></div>
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Applied
+  Applied --> Approved: 审核通过
+  Applied --> Rejected: 驳回
+  Approved --> WaitReturn: 需退货/寄修
+  Approved --> Refunding: 仅退款/价保
+  WaitReturn --> Inspecting: 入仓质检
+  Inspecting --> Refunding: 合格
+  Inspecting --> Repairing: 转维修
+  Repairing --> ShippedBack: 修完寄回
+  Repairing --> Renew: 换新
+  Refunding --> Done
+  Renew --> Done
+
+    </pre>
+  </div>
+
+
+  <div class="qa">
+    <div class="q">【需求】部分退时运费险与券怎么回？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>产品规则写清：券是否整张作废/按比例；运费险是否已理赔；落退款明细。</div>
+      <div class="layer"><b>② 场景</b>客服口径不一。</div>
+      <div class="layer"><b>③ 坑</b>代码里临时 if。</div>
+      <div class="layer"><b>④ 怎么落地</b>规则配置+用例表+财务确认。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「逆向规则先产品签收再编码。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】渠道退款成功本地失败？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>对账扫差异；本地补成功态；禁止再退。</div>
+      <div class="layer"><b>② 场景</b>用户已到账系统显示退款中。</div>
+      <div class="layer"><b>③ 坑</b>再点一次退款。</div>
+      <div class="layer"><b>④ 怎么落地</b>渠道单号幂等查询。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「先查渠道再动作。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【并发】用户重复提交退货？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>业务单号/行级唯一进行中售后；重复返回原单。</div>
+      <div class="layer"><b>② 场景</b>双倍退。</div>
+      <div class="layer"><b>③ 坑</b>前端防抖当唯一手段。</div>
+      <div class="layer"><b>④ 怎么落地</b>DB 唯一约束。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「防抖不防资损。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【变更】要加「七天无理由」自动审？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>审核策略可插拔；风控名单仍可拦；与类目规则配置化。</div>
+      <div class="layer"><b>② 场景</b>运营。</div>
+      <div class="layer"><b>③ 坑</b>写死在流程引擎脚本难测。</div>
+      <div class="layer"><b>④ 怎么落地</b>策略+审计。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「自动审也是策略。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【维修】换新与原单库存？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>换新出库占新库存；原件走质检报废/翻新入库；权益迁移到新 SN。</div>
+      <div class="layer"><b>② 场景</b>硬件。</div>
+      <div class="layer"><b>③ 坑</b>只改订单状态。</div>
+      <div class="layer"><b>④ 怎么落地</b>SN 生命周期表。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「换新是两段库存故事。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-5"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3 id="br-rights">R2 · 增值服务与权益回收</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>延保/刻字/包装等增值服务：未履约取消全额回退；已履约售后按规则回收或按剩余时效折算。</p>
+    <p><b>谁：</b>用户 / 服务商 / 财务　<b>要什么：</b>权益不悬空、不重复售卖、退款口径清</p>
+    <p><b>约束：</b>服务商异步确认；与主品退货时点交叉</p>
+    <p><b>验收口径：</b>主品退货完成时权益必终态；无「幽灵延保」</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>绑定、生效、迁移、作废；和售后类型策略联动。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b>权益状态机←验收；主品售后事件订阅←联动；幂等解绑←重复售后。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>Rights 绑定 orderItem；监听售后完成事件；取消/退货触发回收命令。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>观察者/事件；状态机。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>重复解绑幂等。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>主品仅退款未发货→权益作废退款；已开通延保退货→折算或作废按规则。监控：权益悬挂数。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>权益表+定时对账主品状态；复杂折算先人工。</div>
+  </div>
+
+  <div class="failbox"><div class="label">故障模式 · 权益悬挂</div><p>主品已退，延保仍可申赔——典型漏订阅售后事件或解绑失败无对账。</p></div>
+
+  <div class="qa">
+    <div class="q">【故障】翻新再售卖了未擦除的账号绑定？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>再售入库质检清单缺「解绑/擦除」闸门；工程上强制 check list 状态。</div>
+      <div class="layer"><b>② 场景</b>合规客诉。</div>
+      <div class="layer"><b>③ 坑</b>只看外观质检。</div>
+      <div class="layer"><b>④ 怎么落地</b>再售 SKU 上市前校验。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「再售有准入闸。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【验收】价保补差要动库存吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>通常不动货，只动现金补差；状态机走退款分支短路径。</div>
+      <div class="layer"><b>② 场景</b>价保。</div>
+      <div class="layer"><b>③ 坑</b>误建成退货单。</div>
+      <div class="layer"><b>④ 怎么落地</b>类型策略分流。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「价保是钱，不是货。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="br-r2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="callout"><div class="label">生产 Runbook · 逆向资损 20 分钟</div>
+    <ol>
+      <li>冻结相关售后自动退款开关（防扩大）。</li>
+      <li>按售后单/支付号查渠道实退与本地态。</li>
+      <li>查分摊回退流水是否平衡。</li>
+      <li>查券积分权益终态。</li>
+      <li>订正须 before/after 审计；复盘唯一约束缺口。</li>
+    </ol>
+</div>
+
+  <div class="reflect" data-reflect="br-r1-box"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="b-industry" data-toc="B-Ind · 行业配置餐饮跨境" data-prio="p0">
+  <h2><span class="sys-id">B-Ind</span>行业配置：餐饮 / 跨境（同一正逆向闭环）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>不是平行第三主线：只描述旋钮差异。读完应能指回 B-F/B-R 哪一段被改写。<br><b>挂回：</b>B-F/B-R → 本页配置 → S3 路考</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：餐馆跟海淘，都是「买成/退成」。差别在：餐做好了还能不能退、清关失败货还在谁那儿。</div>
+
+
+  <h3>餐饮配置（生产案例·归纳）</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>高峰拼单下单；出餐后取消涉及餐损；券核销与配送取消要和正逆向状态对齐。</p>
+    <p><b>谁：</b>食客 / 门店 / 骑手运营　<b>要什么：</b>高峰稳；出餐前后取消规则清晰；券不重复核销</p>
+    <p><b>约束：</b>出餐不可逆成本；配送状态；高峰 QPS</p>
+    <p><b>验收口径：</b>出餐后取消按餐损规则结算；高峰核心下单可用；券核销可对账</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>正向同 B-F；旋钮：出餐点=履约不可逆点；逆向短，偏仅退款/部分退。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b>限流降级←高峰；出餐状态←餐损；券核销←营销；配送取消事件←逆向。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>门店接单/出餐状态插入 OMS 等价层；出餐后取消走损失分摊；配送取消释放骑手。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>状态机+策略(取消损失)。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>高峰限流；券核销幂等。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>出餐前取消全额；出餐后扣餐损；高峰降级关闭推荐。监控：出餐后取消率、高峰成功率。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>门店状态+取消规则表；无复杂 WMS 波次。</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">【故障】已出餐仍全额自动退？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>取消策略未读取出餐点；或事件延迟。</div>
+      <div class="layer"><b>② 场景</b>门店亏损。</div>
+      <div class="layer"><b>③ 坑</b>关闭所有自动退。</div>
+      <div class="layer"><b>④ 怎么落地</b>出餐后取消必须走损失策略+门店确认。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「出餐是餐饮的不可逆点。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ind-f1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <h3>跨境配置（生产案例·归纳）</h3>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>清关失败要能拦截发货（或拦截出境后流程）并触发退款；国际退货时效与多仓库存回库口径清晰。</p>
+    <p><b>谁：</b>跨境运营 / 关务 / 财务　<b>要什么：</b>清关失败不继续错履约；税费与锁汇在退款可解释</p>
+    <p><b>约束：</b>清关回执异步乱序；国际退货慢；多仓</p>
+    <p><b>验收口径：</b>清关失败单据无「已签收」；退款含税口径预置；多仓回库仓正确</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>正向增加锁汇/计税/清关状态；逆向增加国际退货与报关撤销分支。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b>清关状态机←拦截需求；锁汇落单←退税差争议；仓路由←多仓回库；ACL←关务回执。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>清关失败→OMS 禁止出库或拦截运单→退款命令；税费按落单快照回退。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>状态机+ACL+策略(税)。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>回执乱序版本；多仓预占。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>清关失败不发货；已发货失败走国际退货；汇率按锁定。监控：清关失败补偿时效。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>清关状态+人工拦发+退款；国际退货工单化。</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">【需求】清关失败拦截发货并退款——最小闭环？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>清关态闸门挡 WMS 出库；失败事件触发 B-R 仅退款；税与货各自回退。</div>
+      <div class="layer"><b>② 场景</b>跨境。</div>
+      <div class="layer"><b>③ 坑</b>先发货再补救。</div>
+      <div class="layer"><b>④ 怎么落地</b>闸门测试用例必过。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「失败先停履约再退钱。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ind-c1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【对比】餐饮不可逆点 vs 跨境不可逆点？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>餐饮≈出餐；跨境≈出境/清关放行后国际段。</div>
+      <div class="layer"><b>② 场景</b>归纳。</div>
+      <div class="layer"><b>③ 坑</b>混用同一取消规则。</div>
+      <div class="layer"><b>④ 怎么落地</b>行业配置表写清不可逆点。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「不可逆点是行业旋钮。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="ind-c2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="ind-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="b-lateral" data-toc="B-L · 横向借鉴资金与大厂" data-prio="p1">
+  <h2><span class="sys-id">B-L</span>横向借鉴：资金并发 · 大厂治理（非第二主线）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>降级旁支：只服务主线里的「支付/退款/高峰」。详细银行引擎见原 T/B2 零件，不在此展开第二事业部。<br><b>挂回：</b>B-F 支付/B-R 退款 → 借经验 → 回到主线验收</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：向银行借「热点账户与对账」；向大厂借「限流降级与预案」。借完要还到「下单正逆向验收」上，不是去开银行项目。</div>
+
+  <table>
+    <thead><tr><th>借鉴点</th><th>用到主线何处</th><th>中厂怎么裁</th></tr></thead>
+    <tbody>
+      <tr><td>热点账户/队列化</td><td>热点商品预占、退款渠道限流</td><td>队列+人工名单</td></tr>
+      <tr><td>日终对账</td><td>支付↔订单↔券↔售后</td><td>日终 SQL+差异工单</td></tr>
+      <tr><td>统一限流降级</td><td>大促正向入口</td><td>网关限流+开关</td></tr>
+      <tr><td>单元化多活（公开主题）</td><td>通常不进中厂主线</td><td>同城 HA 即可</td></tr>
+    </tbody>
+  </table>
+  <div class="qa">
+    <div class="q">【面试】为何不把银行账户做成全书主线？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>读者主战场是交易正逆向；银行是资金领域深化，作横向即可。</div>
+      <div class="layer"><b>② 场景</b>体系化。</div>
+      <div class="layer"><b>③ 坑</b>章节平行堆叠。</div>
+      <div class="layer"><b>④ 怎么落地</b>主线 B0 一张图。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「主线要忍痛做减法。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="bl-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="bl-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="v1-vendor" data-toc="V1 · 大厂对照中厂MVP" data-prio="p1">
+  <h2><span class="sys-id">V1</span>大厂对照 × 中厂 MVP（主线的高配/低配）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>配置层：旋钮拧在 B-F/B-R 同一闭环上。公开技术分享常见套路归纳，非未公开内部数据。<br><b>挂回：</b>B0 主线 → 本配置 → S3</div>
+
+  <div class="plain"><div class="label">人话版</div>人话：自动挡与手动挡，开的是同一条「买成/退成」路。</div>
+
+  <table>
+    <thead><tr><th>主线能力</th><th>大厂公开常见高配</th><th>中厂 MVP</th></tr></thead>
+    <tbody>
+      <tr><td>优惠试算/分摊</td><td>规则平台+实验</td><td>策略+贪心+分摊表</td></tr>
+      <tr><td>拼团/峰值</td><td>统一限流热点平台</td><td>网关限流+Redis 预占</td></tr>
+      <tr><td>支付→OMS</td><td>事务消息/可靠平台</td><td>Outbox 表+轮询</td></tr>
+      <tr><td>OMS→WMS</td><td>仓配中台</td><td>模块化+出站表+人工波次</td></tr>
+      <tr><td>售后全谱</td><td>工单+自动化策略</td><td>仅退款/退货优先；寄修半自动</td></tr>
+      <tr><td>对账</td><td>统一对账平台</td><td>日终任务+差异工单</td></tr>
+      <tr><td>多活/单元化</td><td>公开主题常见</td><td>通常不做；同城 HA</td></tr>
+    </tbody>
+  </table>
+  <div class="qa">
+    <div class="q">【需求】老板要「对齐阿里大促」你怎么落主线？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>对齐的是限流/预案/对账验收，不是单元化名词；映射到 B-F 峰值与 V1 MVP 列。</div>
+      <div class="layer"><b>② 场景</b>预算会。</div>
+      <div class="layer"><b>③ 坑</b>先上多活。</div>
+      <div class="layer"><b>④ 怎么落地</b>写 ADR：主线验收指标。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「对齐验收，不对齐商标。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="v1-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【变更】中厂只做售后仅退款算不算 MVP？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>算；但分摊回退与幂等必须有，否则财务验收不过。</div>
+      <div class="layer"><b>② 场景</b>裁剪。</div>
+      <div class="layer"><b>③ 坑</b>连分摊也不做。</div>
+      <div class="layer"><b>④ 怎么落地</b>B-R 最小集清单。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「MVP 不砍资损闭环。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="v1-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="v1-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s3-e2e" data-toc="S3 · 正逆向E2E路考" data-prio="p0">
+  <h2><span class="sys-id">S3</span>路考：一条订单走完正向与逆向</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>综合演练只考主线：优惠→支付→OMS/WMS→签收→售后回退。<br><b>挂回：</b>B-F/B-R → 本页 → S4</div>
+
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>用户拼团成功下单并签收后，发起一行退货退款：券积分按分摊回退，权益关闭，库存质检回库，财务三方能对上。</p>
+    <p><b>谁：</b>考生/方案负责人　<b>要什么：</b>90 秒讲清链路与资损防护；能指出监控与对账</p>
+    <p><b>约束：</b>回调重复、消息乱序、部分退</p>
+    <p><b>验收口径：</b>口述覆盖正向事件+逆向分摊+幂等；给出 3 个指标</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>正向 B-F；逆向 B-R；行业可假设普通电商。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b>只允许出现溯源到本 PRD 的技术：状态机、分摊表、Outbox、退款幂等、质检回执。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>按 B0 图走一遍；取消一切无关组件叙述。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>链/策略/状态/ACL。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>预占、回调、重复售后。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>自测：画序列图；答重复退；答分摊回退；答缺货补偿。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>指出若中厂，哪几步用工单代替。</div>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-s3-e2e">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-s3-e2e">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as 用户
+  participant F as 正向B-F
+  participant R as 逆向B-R
+  U->>F: 优惠结算+支付
+  F->>F: OMS/WMS/签收
+  U->>R: 退货退款
+  R->>R: 分摊回退+券积分+权益
+  R->>R: 质检回库+渠道退款
+
+    </pre>
+  </div>
+
+  <div class="qa">
+    <div class="q">【路考】90 秒稿提纲？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>需求句→预占成团→支付幂等→Outbox→WMS→签收→售后状态机→分摊回退→对账指标。</div>
+      <div class="layer"><b>② 场景</b>面试。</div>
+      <div class="layer"><b>③ 坑</b>堆组件名。</div>
+      <div class="layer"><b>④ 怎么落地</b>对着 B0 图背。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「一张图走完。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s3-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】签收后仅退款未退货却回了库存？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>类型策略错误走了退货回库；状态机分支反了。</div>
+      <div class="layer"><b>② 场景</b>账实不符。</div>
+      <div class="layer"><b>③ 坑</b>再刷库存。</div>
+      <div class="layer"><b>④ 怎么落地</b>仅退款不碰可售库存；修策略与回归用例。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「类型决定动不动货。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s3-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【变更】要在闭环上加跨境清关失败？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>走 B-Ind 旋钮：清关闸门+失败退款，不新开主线。</div>
+      <div class="layer"><b>② 场景</b>范围。</div>
+      <div class="layer"><b>③ 坑</b>另起清关微服务大章。</div>
+      <div class="layer"><b>④ 怎么落地</b>挂 B-R 补偿。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「配置，不另起炉灶。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s3-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="s3-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s3-conc-bank" data-toc="S3 · 并发题库主线版" data-prio="p0">
+  <h2><span class="sys-id">S3</span>并发常问（绑正逆向，不考玄学）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>每题必须能指回 B-F/B-R 某验收。<br><b>挂回：</b>T1/T5 → 本库 → S4</div>
+
+  <div class="qa">
+    <div class="q">【故障】拼团最后名额超卖？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>名额非原子。</div>
+      <div class="layer"><b>② 场景</b>B-F。</div>
+      <div class="layer"><b>③ 坑</b>先读后写。</div>
+      <div class="layer"><b>④ 怎么落地</b>原子扣/版本。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「名额=库存。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】支付回调两次履约两次？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>无幂等。</div>
+      <div class="layer"><b>② 场景</b>B-F。</div>
+      <div class="layer"><b>③ 坑</b>靠网关去重。</div>
+      <div class="layer"><b>④ 怎么落地</b>支付号唯一+状态机。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「回调默认两次。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】部分退分摊多退？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>未按行 allocation。</div>
+      <div class="layer"><b>② 场景</b>B-R。</div>
+      <div class="layer"><b>③ 坑</b>整单比例拍脑袋。</div>
+      <div class="layer"><b>④ 怎么落地</b>退款分摊流水。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「退款跟分摊走。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】重复点售后双退？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>无进行中唯一约束。</div>
+      <div class="layer"><b>② 场景</b>B-R。</div>
+      <div class="layer"><b>③ 坑</b>前端防抖。</div>
+      <div class="layer"><b>④ 怎么落地</b>DB 唯一。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「防抖不防资损。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】取消与拣货竞态？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>无版本/令牌。</div>
+      <div class="layer"><b>② 场景</b>B-F F3。</div>
+      <div class="layer"><b>③ 坑</b>最后写赢。</div>
+      <div class="layer"><b>④ 怎么落地</b>合法迁移。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「仓内状态说了算。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-5"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】积分支付失败仍扣？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>无冻结态。</div>
+      <div class="layer"><b>② 场景</b>B-F F2。</div>
+      <div class="layer"><b>③ 坑</b>成功再扣导致超卖。</div>
+      <div class="layer"><b>④ 怎么落地</b>冻/扣/回。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「积分三态。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-6"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】退款渠道成功本地失败又退一次？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>未查渠道单号。</div>
+      <div class="layer"><b>② 场景</b>B-R。</div>
+      <div class="layer"><b>③ 坑</b>盲目重试。</div>
+      <div class="layer"><b>④ 怎么落地</b>先查后补态。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「先查渠道。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-7"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【高峰】下单池被导出打满？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>共用池。</div>
+      <div class="layer"><b>② 场景</b>S-MS/T1。</div>
+      <div class="layer"><b>③ 坑</b>加大队列。</div>
+      <div class="layer"><b>④ 怎么落地</b>分池。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「舱壁。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="cq-8"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="cq-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s3-read-blogs" data-toc="S3 · 读博客服务主线" data-prio="">
+  <h2><span class="sys-id">S3</span>读大厂博客：只蒸馏回正逆向</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>输入过滤：映射不到 B-F/B-R 验收的段落，跳过。<br><b>挂回：</b>V1 → 本页</div>
+
+  <ol>
+    <li>文章问题是否等于「买成/退成」某痛点？</li>
+    <li>决策能否写成主线验收句？</li>
+    <li>中厂 MVP 列如何替换平台？</li>
+  </ol>
+  <div class="koujue"><div class="label">口诀</div>映射不进 B0，就不进笔记。</div>
+
+  <div class="qa">
+    <div class="q">【练习】读限流文如何用到售后？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>退款渠道限流防雪崩，挂 B-R 非功能。</div>
+      <div class="layer"><b>② 场景</b>学习。</div>
+      <div class="layer"><b>③ 坑</b>收藏了事。</div>
+      <div class="layer"><b>④ 怎么落地</b>写一条验收。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「限流也要挂主线。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="blog-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="blog-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="s4-review" data-toc="S4 · 复习地图与自测" data-prio="p0">
+  <h2><span class="sys-id">S4</span>复习地图 · 路线 · 自测（主线闭环）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>测主线，不测名词收藏。<br><b>挂回：</b>S3 → 本页 → 薄弱 B-F/B-R</div>
+
+  <table>
+    <thead><tr><th>卡在</th><th>回炉</th></tr></thead>
+    <tbody>
+      <tr><td>分摊/券积分</td><td>B-F F2</td></tr>
+      <tr><td>支付无履约</td><td>B-F F3 + T3</td></tr>
+      <tr><td>售后乱/双退</td><td>B-R</td></tr>
+      <tr><td>餐饮餐损/清关</td><td>B-Ind</td></tr>
+      <tr><td>该不该拆</td><td>S-MS + V1</td></tr>
+    </tbody>
+  </table>
+  <h3>8 周主线路线</h3>
+  <table>
+    <thead><tr><th>周</th><th>主题</th><th>产出</th></tr></thead>
+    <tbody>
+      <tr><td>W1</td><td>S0–S2 + 拒绝拼凑</td><td>默写需求模板</td></tr>
+      <tr><td>W2</td><td>B-F 拼团优惠分摊</td><td>分摊+状态机草稿</td></tr>
+      <tr><td>W3</td><td>B-F 支付 OMS WMS</td><td>Outbox+缺货补偿</td></tr>
+      <tr><td>W4</td><td>B-R 逆向全谱</td><td>售后状态机+幂等</td></tr>
+      <tr><td>W5</td><td>B-Ind 餐饮/跨境旋钮</td><td>配置表</td></tr>
+      <tr><td>W6</td><td>T 零件按需 + S-MS</td><td>主线相关 ADR</td></tr>
+      <tr><td>W7</td><td>S3 路考</td><td>90 秒录音</td></tr>
+      <tr><td>W8</td><td>并发库+作品集</td><td>自测清单</td></tr>
+    </tbody>
+  </table>
+  <ul class="checklist">
+    <li>能默画 B0 正逆向总图</li>
+    <li>能从 PRD 句推出技术溯源表</li>
+    <li>能讲清分摊回退与双退防护</li>
+    <li>能说明餐饮/跨境只改哪个旋钮</li>
+    <li>能拒绝一个无主线的技术提案</li>
+  </ul>
+  <div class="callout"><div class="label">生产 Runbook · 周末主线自测</div><ol><li>写一条 PRD 句</li><li>填需求模板</li><li>答 4 道并发库</li><li>反思框写差距</li></ol></div>
+
+  <div class="qa">
+    <div class="q">【验收】怎样算读完本书？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>能独立交付「一笔正向+一笔退货」的对账型方案，而不是组件清单。</div>
+      <div class="layer"><b>② 场景</b>结业。</div>
+      <div class="layer"><b>③ 坑</b>页数读完。</div>
+      <div class="layer"><b>④ 怎么落地</b>作品集一页 ADR。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「交付闭环，不是读完。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="s4-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="s4-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
 <section class="block" id="casebook" data-toc="生产事故案例集" data-prio="p0">
   <h2><span class="tag prio-p0">P0</span>生产事故案例集（模式化，可迁移）</h2>
   <div class="why"><strong>用法：</strong>每个案例按「现象→错误处置→正确戏本→沉淀」阅读；面试可改成 STAR。</div>
@@ -2772,28 +4618,18 @@ flowchart LR
 
 </section>
 
-<section class="block" id="weekend-plan" data-toc="周末学习路线" data-prio="">
-  <h2>8 周周末深度学习路线（可执行）</h2>
-  <table>
-    <thead><tr><th>周</th><th>主题</th><th>产出物（可带走）</th></tr></thead>
-    <tbody>
-      <tr><td>W1</td><td>JMM/锁/线程池</td><td>项目线程池审计 + 人话讲解录音提纲</td></tr>
-      <tr><td>W2</td><td>GC 与排查工具</td><td>一页 GC runbook</td></tr>
-      <tr><td>W3</td><td>Spring 事务与超时矩阵</td><td>超时/重试表</td></tr>
-      <tr><td>W4</td><td>一致性与幂等</td><td>Outbox/对账设计草稿</td></tr>
-      <tr><td>W5</td><td>MySQL + Redis</td><td>慢 SQL Top5 治理 + 缓存策略</td></tr>
-      <tr><td>W6</td><td>可观测性与限流</td><td>SLO 草案 + 大促开关</td></tr>
-      <tr><td>W7</td><td>架构决策 + MQ</td><td>ADR：拆与不拆 + ISR 笔记</td></tr>
-      <tr><td>W8</td><td>AI 提效 + 作品集</td><td>3 份脱敏复盘 + 审查清单 + RAG 雏形</td></tr>
-    </tbody>
-  </table>
-  <div class="koujue"><div class="label">口诀</div>每周：读人话→跑 runbook→答 3 题详答→写反思→塞进作品集。</div>
+<section class="block" id="weekend-plan" data-toc="P2 · 路线入口(见S4)" data-prio="p2">
+  <h2><span class="sys-id">P2</span>学习路线入口</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>
+  完整 10 周路线与自测清单已收口到 <b>S4</b>；此处只保留协作向提醒，避免双路线打架。</div>
+  <div class="plain"><div class="label">人话版</div>别同时追两条学习路线。统一走 <a href="#s4-review">S4 复习地图</a>：测→补→再测。</div>
+  <div class="koujue"><div class="label">口诀</div>每周：走 S2 模板→跑 Runbook→答并发库→写反思→塞作品集。</div>
     <div class="reflect" data-reflect="weekend-plan-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
 </section>
 
 <footer class="footer-note">
-  <p>© 高级 Java · 可迁移能力白皮书（生产级 · 深且好懂）。导出前确认反思框已保存。用于学习与面试；生产决策请结合现场约束。勿向未授权模型粘贴密钥与未脱敏数据。</p>
+  <p>© 高级 Java · 体系化闭环白皮书（S0–S4 / S-MS / T / B / V）。导出前确认反思框已保存。用于学习与面试；生产决策请结合现场约束。文中大厂对照均为公开技术分享常见套路归纳。勿向未授权模型粘贴密钥与未脱敏数据。</p>
 </footer>
 </article>
 
