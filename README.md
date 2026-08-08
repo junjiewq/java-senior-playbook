@@ -16,18 +16,24 @@
 | S-MS | 微服务卡点·难点·亮点 |
 | **S-Method** | **钉拆标选验五步法** |
 
-## 锚点速链
+## 锚点速链（Pages）
 
-- 五步法：[`#s-method`](./index.html#s-method)
-- AI 总图：[`#t-ai-stack`](./index.html#t-ai-stack)
-- Skills / MCP / RAG：`#t-skills` · `#t-mcp` · `#t-rag`
-- 多智能体 / AgentScope：`#t-agents-deep` · `#t-as-deep` · `#t-agentscope`
-- K8s：[`#t-docker-k8s`](./index.html#t-docker-k8s)
+| 章节 | 锚点 | URL |
+|------|------|-----|
+| 五步法 | `#s-method` / `#s-five-steps` | https://junjiewq.github.io/java-senior-playbook/#s-method |
+| AI 总图 | `#t-ai-stack` | https://junjiewq.github.io/java-senior-playbook/#t-ai-stack |
+| Skills | `#t-skills` | https://junjiewq.github.io/java-senior-playbook/#t-skills |
+| MCP | `#t-mcp` | https://junjiewq.github.io/java-senior-playbook/#t-mcp |
+| RAG | `#t-rag` | https://junjiewq.github.io/java-senior-playbook/#t-rag |
+| 多智能体专章 | `#t-agents-deep` | https://junjiewq.github.io/java-senior-playbook/#t-agents-deep |
+| AgentScope 加深 | `#t-as-deep` | https://junjiewq.github.io/java-senior-playbook/#t-as-deep |
+| 多智能体导读 | `#t-ai-agents` | https://junjiewq.github.io/java-senior-playbook/#t-ai-agents |
+| AgentScope 对照 | `#t-agentscope` | https://junjiewq.github.io/java-senior-playbook/#t-agentscope |
 
 ## 本地打开
 
-[`index.html`](./index.html)（需联网 CDN）。  
-副本：`../高级Java外包-系统学习技术白皮书.html`
+[`index.html`](./index.html)（需联网 CDN）。导出 MD/PDF/Word 与反思框 UI 保留。  
+副本：`../高级Java外包-系统学习技术白皮书.html`（与 index 同步构建）
 
 ## GitHub Pages
 
