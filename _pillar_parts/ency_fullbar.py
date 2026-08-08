@@ -55,47 +55,15 @@ def flex_tradeoff(title, rows):
 
 
 def pad_cases(cases):
+    """Require real cases from callers; never inject generic watery pads."""
     cases = [dict(c) for c in cases]
-    fillers = [
-        {
-            "company": "拼多多类电商（案例归纳）",
-            "scene": "大促峰值链路",
-            "land": "核心与营销分级配置；独立资源池。",
-            "pit": "一套配置打天下互相拖死。",
-            "fix": "①分级 ②隔离 ③压测。",
-            "effect": "公开分享量级/示意区间：大促流量可为平峰数倍～一个数量级（示意）。",
-            "id": "pad-ecom",
-        },
-        {
-            "company": "顺丰类物流（案例归纳）",
-            "scene": "运单/轨迹事件",
-            "land": "至少一次+幂等 upsert；按运单键路由。",
-            "pit": "强一致假设打不开吞吐。",
-            "fix": "①放宽语义 ②幂等 ③lag 告警。",
-            "effect": "公开分享量级/示意区间：日事件十万～百万级（示意）。",
-            "id": "pad-logistics",
-        },
-        {
-            "company": "招行类金融（案例归纳）",
-            "scene": "账务/风控旁路可靠投递",
-            "land": "提高持久化/复制级别；审计演练。",
-            "pit": "异步丢尾未对账。",
-            "fix": "①同步取向 ②切换演练 ③对账闭环。",
-            "effect": "公开分享量级/示意区间：以 RPO/对账闭环为工程目标（示意，非精确内部值）。",
-            "id": "pad-fin",
-        },
-    ]
-    i = 0
-    while len(cases) < 3:
-        t = dict(fillers[i % len(fillers)])
-        t["id"] = f"{t['id']}-{len(cases)}"
-        cases.append(t)
-        i += 1
+    if len(cases) < 3:
+        raise ValueError(f"need ≥3 real cross-industry cases, got {len(cases)}")
     for c in cases:
-        c.setdefault(
-            "effect",
-            "公开分享量级/示意区间：按公开技术分享常见量级描述，非未公开精确值。",
-        )
+        # strip repeated filler prefix if author already wrote substance
+        eff = c.get("effect") or "工程目标：可对账/可回滚/可观测（非未公开精确 KPI）"
+        eff = eff.replace("公开分享量级/示意区间：", "").replace("公开分享量级/示意区间", "")
+        c["effect"] = eff
     return cases[:4]
 
 
@@ -104,9 +72,8 @@ def company_cases(cases):
     out = [
         '  <h3 id="cases">④ 跨行业生产案例（3～4·案例归纳）</h3>',
         '  <div class="callout"><div class="label">出处与数据纪律</div>'
-        "每案均为<strong>公开技术分享常见做法 / 案例归纳</strong>。"
-        "「落地效果」仅写公开分享量级或<strong>示意区间</strong>，"
-        "<b>禁止伪造</b>未公开精确内部指标/代号/链接。</div>",
+        "案例归纳自公开技术分享常见套路；效果写<strong>工程目标/公开量级</strong>，"
+        "<b>禁止伪造</b>未公开精确内部指标。</div>",
     ]
     for i, c in enumerate(cases, 1):
         out.append(
@@ -116,7 +83,7 @@ def company_cases(cases):
             f'<p><b>技术选型细节：</b>{c["land"]}</p>'
             f'<p><b>具体坑点：</b>{c["pit"]}</p>'
             f'<p><b>解决步骤：</b>{c["fix"]}</p>'
-            f'<p><b>落地效果（公开分享量级/示意区间）：</b>{c["effect"]}</p></div>'
+            f'<p><b>落地效果（工程目标/公开量级）：</b>{c["effect"]}</p></div>'
         )
     return "\n".join(out)
 

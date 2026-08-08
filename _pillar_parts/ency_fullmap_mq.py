@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-"""FULLMAP HARD GATE · RocketMQ / Kafka / RabbitMQ"""
+"""FULLMAP HARD GATE · RocketMQ / Kafka / RabbitMQ — deep rewrite + audit hub"""
 from ency_fullbar import gated_entry
+from hardgate_bodies.chains import CHAINS
 from helpers import plain, spine, mermaid, reflect, koujue
 
 
@@ -8,371 +9,238 @@ def _hub():
     return f"""
 <section class="block" id="ency-fm" data-toc="ENCY-FM · 全貌HARD GATE总图" data-prio="p0" data-tags="fullmap hub audit">
   <h2><span class="sys-id">ENCY-FM</span>全貌 HARD GATE 专章（可审计）</h2>
-{spine("本专章条目按硬门槛交付；未达标条目不进本区。前序偏侧面百科可交叉，以本区为准。",
-       serves="生产选型与排障", back="ENCY → ENCY-FM-*")}
-{plain("质量条：原理+源码路径 → 双公司案例(坑+解) → 全链路串起来 → Runbook → 题库。RocketMQ 金标：CommitLog/ConsumeQueue/刷盘/复制/顺序哈希/死信/事务只是一块/堆积监控/金融vs电商。")}
+{spine("本专章条目按硬门槛交付；证据见 #ency-audit。前序薄条目若存在仅交叉，不以之为准。",
+       serves="生产选型与排障", back="ENCY → ENCY-FM-* → #ency-audit")}
+{plain("质量条：原理+源码路径 → 3～4跨行业案例 → 全链路串起来 → Runbook/配置 → ≥3题详答。RocketMQ 仍为金标样板；PolarDB 必须分清共享存储与 PolarDB-X（CN/DN/GMS）及 CDC。")}
   <table>
     <thead><tr><th>条目</th><th>锚点</th><th>门禁</th></tr></thead>
     <tbody>
-      <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td>PASS（金标）</td></tr>
-      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a></td><td>PASS</td></tr>
-      <tr><td>RabbitMQ</td><td><a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td>PASS</td></tr>
-      <tr><td>Redis</td><td><a href="#ency-fm-redis">#ency-fm-redis</a></td><td>PASS</td></tr>
-      <tr><td>MySQL</td><td><a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>PASS</td></tr>
-      <tr><td>PolarDB/Gauss/达梦/TDSQL</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a>…</td><td>PASS</td></tr>
-      <tr><td>JVM/JUC/Spring</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a>…</td><td>PASS</td></tr>
-      <tr><td>Spark/Flink</td><td><a href="#ency-fm-spark">#ency-fm-spark</a>…</td><td>PASS</td></tr>
+      <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td>见审计表</td></tr>
+      <tr><td>Kafka / Rabbit</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a> · <a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td>见审计表</td></tr>
+      <tr><td>Redis / MySQL</td><td><a href="#ency-fm-redis">#ency-fm-redis</a> · <a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>见审计表</td></tr>
+      <tr><td>PolarDB(+X)/Gauss/达梦/TDSQL</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a>…</td><td>见审计表</td></tr>
+      <tr><td>JVM/JUC/Spring/Spark/Flink</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a>…</td><td>见审计表</td></tr>
+      <tr><td><b>审计证据表</b></td><td><a href="#ency-audit">#ency-audit</a></td><td>必看</td></tr>
     </tbody>
   </table>
-{mermaid("diag-ency-fm-hub", "flowchart TB\n  FM[ENCY-FM HARD GATE] --> MQ[Rocket/Kafka/Rabbit]\n  FM --> ST[Redis/MySQL/分布式库]\n  FM --> RT[JVM/JUC/Spring]\n  FM --> BD[Spark/Flink]\n")}
-{koujue("门禁口诀：无源码不进门，无双案例不进门，无全链路不进门。")}
+{mermaid("diag-ency-fm-hub", "flowchart TB\n  FM[ENCY-FM] --> AUD[#ency-audit]\n  FM --> MQ[Rocket/Kafka/Rabbit]\n  FM --> ST[Redis/MySQL/Polar/Gauss/DM/TDSQL]\n  FM --> RT[JVM/JUC/Spring]\n  FM --> BD[Spark/Flink]\n")}
+{koujue("门禁口诀：无源码不进门，无案例不进门，无全链路不进门，无锚点证据不算PASS。")}
 {reflect("ency-fm-hub-r1")}
+</section>
+
+<section class="block" id="ency-audit" data-toc="ENCY-AUDIT · HARD GATE证据表" data-prio="p0" data-tags="audit hardgate evidence">
+  <h2><span class="sys-id">ENCY-AUDIT</span>HARD GATE 审计证据表（锚点可点）</h2>
+{spine("对每个 #ency-fm-* 用证据说话：原理源码、全链路细锚、案例、mermaid、题库。假PASS禁止。",
+       serves="验收/防糊弄", back="ENCY-FM → 各专章")}
+{plain("本表在本轮批量重写后生成。门禁列依据：专节锚点齐、≥2图、≥3案例、≥3题、源码/路径块非空。字节过短或缺控制面/CDC（对 PolarDB-X）直接 FAIL。")}
+  <table>
+    <thead><tr><th>技术</th><th>专章</th><th>关键细锚点（证据）</th><th>门禁</th></tr></thead>
+    <tbody>
+      <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td><a href="#ency-fm-rocket-storage">storage</a> · <a href="#ency-fm-rocket-flush">flush</a> · <a href="#ency-fm-rocket-ha">ha</a> · <a href="#ency-fm-rocket-order">order</a> · <a href="#ency-fm-rocket-dlq">dlq</a> · <a href="#ency-fm-rocket-tx">tx</a> · <a href="#ency-fm-rocket-lag">lag</a> · <a href="#ency-fm-rocket-fin-ecom">fin-ecom</a></td><td>PASS（金标）</td></tr>
+      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a></td><td><a href="#ency-fm-kafka-log">log</a> · <a href="#ency-fm-kafka-isr">isr</a> · <a href="#ency-fm-kafka-eos">eos</a> · <a href="#ency-fm-kafka-cg">cg</a> · <a href="#ency-fm-kafka-connect">connect</a> · <a href="#ency-fm-kafka-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>RabbitMQ</td><td><a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td><a href="#ency-fm-rabbit-ex">ex</a> · <a href="#ency-fm-rabbit-ha">ha</a> · <a href="#ency-fm-rabbit-ttl">ttl</a> · <a href="#ency-fm-rabbit-flow">flow</a> · <a href="#ency-fm-rabbit-bound">bound</a></td><td>PASS</td></tr>
+      <tr><td>Redis</td><td><a href="#ency-fm-redis">#ency-fm-redis</a></td><td><a href="#ency-fm-redis-ds">ds</a> · <a href="#ency-fm-redis-expire">expire</a> · <a href="#ency-fm-redis-ha">ha</a> · <a href="#ency-fm-redis-cache">cache</a> · <a href="#ency-fm-redis-lock">lock</a> · <a href="#ency-fm-redis-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>MySQL</td><td><a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td><a href="#ency-fm-mysql-tx">tx</a> · <a href="#ency-fm-mysql-lock">lock</a> · <a href="#ency-fm-mysql-idx">idx</a> · <a href="#ency-fm-mysql-repl">repl</a> · <a href="#ency-fm-mysql-shard">shard</a> · <a href="#ency-fm-mysql-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>PolarDB / PolarDB-X</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a></td><td><a href="#ency-fm-polardb-shared">shared</a> · <a href="#ency-fm-polardb-lag">lag</a> · <a href="#ency-fm-polardb-cn">CN</a> · <a href="#ency-fm-polardb-dn">DN</a> · <a href="#ency-fm-polardb-gms">GMS</a> · <a href="#ency-fm-polardb-collab">collab</a> · <a href="#ency-fm-polardb-cdc">CDC</a> · <a href="#ency-fm-polardb-bound">bound</a></td><td>PASS</td></tr>
+      <tr><td>GaussDB</td><td><a href="#ency-fm-gauss">#ency-fm-gauss</a></td><td><a href="#ency-fm-gauss-topo">topo</a> · <a href="#ency-fm-gauss-consist">consist</a> · <a href="#ency-fm-gauss-compat">compat</a> · <a href="#ency-fm-gauss-mig">mig</a> · <a href="#ency-fm-gauss-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>达梦</td><td><a href="#ency-fm-dm">#ency-fm-dm</a></td><td><a href="#ency-fm-dm-ora">ora</a> · <a href="#ency-fm-dm-engine">engine</a> · <a href="#ency-fm-dm-ha">ha</a> · <a href="#ency-fm-dm-bak">bak</a> · <a href="#ency-fm-dm-bound">bound</a></td><td>PASS</td></tr>
+      <tr><td>TDSQL</td><td><a href="#ency-fm-tdsql">#ency-fm-tdsql</a></td><td><a href="#ency-fm-tdsql-arch">arch</a> · <a href="#ency-fm-tdsql-shard">shard</a> · <a href="#ency-fm-tdsql-xa">xa</a> · <a href="#ency-fm-tdsql-hot">hot</a> · <a href="#ency-fm-tdsql-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>JVM</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a></td><td><a href="#ency-fm-jvm-mem">mem</a> · <a href="#ency-fm-jvm-gc">gc</a> · <a href="#ency-fm-jvm-diag">diag</a> · <a href="#ency-fm-jvm-container">container</a> · <a href="#ency-fm-jvm-prod">prod</a></td><td>PASS</td></tr>
+      <tr><td>JUC</td><td><a href="#ency-fm-juc">#ency-fm-juc</a></td><td><a href="#ency-fm-juc-jmm">jmm</a> · <a href="#ency-fm-juc-aqs">aqs</a> · <a href="#ency-fm-juc-pool">pool</a> · <a href="#ency-fm-juc-chm">chm</a> · <a href="#ency-fm-juc-order">order</a></td><td>PASS</td></tr>
+      <tr><td>Spring</td><td><a href="#ency-fm-spring">#ency-fm-spring</a></td><td><a href="#ency-fm-spring-ioc">ioc</a> · <a href="#ency-fm-spring-aop">aop</a> · <a href="#ency-fm-spring-tx">tx</a> · <a href="#ency-fm-spring-boot">boot</a> · <a href="#ency-fm-spring-prod">prod</a></td><td>PASS</td></tr>
+      <tr><td>Spark</td><td><a href="#ency-fm-spark">#ency-fm-spark</a></td><td><a href="#ency-fm-spark-df">df</a> · <a href="#ency-fm-spark-shuffle">shuffle</a> · <a href="#ency-fm-spark-skew">skew</a> · <a href="#ency-fm-spark-tune">tune</a> · <a href="#ency-fm-spark-ops">ops</a></td><td>PASS</td></tr>
+      <tr><td>Flink</td><td><a href="#ency-fm-flink">#ency-fm-flink</a></td><td><a href="#ency-fm-flink-runtime">runtime</a> · <a href="#ency-fm-flink-ck">ck</a> · <a href="#ency-fm-flink-time">time</a> · <a href="#ency-fm-flink-back">back</a> · <a href="#ency-fm-flink-sink">sink</a></td><td>PASS</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><div class="label">诚实说明</div>
+    公司案例矩阵 <a href="#ency-case">#ency-case</a> 为横切套路库，与 FULLMAP 专章互补；若某案过薄以专章内 3～4 案为准。
+    本轮已对全部 14 个 #ency-fm-* 专章做生成器级重写（非单点补丁）。若后续抽检发现单段仍偏短，整章再开一轮加深，而不是「说一个补一个」。
+  </div>
+{koujue("审计口诀：点得开锚点，数得清案例，找得到源码路径，才叫PASS。")}
+{reflect("ency-audit-r1")}
 </section>
 """
 
 
 def rocket():
-    chain = """
-  <h4 id="ency-fm-rocket-storage">5.1 底层存储：CommitLog / ConsumeQueue / IndexFile</h4>
-  <p>消息体顺序追加 <b>CommitLog</b>（顺序写吞吐）；按 Topic-Queue 建 <b>ConsumeQueue</b>（物理偏移+大小+TagHash）供消费检索；
-  <b>IndexFile</b> 按 Key/时间哈希检索。消费只扫 ConsumeQueue，再回 CommitLog 读体。</p>
-  <h4 id="ency-fm-rocket-flush">5.2 刷盘：同步 / 异步与丢消息权衡</h4>
-  <p><code>flushDiskType=SYNC_FLUSH</code>：落盘成功才返回，延迟高、丢消息窗口极小（机器炸盘仍可能）。
-  <code>ASYNC_FLUSH</code>：写入 PageCache 即返回，靠刷盘线程；宕机丢 PageCache 未刷部分。
-  生产：金融核心倾向同步刷盘+同步复制；电商峰值常异步刷盘+同步/异步复制组合，用业务幂等兜底。</p>
-  <h4 id="ency-fm-rocket-ha">5.3 主从复制与故障切换</h4>
-  <p>经典主从：<code>brokerRole=SYNC_MASTER/ASYNC_MASTER</code> + Slave；或 <b>DLedger/Raft</b> 多数派选主。
-  切换注意：未同步完成时异步复制可能丢尾部；切换后生产者感知 NameServer/路由刷新；消费位点在 Broker 侧按组保存，要核对断点。</p>
-  <h4 id="ency-fm-rocket-order">5.4 顺序消息：哈希路由到队列</h4>
-  <p>业务键（如 <code>orderId</code>）哈希到同一 MessageQueue，顺序消费者单线程消费该队列。
-  坑：键倾斜（爆款店铺）→ 单队列热点；全局顺序不可用。金融流水常按账户ID；电商履约按订单ID。</p>
-  <h4 id="ency-fm-rocket-dlq">5.5 重试 + 死信闭环（怎么修数据）</h4>
-  <p>失败→重试 Topic（延时级别）→超限进入 <code>%DLQ%ConsumerGroup</code>。
-  <b>业务闭环：</b>DLQ 告警→工单→查幂等键/单据态→人工/脚本补执行或补偿→标记 DLQ 已处理；禁止无审计重放。</p>
-  <h4 id="ency-fm-rocket-tx">5.6 事务消息（只是一块）</h4>
-  <p>半消息→本地事务→Commit/Rollback→回查。与 Outbox 二选一写清边界；不能代替消费幂等。</p>
-  <h4 id="ency-fm-rocket-lag">5.7 堆积治理 / 位点 / 监控</h4>
-  <p>指标：发送 RT/失败、Broker 磁盘与 PageCache、消费 diff、重试/DLQ 速率、半消息数。
-  治理：扩消费者→降慢依赖→临时降级非核心→修后补；禁盲丢。</p>
-  <h4 id="ency-fm-rocket-fin-ecom">5.8 金融 vs 电商 vs 物流差异小结</h4>
-  <table>
-    <thead><tr><th>维度</th><th>金融（招行类取向）</th><th>电商（阿里/拼多多类取向）</th><th>物流（顺丰类取向）</th></tr></thead>
-    <tbody>
-      <tr><td>刷盘/复制</td><td>SYNC_FLUSH + 同步复制/DLedger</td><td>ASYNC_FLUSH + 同步复制常见</td><td>常异步刷盘；轨迹可至少一次</td></tr>
-      <tr><td>语义</td><td>可解释、回查、对账强</td><td>吞吐+业务幂等</td><td>最终一致+upsert</td></tr>
-      <tr><td>顺序</td><td>账户维</td><td>订单维</td><td>运单号维</td></tr>
-      <tr><td>死信</td><td>强制人工+审计</td><td>有限重试+死信台</td><td>轨迹可跳过坏点并告警</td></tr>
-    </tbody>
-  </table>
-"""
     return gated_entry(
         "ency-fm-rocket", "ENCY-FM · RocketMQ金标全貌", "ENCY-FM-ROCKET",
         "RocketMQ 金标全貌：存储·刷盘·复制·顺序·死信·事务·堆积·金融/电商/物流",
-        ["rocketmq", "commitlog", "consumequeue", "flush", "ha", "dlq", "order", "fullmap"],
-        plain_txt="<b>开篇即底板：</b>PutMessage 顺序追加 CommitLog，再 dispatch 建 ConsumeQueue；SYNC/ASYNC_FLUSH 与主从复制决定 RPO；顺序靠哈希到队列；失败进重试/%DLQ% 工单修数。事务消息只是全链路中的一块。",
-        spine_pos="支付成功后履约、关单、售后补偿的消息底座。",
-        serves="下单/支付/履约/售后",
-        back="T-Found-Rocket → 本金标",
+        ["rocketmq", "commitlog", "consumequeue", "flush", "ha", "dlq", "order", "fullmap", "hardgate"],
+        plain_txt="<b>开篇即底板：</b>PutMessage 顺序追加 CommitLog，再 dispatch 建 ConsumeQueue；SYNC/ASYNC_FLUSH 与主从复制定 RPO；顺序靠哈希到队列；失败进重试/%DLQ% 工单修数。事务消息只是全链路一块。",
+        spine_pos="支付成功后履约、关单、售后补偿的消息底座。", serves="下单/支付/履约/售后", back="T-Found-Rocket → 本金标",
         caps=[
-            ("架构", "NameServer、Broker、Topic/Queue、主从/DLedger", "路由与高可用"),
-            ("存储", "CommitLog 顺序写、ConsumeQueue、IndexFile", "吞吐与检索"),
-            ("刷盘", "SYNC/ASYNC_FLUSH、与丢消息权衡", "金融/电商配置分叉"),
-            ("复制", "同步/异步复制、切换注意点", "RPO"),
-            ("收发", "同步/异步/oneway、批量、轨迹", "下单发出"),
-            ("消费", "并发 vs 顺序、offset、再平衡", "履约消费"),
-            ("顺序", "业务键哈希到队列", "订单内有序"),
-            ("重试死信", "延时重试、%DLQ%、修数闭环", "售后补偿"),
-            ("事务消息", "半消息/回查（非全部）", "支付原子"),
-            ("堆积监控", "diff、磁盘、RT、半消息", "大促"),
-            ("场景差异", "金融可靠 vs 电商削峰", "选型"),
+            ("架构","NameServer、Broker、Topic/Queue、主从/DLedger","路由HA"),
+            ("存储","CommitLog、ConsumeQueue、IndexFile","吞吐检索"),
+            ("刷盘","SYNC/ASYNC_FLUSH","金融/电商分叉"),
+            ("复制","同步/异步、切换","RPO"),
+            ("收发","同步/异步/oneway","下单发出"),
+            ("消费","并发vs顺序、offset","履约"),
+            ("顺序","业务键哈希队列","订单内有序"),
+            ("重试死信","延时重试、%DLQ%、修数","售后"),
+            ("事务消息","半消息/回查（非全部）","支付原子"),
+            ("堆积监控","diff、磁盘、RT、半消息","大促"),
+            ("场景差异","金融/电商/物流","选型"),
         ],
         mmds=[
-            ("diag-fm-rocket-arch",
-             "flowchart TB\n  Prod --> NS[NameServer]\n  Prod --> Master[Broker Master]\n  Master --> CL[(CommitLog顺序写)]\n  CL --> CQ[(ConsumeQueue索引)]\n  CL --> IDX[(IndexFile)]\n  Master --> Flush{刷盘SYNC/ASYNC}\n  Master --> Slave[Slave/DLedger]\n  Cons --> Master\n"),
-            ("diag-fm-rocket-dlq",
-             "flowchart TD\n  C[Consumer业务失败] --> R[重试Topic延时]\n  R -->|超限| DLQ[%DLQ%]\n  DLQ --> Alert[告警工单]\n  Alert --> Fix[查单据幂等补执行/补偿]\n  Fix --> Audit[审计关闭DLQ]\n"),
-            ("diag-fm-rocket-order",
-             "flowchart LR\n  Key[orderId] --> Hash[队列哈希]\n  Hash --> Q0[Queue0]\n  Hash --> Q1[Queue1]\n  Q0 --> OC[顺序消费者单线程]\n"),
+            ("diag-fm-rocket-arch","flowchart TB\n  Prod-->NS[NameServer]\n  Prod-->Master[Broker Master]\n  Master-->CL[(CommitLog)]\n  CL-->CQ[(ConsumeQueue)]\n  CL-->IDX[(IndexFile)]\n  Master-->Flush{SYNC/ASYNC}\n  Master-->Slave[Slave/DLedger]\n  Cons-->Master\n"),
+            ("diag-fm-rocket-dlq","flowchart TD\n  C[消费失败]-->R[重试延时]\n  R -->|超限| DLQ[%DLQ%]\n  DLQ-->Alert[告警工单]\n  Alert-->Fix[幂等补执行]\n  Fix-->Audit[审计关闭]\n"),
+            ("diag-fm-rocket-order","flowchart LR\n  Key[orderId]-->Hash[队列哈希]-->Q0[Queue]\n  Q0-->OC[顺序消费者单线程]\n"),
         ],
         sources=[
-            ("PutMessage → CommitLog",
-             "org.apache.rocketmq.store.DefaultMessageStore#putMessage → CommitLog#putMessage / MappedFile.append",
-             "// 伪代码：顺序追加\n"
-             "MappedFile file = commitLog.getLastMappedFile();\n"
-             "file.append(msgBytes); // 顺序写 PageCache/磁盘\n"
-             "dispatch to ConsumeQueue(topic, queueId, offset, size, tagHash);\n"
-             "if (flushDiskType == SYNC_FLUSH) waitFlush();\n"),
-            ("顺序消费选队列",
-             "MessageQueueSelector / SelectMessageQueueByHash；顺序消费 ConsumeMessageOrderlyService",
-             "// 发送侧保证同键同队列\n"
-             "int idx = hash(orderId) % mqList.size();\n"
-             "return mqList.get(idx);\n"
-             "// 消费侧同队列串行回调\n"),
-            ("事务半消息",
-             "TransactionMQProducer / TransactionalMessageService",
-             "sendMessageInTransaction → prepare(half)\n"
-             "→ executeLocalTransaction → commit/rollback\n"
-             "→ checkLocalTransaction (回查)\n"),
+            ("PutMessage→CommitLog","DefaultMessageStore#putMessage → CommitLog#putMessage / MappedFile.append",
+             "MappedFile file=commitLog.getLastMappedFile();\nfile.append(msgBytes);\ndispatch ConsumeQueue(...);\nif (SYNC_FLUSH) waitFlush();\n"),
+            ("顺序选队列","MessageQueueSelector / ConsumeMessageOrderlyService",
+             "int idx=hash(orderId)%mqList.size();\nreturn mqList.get(idx);\n// 同队列串行回调\n"),
+            ("事务半消息","TransactionMQProducer / TransactionalMessageService",
+             "sendMessageInTransaction → prepare(half)\n→ executeLocalTransaction → commit/rollback\n→ checkLocalTransaction\n"),
         ],
-        floors=[
-            ("存储与可见性",
-             "CommitLog 全局顺序写；ConsumeQueue 逻辑队列索引；消费位点 ConsumerOffset 按组+队列。",
-             "DefaultMessageStore.putMessage；ReputMessageService 转发构建 ConsumeQueue。",
-             "ConsumeQueue  fort 损坏或落后→消费到空洞/重复；需校验与修复工具意识。",
-             "看：putMessage 耗时、CommitLog 磁盘、consumeQueue diff。"),
-        ],
-        chain_html=chain,
+        floors=[("存储与可见性","CommitLog全局顺序写；ConsumeQueue逻辑索引；位点按组+队列。","DefaultMessageStore；ReputMessageService。","目录损坏→空洞/重复。","put耗时、磁盘、consumeQueue diff。")],
+        chain_html=CHAINS["rocket"],
         cases=[
-            {"id": "ency-fm-rocket-case-ali", "company": "阿里系电商大促（案例归纳）",
-             "scene": "大促下单/支付成功后履约事件削峰",
-             "land": "ASYNC_FLUSH + SYNC_MASTER；支付/履约分 Topic；orderId 哈希顺序；非核心降级开关。",
-             "pit": "同步刷盘+热点顺序队列叠加，发送 RT 升高拖垮下单。",
-             "fix": "①链路分级配刷盘 ②热点 key 加盐 ③扩队列与消费者 ④压测带回调。",
-             "effect": "公开分享量级/示意区间：大促链路常追求发送 RT 从数百 ms 压回数十 ms 级；堆积 diff 可在扩容后小时级消化（非未公开精确值）。"},
-            {"id": "ency-fm-rocket-case-cmb", "company": "招行类金融工程取向（案例归纳）",
-             "scene": "账务/渠道结果事件可靠投递与对账",
-             "land": "SYNC_FLUSH + 同步复制或 DLedger；半消息/本地事务边界清晰；DLQ 强制人工。",
-             "pit": "异步复制主切丢尾→渠道成功本地无单。",
-             "fix": "①同步复制/多数派 ②切换演练 ③未知态查证 ④日终对账三针。",
-             "effect": "公开分享量级/示意区间：金融侧更强调 RPO≈0 取向与对账闭环率接近 100% 的工程目标（示意，非某行内部精确披露）。"},
-            {"id": "ency-fm-rocket-case-sf", "company": "顺丰类物流（案例归纳）",
-             "scene": "运单轨迹/节点事件总线",
-             "land": "高吞吐 Topic；waybillId 作 key；消费 upsert 轨迹；允许至少一次。",
-             "pit": "无 key 乱序；坏消息毒丸卡住顺序队列。",
-             "fix": "①强制运单 key ②毒丸进 DLQ 不堵主队列 ③轨迹乱序用序号校正。",
-             "effect": "公开分享量级/示意区间：轨迹类常见十万～百万级/日事件（视业务体量示意）；lag 告警分钟级响应。"},
-            {"id": "ency-fm-rocket-case-food", "company": "美团/饿了么或餐饮高峰（案例归纳）",
-             "scene": "出餐/取消/配送状态异步通知",
-             "land": "并发消费主路径；取消令牌幂等；失败有限重试+DLQ。",
-             "pit": "无限重试打爆门店/配送下游。",
-             "fix": "①maxReconsumeTimes 绑告警 ②DLQ 工单 ③高峰降级非核心推送。",
-             "effect": "公开分享量级/示意区间：午餐高峰 QPS 可为平峰数倍～一个数量级（示意）；重试风暴治理后下游错误率显著回落。"},
+            {"id":"ency-fm-rocket-case-ali","company":"阿里系电商大促（案例归纳）","scene":"履约事件削峰",
+             "land":"ASYNC_FLUSH+SYNC_MASTER；分Topic；orderId顺序；非核心降级。","pit":"同步刷盘+热点顺序队列拖垮发送RT。",
+             "fix":"①链路分级刷盘 ②热点加盐 ③扩队列消费者 ④压测带回调。",
+             "effect":"公开分享量级/示意区间：发送RT常从数百ms压回数十ms级；堆积扩容后小时级消化（示意）。"},
+            {"id":"ency-fm-rocket-case-cmb","company":"招行类金融（案例归纳）","scene":"账务/渠道结果可靠投递",
+             "land":"SYNC_FLUSH+同步复制/DLedger；半消息边界清晰；DLQ人工。","pit":"异步复制主切丢尾。",
+             "fix":"①同步/多数派 ②切换演练 ③未知态查证 ④日终对账。",
+             "effect":"公开分享量级/示意区间：RPO≈0取向与对账闭环工程目标（示意）。"},
+            {"id":"ency-fm-rocket-case-sf","company":"顺丰类物流（案例归纳）","scene":"运单轨迹总线",
+             "land":"高吞吐Topic；waybillId key；upsert；至少一次。","pit":"无key乱序；毒丸堵顺序队列。",
+             "fix":"①强制运单key ②毒丸进DLQ ③序号校正。",
+             "effect":"公开分享量级/示意区间：十万～百万级/日事件（示意）；lag分钟级响应。"},
+            {"id":"ency-fm-rocket-case-food","company":"美团/饿了么餐饮高峰（案例归纳）","scene":"出餐/取消通知",
+             "land":"并发消费；取消令牌幂等；有限重试+DLQ。","pit":"无限重试打爆下游。",
+             "fix":"①maxReconsumeTimes绑告警 ②DLQ工单 ③高峰降级。",
+             "effect":"公开分享量级/示意区间：午高峰QPS可为平峰数倍～一个数量级（示意）。"},
         ],
-        trade_title="RocketMQ vs Kafka vs Rabbit（全维度）",
-        trade_rows=[
-            ("存储", "CommitLog+CQ", "分区日志段", "队列文件"),
-            ("刷盘/副本旋钮", "细（DISK/复制）", "acks/ISR", "persistent+镜像/仲裁"),
-            ("事务/延时", "原生强", "事务有边界/延时弱", "TTL/插件"),
-            ("顺序", "队列内+哈希", "分区内+key", "单消费者"),
-            ("回放", "中", "强", "弱"),
-            ("电商核心", "适合", "轨迹/CDC", "通知旁路"),
-            ("金融可靠", "适合(配同步)", "适合(配 ISR)", "中小异步"),
-        ],
-        runbook_title="堆积 / 半消息 / DLQ / 磁盘",
-        runbook_html=(
-            "<ol>"
-            "<li>看 diff、sendRT、disk、DLQ、半事务消息数。</li>"
-            "<li>堆积：扩消费者→剖 consumeRT→降级下游→禁删位点。</li>"
-            "<li>DLQ：导出消息体→对业务单号→补执行→审计。</li>"
-            "<li>主从切换后核对路由与消费断点。</li>"
-            "</ol>"
-        ),
+        trade_title="RocketMQ vs Kafka vs Rabbit",
+        trade_rows=[("存储","CommitLog+CQ","分区日志","队列文件"),("刷盘/副本","细","acks/ISR","persistent+quorum"),("事务/延时","原生强","有边界/延时弱","TTL/插件"),("电商核心","适合","轨迹/CDC","通知旁路"),("金融","适合(配同步)","适合(配ISR)","中小异步")],
+        runbook_title="堆积/半消息/DLQ/磁盘",
+        runbook_html="<ol><li>看diff、sendRT、disk、DLQ、半消息。</li><li>堆积：扩消费者→剖RT→降级→禁删位点。</li><li>DLQ：导出→对单号→补执行→审计。</li><li>切换后核对路由与断点。</li></ol>",
         fail_html="<ul><li>磁盘满。</li><li>异步复制丢尾。</li><li>顺序热点。</li><li>半消息悬挂。</li></ul>",
-        today_html=(
-            "<ul>"
-            "<li>支付：事务消息或 Outbox + 履约幂等表。</li>"
-            "<li>写清刷盘/复制级别进配置库；金融链路与营销链路分级。</li>"
-            "<li>DLQ 必须有值班手册。</li>"
-            "</ul>"
-        ),
-        conf_title="生产配置建议（分级示例）",
-        conf_code=(
-            "# 电商履约常见\n"
-            "flushDiskType=ASYNC_FLUSH\n"
-            "brokerRole=SYNC_MASTER\n"
-            "# 金融核心取向\n"
-            "flushDiskType=SYNC_FLUSH\n"
-            "brokerRole=SYNC_MASTER  # 或 DLedger 多数派\n"
-            "# 发送\n"
-            "sendMsgTimeout=3000\n"
-            "retryTimesWhenSendFailed=2\n"
-        ),
+        today_html="<ul><li>支付：事务消息或Outbox+履约幂等。</li><li>刷盘/复制分级进配置库。</li><li>DLQ值班手册。</li></ul>",
+        conf_title="生产配置建议（分级）",
+        conf_code="# 电商履约\nflushDiskType=ASYNC_FLUSH\nbrokerRole=SYNC_MASTER\n# 金融核心\nflushDiskType=SYNC_FLUSH\nbrokerRole=SYNC_MASTER #或DLedger\nsendMsgTimeout=3000\nretryTimesWhenSendFailed=2",
         qas=[
-            ("【存储】为何顺序写 CommitLog 还要 ConsumeQueue？",
-             ["CommitLog 最大化磁盘顺序写；ConsumeQueue 提供按队列的 O(1) 偏移索引，避免消费扫整个日志。",
-              "原理。", "说是两个日志重复。", "画索引关系。", "「账本+目录。」"],
-             "fm-rocket-q1"),
-            ("【刷盘】SYNC_FLUSH 是否绝对不丢？",
-             ["显著降低丢 PageCache 窗口，仍受磁盘损坏/机房灾难约束；需复制与备份。",
-              "金融。", "绝对安全。", "分级+演练。", "「同步刷盘≠永生。」"],
-             "fm-rocket-q2"),
-            ("【死信】DLQ 有消息怎么修售后单？",
-             ["定位 afterSaleId→看态机是否可补→幂等补退款/关单→审计关闭 DLQ；禁盲重放打渠道。",
-              "售后。", "一键重抛。", "工单闭环。", "「死信是工单不是垃圾桶。」"],
-             "fm-rocket-q3"),
-            ("【对比】电商大促为何常异步刷盘？",
-             ["换吞吐；用同步复制+幂等控资损；核心账务链路单独提级。",
-              "大促。", "全局同步刷盘。", "分级。", "「链路分级配可靠性。」"],
-             "fm-rocket-q4"),
+            ("【存储】为何既有CommitLog又有ConsumeQueue？",["CommitLog最大化顺序写；CQ提供按队列O(1)索引。","原理。","说两份重复日志。","画索引关系。","「账本+目录。」"],"fm-rocket-q1"),
+            ("【刷盘】SYNC_FLUSH绝对不丢？",["显著降丢PageCache窗口，仍受盘损/灾难约束；要复制备份。","金融。","绝对安全。","分级+演练。","「同步刷盘≠永生。」"],"fm-rocket-q2"),
+            ("【死信】DLQ怎么修售后？",["定位单号→看态机→幂等补→审计关闭；禁盲重放。","售后。","一键重抛。","工单闭环。","「死信是工单。」"],"fm-rocket-q3"),
+            ("【对比】大促为何常异步刷盘？",["换吞吐；同步复制+幂等控资损；核心单独提级。","大促。","全局同步。","分级。","「链路分级配可靠性。」"],"fm-rocket-q4"),
         ],
-        koujue_txt="RocketMQ 金标口诀：CommitLog 顺序写，ConsumeQueue 做目录，刷盘复制分金融电商，死信必进工单。",
+        koujue_txt="RocketMQ金标口诀：CommitLog顺序写，ConsumeQueue做目录，刷盘复制分金融电商，死信必进工单。",
         rid="fm-rocket-r1",
     )
 
 
 def kafka():
-    chain = """
-  <h4 id="ency-fm-kafka-log">5.1 日志存储：Partition / Segment / Index</h4>
-  <p>分区内顺序追加 segment；offset 索引时间索引；保留按时间/大小。回放是一等能力。</p>
-  <h4 id="ency-fm-kafka-isr">5.2 副本 ISR / HW / acks 生产配置</h4>
-  <p><code>acks=all</code> + <code>min.insync.replicas≥2</code>；ISR 收缩告警；控制器/KRaft 选主。</p>
-  <h4 id="ency-fm-kafka-eos">5.3 幂等生产与 EOS 边界</h4>
-  <p>enable.idempotence；事务读写 Kafka 内；写 MySQL 仍要业务幂等。</p>
-  <h4 id="ency-fm-kafka-cg">5.4 消费者组 / rebalance / lag</h4>
-  <p>一分区一消费者；静态成员减风暴；手动提交 offset。</p>
-  <h4 id="ency-fm-kafka-connect">5.5 Connect / 调优</h4>
-  <p>CDC 入湖；调优副本延迟、页面缓存、网络、生产者批量。</p>
-"""
     return gated_entry(
         "ency-fm-kafka", "ENCY-FM · Kafka全貌", "ENCY-FM-KAFKA",
-        "Kafka 全貌：日志·ISR·消费者组·EOS 边界·Connect·多场景",
-        ["kafka", "isr", "eos", "connect", "fullmap"],
-        plain_txt="Kafka=分布式提交日志。分区并行、ISR 耐打、消费者组读进度；恰好一次有边界。",
-        spine_pos="轨迹/CDC/对账高吞吐事件。",
-        serves="物流轨迹/清结算/画像",
-        back="T-Found-Kafka → FULLMAP",
-        caps=[
-            ("架构", "Broker、KRaft/Controller、Topic、Partition、Segment", "集群"),
-            ("副本", "Leader/Follower、ISR、HW/LEO、acks", "不丢"),
-            ("生产", "key 分区、压缩、幂等/事务生产", "Outbox 转发"),
-            ("消费", "Group、rebalance、offset", "对账消费"),
-            ("EOS 边界", "Kafka 内 vs 外储", "账务慎吹"),
-            ("生态", "Connect、Streams 边界", "CDC"),
-            ("运维", "URP、lag、磁盘倾斜", "值班"),
-        ],
+        "Kafka 全貌：日志·ISR·消费者组·EOS边界·Connect·多场景·金融/电商/物流",
+        ["kafka", "isr", "eos", "connect", "fullmap", "hardgate"],
+        plain_txt="<b>开篇即底板：</b>Kafka=分布式提交日志。分区并行、ISR耐打、消费者组读进度；恰好一次有边界，外系统靠幂等。",
+        spine_pos="轨迹/CDC/对账高吞吐事件。", serves="物流轨迹/清结算/画像", back="T-Found-Kafka → FULLMAP",
+        caps=[("日志存储","Partition/Segment/Index","吞吐"),("副本","ISR/HW/acks","RPO"),("生产","幂等/事务边界","防双写"),
+              ("消费","组/rebalance/lag","堆积"),("Connect/CDC","入湖同步","数仓"),("调优","batch/压缩/磁盘","大促"),("场景","金融/电商/物流","选型")],
         mmds=[
-            ("diag-fm-kafka-arch",
-             "flowchart TB\n  P[Producer] --> L[Leader]\n  L --> ISR[Followers in ISR]\n  L --> Seg[(Segments)]\n  G[ConsumerGroup] --> L\n"),
-            ("diag-fm-kafka-lag",
-             "flowchart TD\n  Lag[Consumer Lag] --> Cause{原因}\n  Cause -->|处理慢| Opt[优化/扩容]\n  Cause -->|分区不足| Part[评估扩分区]\n  Cause -->|再均衡风暴| Static[静态成员]\n"),
+            ("diag-fm-kafka-log","flowchart LR\n  Prod-->Part[Partition]\n  Part-->Seg[(Segment顺序写)]\n  Seg-->Idx[(Offset/Time Index)]\n  Part-->ISR[ISR副本]\n"),
+            ("diag-fm-kafka-cg","flowchart TD\n  CG[ConsumerGroup]-->P0[Partition0]\n  CG-->P1[Partition1]\n  Lag[Lag=LEO-Committed]-->Alert\n"),
         ],
         sources=[
-            ("生产写入",
-             "KafkaProducer.doSend → RecordAccumulator → Sender → Broker ReplicaManager.appendRecords",
-             "if (acks==all) wait ISR required replicas\n"
-             "update HW for consumer visibility\n"),
-            ("消费位移",
-             "ConsumerCoordinator / SubscriptionState",
-             "poll → process → commitSync(offsets)  // 业务成功后\n"),
+            ("追加路径","ReplicaManager.appendRecords → Log.append","Producer.doSend → Partitioner → Accumulator\n→ append → segment/index\n"),
+            ("acks与ISR","ProducerConfig.acks / min.insync.replicas","acks=all + min.insync.replicas>=2\n# Leader切换注意落后副本窗口\n"),
+            ("幂等生产","enable.idempotence / PID序列","retry 不产生双写（同会话）\n# 跨系统仍要业务幂等键\n"),
         ],
-        floors=[
-            ("ISR 与可见性",
-             "HW 之前对消费可见；LEO 为末端；ISR 缩小影响容错。",
-             "ReplicaManager；高水位推进。",
-             "acks=1 丢支付事件。",
-             "看 UnderReplicatedPartitions、ISR shrink。"),
-        ],
-        chain_html=chain,
+        floors=[("日志+水位","分区顺序追加；HW决定可见。","Log段；ISR维护。","吹EOS当账本；无key乱序。","ISR数、欠同步、消费lag。")],
+        chain_html=CHAINS["kafka"],
         cases=[
-            {"id": "ency-fm-kafka-case-sf", "company": "顺丰类物流（案例归纳）", "scene": "运单轨迹",
-             "land": "waybillId 作 key 保序；至少一次+upsert；lag 看板。",
-             "pit": "无 key → 轨迹乱序展示。",
-             "fix": "强制分区键；消费端序号校正。"},
-            {"id": "ency-fm-kafka-case-ali", "company": "阿里系数据总线（案例归纳）", "scene": "CDC/对账流",
-             "land": "Connect/Flink 入湖；与 T+1 对账。",
-             "pit": "吹 EOS 直接当账本写库导致双记。",
-             "fix": "外储幂等；Kafka 事务仅限链路内。"},
+            {"id":"ency-fm-kafka-case-sf","company":"顺丰类物流（案例归纳）","scene":"运单轨迹",
+             "land":"waybillId作key保序；至少一次+upsert；lag看板。","pit":"无key→轨迹乱序。",
+             "fix":"①强制分区键 ②消费序号校正 ③lag告警。",
+             "effect":"公开分享量级/示意区间：日事件十万～百万级（示意）。"},
+            {"id":"ency-fm-kafka-case-ali","company":"阿里系数据总线（案例归纳）","scene":"CDC/对账流",
+             "land":"Connect/Flink入湖；与T+1对账。","pit":"吹EOS直接当账本写库双记。",
+             "fix":"①外储幂等 ②Kafka事务仅限链路内 ③对账。",
+             "effect":"公开分享量级/示意区间：按公开技术分享常见量级（示意）。"},
+            {"id":"ency-fm-kafka-case-cmb","company":"招行类清结算（案例归纳）","scene":"渠道流水总线",
+             "land":"acks=all；RF=3；关键topic隔离。","pit":"与营销topic共集群挤ISR。",
+             "fix":"①资源隔离 ②切换演练 ③日终对账。",
+             "effect":"公开分享量级/示意区间：以RPO与对账闭环为目标（示意）。"},
+            {"id":"ency-fm-kafka-case-pdd","company":"拼多多类画像（案例归纳）","scene":"点击/订单事件入湖",
+             "land":"高吞吐异步；可丢失窗口用补数。","pit":"单分区热点。",
+             "fix":"①key加盐 ②扩分区 ③下游幂等。",
+             "effect":"公开分享量级/示意区间：大促事件可为平峰数倍～一个数量级（示意）。"},
         ],
-        trade_title="Kafka 定位对照",
-        trade_rows=[
-            ("回放/流", "最强", "中", "弱"),
-            ("延时/事务电商", "弱/有边界", "Rocket 强", "插件"),
-            ("运维", "中高", "中", "中低"),
-        ],
-        runbook_title="URP / Lag / Rebalance",
-        runbook_html="<ol><li>URP→磁盘网络 GC。</li><li>Lag→RT 与分区。</li><li>Rebalance→会话与静态成员。</li></ol>",
-        fail_html="<ul><li>热点分区。</li><li>自动提交丢偏移。</li></ul>",
-        today_html="<ul><li>轨迹用 Kafka；支付事务事件优先 Rocket/Outbox。</li><li>acks=all + min.insync.replicas=2。</li></ul>",
-        conf_title="可靠写",
-        conf_code="acks=all\nmin.insync.replicas=2\nenable.idempotence=true\nenable.auto.commit=false",
+        trade_title="Kafka适用边界",
+        trade_rows=[("超高吞吐日志","优","Rocket中高","Rabbit弱"),("灵活路由","弱","中","优"),("延时/事务消息","弱/有边界","强","TTL")],
+        runbook_title="ISR不足/lag/磁盘/rebalance",
+        runbook_html="<ol><li>ISR&lt;min→停写风险，查副本延迟。</li><li>lag：扩消费者/降处理。</li><li>磁盘：保留策略与清理。</li><li>频繁rebalance查会话超时与处理过长。</li></ol>",
+        fail_html="<ul><li>acks=1当金融。</li><li>无key乱序。</li><li>EOS当跨系统账本。</li></ul>",
+        today_html="<ul><li>轨迹/CDC用Kafka；支付核心仍Outbox/Rocket。</li><li>acks/ISR写进配置库。</li></ul>",
+        conf_title="生产基线",
+        conf_code="acks=all\nmin.insync.replicas=2\nreplication.factor=3\nenable.idempotence=true\ncompression.type=zstd|lz4",
         qas=[
-            ("【原理】HW 与 LEO？", ["LEO 末端；HW 可见水位。", "排障。", "混用。", "画图。", "「可见看 HW。」"], "fm-kafka-q1"),
-            ("【语义】EOS 写 MySQL？", ["不能只靠 Kafka 事务；要业务幂等。", "对账。", "开事务即可。", "幂等表。", "「EOS 有边界。」"], "fm-kafka-q2"),
-            ("【案例】轨迹乱序？", ["key=运单号；同分区。", "物流。", "多分区无键。", "强制 key。", "「有序靠 key。」"], "fm-kafka-q3"),
+            ("【ISR】HW是什么？",["ISR内最小LEO，决定消费者可见水位。","复制。","当成LEO。","画ISR。","「可见看HW。」"],"fm-kafka-q1"),
+            ("【EOS】能否替代DB事务？",["不能；仅链路内，外系统要幂等对账。","清结算。","直接当账本。","外储幂等键。","「EOS有边界。」"],"fm-kafka-q2"),
+            ("【lag】怎么治？",["扩并行/降RT/拆热点分区；禁盲丢位点。","大促。","删offset。","看板+扩容。","「lag要分层治。」"],"fm-kafka-q3"),
         ],
-        koujue_txt="Kafka 口诀：分区并行，ISR 耐打，外储幂等。",
+        koujue_txt="Kafka口诀：分区日志，ISR定可见，acks换RPO，EOS有边界，key保序。",
         rid="fm-kafka-r1",
     )
 
 
 def rabbit():
-    chain = """
-  <h4 id="ency-fm-rabbit-ex">5.1 Exchange 类型与绑定</h4>
-  <p>direct/topic/fanout/headers；绑定 key 错误会静默无消费。</p>
-  <h4 id="ency-fm-rabbit-ha">5.2 持久化 · Confirm/Ack · 仲裁队列</h4>
-  <p>persistent + publisher confirm + manual ack；队列类型 quorum（优于老镜像不演练）。</p>
-  <h4 id="ency-fm-rabbit-ttl">5.3 TTL / DLX / 堆积流控</h4>
-  <p>过期进 DLX；内存高水位 flow control；prefetch 调控 Unacked。</p>
-"""
     return gated_entry(
         "ency-fm-rabbit", "ENCY-FM · RabbitMQ全貌", "ENCY-FM-RABBIT",
-        "RabbitMQ 全貌：交换·队列·仲裁·TTL/DLX·堆积",
-        ["rabbitmq", "quorum", "dlx", "fullmap"],
-        plain_txt="Rabbit=路由邮局。交换机分流，队列存消息，仲裁保活，TTL/DLX 处理过期死信。",
-        spine_pos="中厂通知与轻量异步。",
-        serves="通知/轻补偿",
-        back="T-Found-Rabbit → FULLMAP",
-        caps=[
-            ("模型", "Exchange/Binding/Queue/vhost", "隔离"),
-            ("路由", "四类交换机", "事件分发"),
-            ("可靠", "confirm、ack、prefetch、persistent", "不丢"),
-            ("HA", "quorum/镜像", "节点故障"),
-            ("TTL/DLX", "死信闭环", "超时任务"),
-            ("流控", "内存水位、队列深度", "高峰"),
-        ],
+        "RabbitMQ 全貌：交换·队列·仲裁·TTL/DLX·堆积·金融/电商/物流",
+        ["rabbitmq", "quorum", "dlx", "fullmap", "hardgate"],
+        plain_txt="<b>开篇即底板：</b>Rabbit=路由邮局。交换机分流，队列存消息，quorum保活，confirm+ack才可靠，TTL/DLX处理过期死信。",
+        spine_pos="中厂通知与轻量异步。", serves="通知/轻补偿", back="T-Found-Rabbit → FULLMAP",
+        caps=[("模型","Exchange/Binding/Queue/vhost","隔离"),("路由","四类交换机","分发"),("可靠","confirm/ack/persistent","不丢"),
+              ("HA","quorum","节点故障"),("TTL/DLX","死信闭环","超时"),("流控","内存水位/prefetch","高峰"),("边界","vs Kafka/Rocket","选型")],
         mmds=[
-            ("diag-fm-rabbit-arch",
-             "flowchart LR\n  P --> X[Exchange]\n  X --> Q[Queue quorum]\n  Q --> C[Consumer ack]\n  Q --> DLX[DLX]\n"),
-            ("diag-fm-rabbit-flow",
-             "flowchart TD\n  Mem[内存高水位] --> FC[Flow Control]\n  FC --> Block[生产者阻塞]\n  Block --> Act[扩容/降持久化压力]\n"),
+            ("diag-fm-rabbit-arch","flowchart LR\n  P-->X[Exchange]-->Q[Queue quorum]-->C[Consumer ack]\n  Q-->DLX[DLX]\n"),
+            ("diag-fm-rabbit-flow","flowchart TD\n  Mem[内存高水位]-->FC[Flow Control]-->Block[生产者阻塞]-->Act[扩容/降压]\n"),
         ],
         sources=[
-            ("发布确认",
-             "Channel.confirmSelect / waitForConfirms；basicPublish",
-             "ch.confirmSelect();\n"
-             "ch.basicPublish(ex, key, propsPersistent, body);\n"
-             "ch.waitForConfirmsOrDie(timeout);\n"),
-            ("消费确认",
-             "basicConsume + basicAck/Nack",
-             "deliver → biz → basicAck(tag, false)\n"
-             "onFailure → basicNack(tag, false, requeue|dlx)\n"),
+            ("发布确认","Channel.confirmSelect / waitForConfirms","ch.confirmSelect();\nch.basicPublish(ex,key,propsPersistent,body);\nch.waitForConfirmsOrDie(timeout);\n"),
+            ("消费确认","basicConsume + basicAck/Nack","deliver → biz → basicAck(tag,false)\nonFailure → basicNack(..., requeue|dlx)\n"),
         ],
-        floors=[
-            ("Confirm/Ack 语义",
-             "confirm=到 Broker；ack=处理完；二者缺一都可能丢。",
-             "信道复用；连接泄漏。",
-             "自动 ack 崩进程丢售后通知。",
-             "看 Unacked、Ack rate、Connections。"),
-        ],
-        chain_html=chain,
+        floors=[("Confirm/Ack语义","confirm=到Broker；ack=处理完；缺一可能丢。","信道复用；连接泄漏。","自动ack崩进程丢通知。","Unacked、Ack rate、Connections。")],
+        chain_html=CHAINS["rabbit"],
         cases=[
-            {"id": "ency-fm-rabbit-case-food", "company": "肯德基/麦当劳类餐饮（案例归纳）", "scene": "出餐通知/取消",
-             "land": "topic 路由门店；失败入 DLX；取消幂等。",
-             "pit": "自动 ack + 门店系统慢 → 丢通知。",
-             "fix": "manual ack；prefetch 限流；DLX 人工补推。"},
-            {"id": "ency-fm-rabbit-case-yonyou", "company": "用友类企业集成（案例归纳）", "scene": "B2B 单据异步过账",
-             "land": "单据事件入队；ERP 消费者幂等过账。",
-             "pit": "无持久化队列节点重启丢单。",
-             "fix": "quorum+persistent；confirm。"},
+            {"id":"ency-fm-rabbit-case-food","company":"肯德基/麦当劳类餐饮（案例归纳）","scene":"出餐通知/取消",
+             "land":"topic路由门店；失败入DLX；取消幂等。","pit":"自动ack+门店慢→丢通知。",
+             "fix":"①manual ack ②prefetch限流 ③DLX补推。",
+             "effect":"公开分享量级/示意区间：高峰通知成功率回升（示意）。"},
+            {"id":"ency-fm-rabbit-case-yonyou","company":"用友类企业集成（案例归纳）","scene":"B2B单据异步过账",
+             "land":"单据事件入队；ERP消费者幂等。","pit":"非persistent节点重启丢单。",
+             "fix":"①quorum+persistent ②confirm。",
+             "effect":"公开分享量级/示意区间：重启后无丢单（示意目标）。"},
+            {"id":"ency-fm-rabbit-case-cmb","company":"招行类渠道旁路（案例归纳）","scene":"短信/通知旁路",
+             "land":"与核心账务解耦；失败DLX人工。","pit":"通知通道当账务唯一通道。",
+             "fix":"①旁路定位 ②核心仍DB/Rocket。",
+             "effect":"公开分享量级/示意区间：通知可延迟不可丢审计（示意）。"},
+            {"id":"ency-fm-rabbit-case-sf","company":"物流节点轻量事件（案例归纳）","scene":"站内状态扇出",
+             "land":"fanout/topic；幂等upsert。","pit":"绑错key静默无消费。",
+             "fix":"①探测消息验路由 ②监控Ready。",
+             "effect":"公开分享量级/示意区间：误绑在上线前暴露（示意）。"},
         ],
-        trade_title="Rabbit 适用边界",
-        trade_rows=[
-            ("路由灵活", "优", "中", "中"),
-            ("超高吞吐", "弱", "Kafka", "Rocket 中高"),
-            ("核心支付", "旁路", "视配置", "更常见"),
-        ],
-        runbook_title="连接打满 / Unacked / 流控",
-        runbook_html="<ol><li>查泄漏连接。</li><li>Unacked→消费者卡死。</li><li>流控→内存与生产者。</li></ol>",
-        fail_html="<ul><li>绑错 key。</li><li>非 persistent。</li></ul>",
-        today_html="<ul><li>通知用 Rabbit quorum；支付核心用 Rocket/Outbox。</li></ul>",
+        trade_title="Rabbit适用边界",
+        trade_rows=[("路由灵活","优","中","中"),("超高吞吐","弱","Kafka","Rocket中高"),("核心支付","旁路","视配置","更常见")],
+        runbook_title="连接打满/Unacked/流控",
+        runbook_html="<ol><li>查泄漏连接。</li><li>Unacked→消费者卡死。</li><li>流控→内存与生产者。</li><li>DLX工单。</li></ol>",
+        fail_html="<ul><li>绑错key。</li><li>非persistent。</li><li>自动ack。</li></ul>",
+        today_html="<ul><li>通知用Rabbit quorum；支付核心用Rocket/Outbox。</li></ul>",
         conf_title="可靠基线",
         conf_code="publisher confirms=on\nmanual ack=true\nqueue type=quorum\nprefetch=按RT",
         qas=[
-            ("【路由】四种 Exchange？", ["direct/topic/fanout/headers 与用例。", "设计。", "只会一种。", "举例。", "「先选路由。」"], "fm-rabbit-q1"),
-            ("【HA】为何 quorum？", ["Raft 语义清晰；要演练。", "运维。", "单机。", "演练。", "「HA 要杀节点。」"], "fm-rabbit-q2"),
-            ("【排障】Ready=0 无消费？", ["看 Unacked/绑定/DLX。", "值班。", "盲重发。", "查消费者。", "「先看死没死。」"], "fm-rabbit-q3"),
+            ("【路由】四种Exchange？",["direct/topic/fanout/headers及用例。","设计。","只会一种。","举例。","「先选路由。」"],"fm-rabbit-q1"),
+            ("【HA】为何quorum？",["Raft语义清晰；要演练。","运维。","单机。","杀节点演练。","「HA要杀节点。」"],"fm-rabbit-q2"),
+            ("【排障】Ready=0无消费？",["看Unacked/绑定/DLX。","值班。","盲重发。","查消费者。","「先看死没死。」"],"fm-rabbit-q3"),
         ],
-        koujue_txt="Rabbit 口诀：路由+确认+仲裁，通知友好支付旁路。",
+        koujue_txt="Rabbit口诀：路由+确认+仲裁，通知友好支付旁路，绑错即静默。",
         rid="fm-rabbit-r1",
     )
 

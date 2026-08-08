@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """管理思维 · 外包高级可落地（排期/瀑布敏捷/联调UAT）"""
+from anti_water_boost import boost_mgmt
 from helpers import (
     qa, c4, five, tradeoff, spine, plain, koujue,
     reflect, today, checklist, runbook,
@@ -90,6 +91,7 @@ def build() -> str:
     "UAT+观察项+复盘。",
 )}
 {koujue("管理口诀：故事能演示，风险有主人，窗口能回滚，财务能点头。")}
+""" + boost_mgmt() + f"""
 {qa("【题】业务要两周「重构订单库+新退款口径+AI 自动退」，如何排？",
     ["拆成三阶段门：① 口径+状态机（强验收）② 库迁移双轨 ③ AI 仅草稿。两周只承诺①的可回滚切片，其余进路线图。",
      "范围膨胀。", "全塞一个 sprint。", "书面分期。", "「两周只买可验证的一片。」"],

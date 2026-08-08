@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """C. AI Skills/MCP/RAG/多智能体/AgentScope · 极致落地"""
+from anti_water_boost import boost_rag, boost_mcp, boost_ai_integrate
 from helpers import (
     qa, c4, five, tradeoff, mermaid, spine, essence, company_prd,
     plain, koujue, failbox, runbook, ban, reflect, today, checklist,
@@ -149,6 +150,7 @@ def build() -> str:
   <h2><span class="sys-id">T-AI-X</span>RAG 评测与幻觉资损案例</h2>
 {failbox("幻觉资损案例",
          "知识库混入过期「未发货可秒退全额」话术；Agent 未强制 cite；客服照念对已发货单承诺全额→多退。根因：无版本门禁+无引用门禁+无 HITL 金额闸。修复：kbVer 钉扎、强制引用、金额必人工、评测陷阱题回归。")}
+""" + boost_rag() + f"""
   <h3 id="aix-rag-eval">评测集最小集</h3>
   <table>
     <thead><tr><th>题型</th><th>例子</th><th>通过标准</th></tr></thead>
@@ -170,6 +172,7 @@ def build() -> str:
     mcp = f"""
 <section class="block" id="t-ai-x-mcp" data-toc="T-AI-X · MCP威胁模型" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>MCP 安全威胁模型：提示注入 · 越权工具</h2>
+""" + boost_mcp() + f"""
   <table>
     <thead><tr><th>威胁</th><th>攻击面</th><th>缓解</th></tr></thead>
     <tbody>
@@ -192,6 +195,7 @@ def build() -> str:
     integrate = f"""
 <section class="block" id="t-ai-x-integrate" data-toc="T-AI-X · CI工单值班集成" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>与 CI / 工单 / 值班集成</h2>
+""" + boost_ai_integrate() + f"""
   <table>
     <thead><tr><th>集成点</th><th>做什么</th><th>不做</th></tr></thead>
     <tbody>

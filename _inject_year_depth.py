@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """Inject year roadmap + cognitive C4 loop + 5 production complex cases."""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 INDEX = ROOT / "index.html"
 MIRROR = ROOT.parent / "高级Java外包-系统学习技术白皮书.html"
+sys.path.insert(0, str(ROOT / "_pillar_parts"))
+from anti_water_boost import boost_bx_hub as _boost_bx_hub  # noqa: E402
 
 CSS_EXTRA = """
 .c4-loop {
@@ -600,6 +603,7 @@ SEC_BX_HUB = f"""
     </tbody>
   </table>
   <div class="koujue"><div class="label">口诀</div>复杂场景口诀：组合拳先四段，取舍表后五步，压测数字收口。</div>
+""" + _boost_bx_hub() + f"""
 {reflect("bx-hub-r1")}
 </section>
 """

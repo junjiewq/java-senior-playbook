@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """B. 云原生 Docker/K8s · 极致落地"""
+from anti_water_boost import boost_k8s_workload
 from helpers import (
     qa, c4, five, tradeoff, mermaid, spine, essence, company_prd,
     plain, koujue, failbox, runbook, pit, reflect, ban, today, floor,
@@ -70,6 +71,7 @@ def build() -> str:
     "压测给出副本×池×DB 连接公式；秒杀场景书面决定「扩不扩」。",
     "秒杀尖刺秒级，HPA 分钟级——时间常数不匹配。",
 )}
+""" + boost_k8s_workload() + f"""
   <h3 id="k8sx-w-jvm">JVM 容器参数对齐（写死习惯）</h3>
   <table>
     <thead><tr><th>项</th><th>建议</th><th>若违背</th></tr></thead>

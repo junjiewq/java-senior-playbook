@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """DDD + 设计模式 + 架构思维 · 落到订单域（人话→落地→必要底板）"""
+from anti_water_boost import boost_ddd_hub
 from helpers import (
     qa, c4, five, tradeoff, mermaid, spine, plain, koujue,
     reflect, today, checklist, conf, floor, ban,
@@ -23,6 +24,7 @@ def build() -> str:
       <tr><td>架构权衡与模块化 vs 微服务</td><td><a href="#s-ddd-x-arch">#s-ddd-x-arch</a></td></tr>
     </tbody>
   </table>
+""" + boost_ddd_hub() + f"""
 {reflect("dddx-hub-r1")}
 </section>
 """

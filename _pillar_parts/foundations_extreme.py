@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """基础件极致：JVM/JUC/MySQL/Redis/Kafka/Rabbit/RocketMQ — 人话→掀底板→落地→回扣"""
+from anti_water_boost import boost_found_rocket
 from helpers import (
     qa, c4, five, tradeoff, mermaid, spine, essence, plain, koujue,
     failbox, runbook, reflect, today, checklist, conf, floor, ban,
@@ -283,6 +284,7 @@ if (order.status == CREATED) markClosedAndReleaseStock();
     ["半消息长期不转正，OMS 收不到；Broker 反复回查打 Producer。修回查逻辑对终态返回 Commit/Rollback。",
      "支付高峰。", "回查直接抛异常。", "回查单测+指标。", "「回查是事务消息的命门。」"],
     "found-rocket-q1")}
+""" + boost_found_rocket() + f"""
 {reflect("found-rocket-r1")}
 </section>
 """

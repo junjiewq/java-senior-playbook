@@ -54,13 +54,24 @@
 | MQ 选型矩阵 | `#found-mq-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-mq-matrix |
 | 锁/一致性矩阵 | `#found-lock-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-lock-matrix |
 | **大促三联** | `#x-promo-trinity` | https://junjiewq.github.io/java-senior-playbook/#x-promo-trinity |
+| **全书去水审计** | `#doc-audit` | https://junjiewq.github.io/java-senior-playbook/#doc-audit |
+| **ENCY HARD GATE** | `#ency-fm` / `#ency-audit` | https://junjiewq.github.io/java-senior-playbook/#ency-fm |
+| PolarDB-X CN/DN/GMS/CDC | `#ency-fm-polardb-cn` … | https://junjiewq.github.io/java-senior-playbook/#ency-fm-polardb |
 
 ## 本地打开
 
 1. [`index.html`](./index.html)（需联网 CDN）  
 2. **同内容副本**（必须 md5 一致）：`/Users/Zhuanz/Downloads/test2/高级Java外包-系统学习技术白皮书.html`  
 
-构建：`python3 _inject_pillars_extreme.py`（写 index + 强制 `cp` 中文名文件并校验 md5）。
+构建：
+
+```bash
+python3 _inject_pillars_extreme.py   # 极致章
+python3 _inject_ency.py              # ENCY-FM 全貌 + 搜索
+python3 _apply_anti_water.py         # 去水加厚 + #doc-audit（可选一键）
+```
+
+写 `index.html` 后必须与 `../高级Java外包-系统学习技术白皮书.html` md5 一致。
 
 ## GitHub Pages
 
