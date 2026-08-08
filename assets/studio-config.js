@@ -1,11 +1,11 @@
 /**
  * 公众号 / H5 合体页用的 Studio 公网地址配置。
  *
- * 目标拓扑（域名审核通过并完成解析后）：
+ * 目标拓扑（审核已通过；DNSPod 加解析 + 命名隧道就绪后）：
  *   Hub（Pages 自定义域）：https://xjj985.top/wechat.html
  *   Studio（cloudflared 命名隧道）：https://chat.xjj985.top
  *
- * 审核期间临时方案：
+ * 当前（权威区尚无 A/CNAME 时）临时方案：
  *   Hub：https://junjiewq.github.io/java-senior-playbook/wechat.html
  *   Studio：本机 bash scripts/remote-access.sh 打印的 https://….trycloudflare.com
  *           用 wechat.html?studio=… 或页面内粘贴覆盖下方默认值。
@@ -15,7 +15,7 @@
  */
 window.PLAYBOOK_STUDIO = {
   /** @type {string} 公网 HTTPS Studio 根地址，末尾不要斜杠也可 */
-  publicStudioUrl: "https://chat.xjj985.top",
+  publicStudioUrl: "https://consideration-excited-exec-may.trycloudflare.com",
   /** 打开对话时附加的 query（embed=1 为微信轻量壳） */
   chatQuery: "embed=1",
 };
