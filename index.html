@@ -510,18 +510,20 @@ flowchart TB
   BI[B-Ind 餐饮/跨境旋钮]
   T[T 横向零件]
   K8s[T-K8s 发布弹性]
-  AI[T-AI / AgentScope]
+  AI[T-AI-Stack Skills/MCP/RAG]
+  Agents[T-AI / T-AS 多智能体]
   MS[S-MS 卡点难点亮点]
   V[V1 大厂高配/中厂MVP]
   S3[S3 E2E 路考]
   S4[S4 复习]
-  SM[S-Method 带走方法论]
+  SM[S-Method 五步法]
   S0-->S1-->S2-->B0
   B0-->BF-->BR-->BI
   T-->BF
   T-->BR
   K8s-->BF
   AI-->BR
+  Agents-->BR
   MS-->BF
   MS-->BR
   V-->BF
@@ -538,11 +540,12 @@ flowchart TB
     <tbody>
       <tr><td><code>S0–S4</code></td><td>脊柱：目标→问题域→方法→路考→复习</td></tr>
       <tr><td><code>B0 / B-F / B-R / B-Ind</code></td><td><b>业务主线</b></td></tr>
-      <tr><td><code>T-K8s / T-AI / T-AS</code></td><td>发布弹性与 AI 辅驾（服务主线）</td></tr>
+      <tr><td><code>T-K8s</code></td><td>发布弹性（服务主线）</td></tr>
+      <tr><td><code>T-AI-Stack / Skills / MCP / RAG / Agents</code></td><td><b>AI 重头戏</b>（挂订单域）</td></tr>
+      <tr><td><code>S-Method</code></td><td><b>钉拆标选验五步法</b>（收官）</td></tr>
       <tr><td><code>B-L / V1</code></td><td>横向借鉴与配置（降级）</td></tr>
       <tr><td><code>T*</code></td><td>技术零件，必须标注服务主线哪段</td></tr>
       <tr><td><code>S-MS</code></td><td>拆分卡点，服务主线边界</td></tr>
-      <tr><td><code>S-Method</code></td><td><b>收官：可带走的技术×业务方法论</b></td></tr>
     </tbody>
   </table>
   <div class="koujue"><div class="label">口诀</div>主线一句话：加购到签收是正向；退款到寄修翻新是逆向；行业只改旋钮；AI 不改账务。</div>
@@ -564,7 +567,7 @@ flowchart TB
       <tr><td>餐饮高峰·餐损</td><td>主线配置</td><td>B-Ind</td></tr>
       <tr><td>跨境清关·国际退</td><td>主线配置</td><td>B-Ind</td></tr>
       <tr><td>发布回滚·弹性</td><td>工程辅路</td><td><a href="#t-docker-k8s">T-K8s</a></td></tr>
-      <tr><td>质检/规则/复盘 Agent</td><td>人效辅驾</td><td><a href="#t-ai-agents">T-AI</a> / <a href="#t-agentscope">T-AS</a></td></tr>
+      <tr><td>Skills / MCP / RAG / 多智能体</td><td>人效辅驾（重头戏）</td><td><a href="#t-ai-stack">T-AI-Stack</a></td></tr>
       <tr><td>资金热点·大厂治理</td><td>横向借鉴</td><td>B-L / V1</td></tr>
     </tbody>
   </table>
@@ -2826,9 +2829,13 @@ flowchart LR
 
 </section>
 
-<section class="block" id="t-ai-agents" data-toc="T-AI · 交易域多智能体" data-prio="p0">
-  <h2><span class="sys-id">T-AI</span>AI 多智能体：挂在正逆向链路上的副驾</h2>
-  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>提效层：质检/规则评审/复盘 Agent——服务 B-F/B-R 的人效与质量，禁止直接改生产账务。<br><b>服务业务闭环：</b>售后质检、优惠规则、故障复盘<br><b>挂回：</b>B-R/B-F → 本层 → T-AgentScope → 方法论人机边界</div>
+<section class="block" id="t-ai-agents" data-toc="T-AI · 交易域多智能体导读" data-prio="p0">
+  <h2><span class="sys-id">T-AI</span>AI 多智能体导读（重头戏见 T-AI-Stack）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>导读层：完整 Skills/MCP/RAG/多智能体/AgentScope 见 <a href='#t-ai-stack'>T-AI-Stack</a>。<br><b>服务业务闭环：</b>售后质检、优惠规则、故障复盘<br><b>挂回：</b>B-R/B-F → T-AI-Stack → S-Method</div>
+
+  <div class="callout ok"><div class="label">重头戏入口</div>
+    <p>请优先阅读：<a href="#t-skills">Skills</a> · <a href="#t-mcp">MCP</a> · <a href="#t-rag">RAG</a> · <a href="#t-agents-deep">多智能体</a> · <a href="#t-as-deep">AgentScope 嵌入</a>。下面保留精简三角色图。</p>
+  </div>
 
   <div class="essence">
     <div class="essence-col">
@@ -2888,13 +2895,37 @@ flowchart TB
 
   <div class="callout danger"><div class="label">踩坑</div>幻觉与资损：模型可能「编造」渠道已退成功。对策：凡涉金额以渠道查询 API 实据为准；无工具证据不得建议「再退一笔」。</div>
 
+
+  <h3 id="tai-stack-link">与 Skills / MCP / RAG 的装配关系</h3>
+  <div class="plain"><div class="label">人话版</div>人话：多智能体是「分角色的副驾」；Skill 规定每个角色怎么干活；MCP 是他们能按的只读按钮；RAG 是他们翻的带页码手册。缺任何一层都会退化成闲聊。详解见 <a href='#t-ai-stack'>T-AI-Stack</a>。</div>
+
+  <table>
+    <thead><tr><th>角色</th><th>Skill</th><th>MCP（只读）</th><th>RAG</th></tr></thead>
+    <tbody>
+      <tr><td>质检助手</td><td>售后质检取证步骤</td><td>ticket.get / 物流轨迹</td><td>质检 SOP、历史案例</td></tr>
+      <tr><td>优惠评审</td><td>互斥评审检查单</td><td>规则仓库只读</td><td>互斥表版本、资损复盘</td></tr>
+      <tr><td>复盘 Agent</td><td>20 分钟资损戏本</td><td>日志/指标摘要工具</td><td>Runbook、发布记录</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tai-alts">同一需求 · 多解法（多智能体要不要上）</h3>
+  <table>
+    <thead><tr><th>需求：售后质检提效</th><th>视角</th><th>优点</th><th>代价</th><th>边界</th></tr></thead>
+    <tbody>
+      <tr><td>加人 + 清单</td><td>可控</td><td>无幻觉</td><td>成本高</td><td>单量小</td></tr>
+      <tr><td>单 Agent + RAG</td><td>成本</td><td>快上</td><td>角色混杂易偏题</td><td>MVP</td></tr>
+      <tr><td>多 Agent 分工 + HITL</td><td>人效/质量</td><td>职责清、可审计</td><td>编排与权限成本</td><td><b>推荐</b>积压明显时</td></tr>
+      <tr><td>Agent 直改合格并退款</td><td>—</td><td>看似快</td><td>资损</td><td><b>禁止</b></td></tr>
+    </tbody>
+  </table>
+
   <div class="qa">
     <div class="q">【红线】Agent 能否自动调用退款接口？</div>
     <div class="a answer-detail">
       <div class="layer"><b>① 原理</b>默认否。退款是资金指令；最多生成「退款申请草稿」进人工/原有售后状态机。</div>
       <div class="layer"><b>② 场景</b>提效压力。</div>
       <div class="layer"><b>③ 坑</b>给生产写权限图省事。</div>
-      <div class="layer"><b>④ 怎么落地</b>工具白名单+金额阈值熔断+双人审批。</div>
+      <div class="layer"><b>④ 怎么落地</b>工具白名单+金额阈值熔断+双人审批；写工具不进 MCP 默认 server。</div>
       <div class="layer"><b>⑤ 30秒亮点口述</b>「AI 不直接改生产账务。」</div>
     </div>
   </div>
@@ -2906,11 +2937,35 @@ flowchart TB
       <div class="layer"><b>① 原理</b>挂在「待质检」态：拉证据→草稿结论→质检员确认→状态机继续。</div>
       <div class="layer"><b>② 场景</b>寄修/退货。</div>
       <div class="layer"><b>③ 坑</b>Agent 直接改合格。</div>
-      <div class="layer"><b>④ 怎么落地</b>确认事件才驱动状态迁移。</div>
+      <div class="layer"><b>④ 怎么落地</b>确认事件才驱动状态迁移；Skill 固定取证顺序。</div>
       <div class="layer"><b>⑤ 30秒亮点口述</b>「Agent 产出建议，状态机认人的确认。」</div>
     </div>
   </div>
   <div class="reflect" data-reflect="tai-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【对比】单 Agent 一把梭 vs 三角色？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>单 Agent 适合 MVP；三角色在质检/规则/复盘并发且工具集不同时更清晰，避免上下文污染。</div>
+      <div class="layer"><b>② 场景</b>编排选型。</div>
+      <div class="layer"><b>③ 坑</b>为了架构图硬拆七个 Agent。</div>
+      <div class="layer"><b>④ 怎么落地</b>按资损与工具边界拆，不按时髦拆。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「按边界拆角色，不按热闹拆。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tai-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【本质】多智能体消灭的是什么不确定？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>检索与初稿的不确定；不是账务一致。一致仍靠状态机/幂等/对账。</div>
+      <div class="layer"><b>② 场景</b>老板期望 AI 替代对账。</div>
+      <div class="layer"><b>③ 坑</b>用 Agent 替代分摊。</div>
+      <div class="layer"><b>④ 怎么落地</b>叙事钉在人效，验收钉在零直改账务。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「副驾加速，账本不交给模型。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tai-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
   <div class="reflect" data-reflect="tai-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
@@ -2991,6 +3046,29 @@ flowchart TB
 
   <div class="koujue"><div class="label">口诀</div>嵌套口诀：Agent 写草稿，状态机记账，人对着干；框架可换，红线不换。</div>
 
+
+  <h3 id="tas-alts">编排选型 · 多解法加深</h3>
+  <table>
+    <thead><tr><th>解法</th><th>视角</th><th>优点</th><th>代价</th><th>推荐边界</th></tr></thead>
+    <tbody>
+      <tr><td>脚本 + 单次 Prompt</td><td>成本</td><td>一天能见</td><td>无会话恢复/难审计</td><td>个人试用</td></tr>
+      <tr><td>LangChain / LangGraph</td><td>生态/原型</td><td>示例多</td><td>生产安全自建</td><td>Python 数据/研究链</td></tr>
+      <tr><td>AgentScope（及 Java 运行时）</td><td>生产向多 Agent</td><td>HITL/工具/分布式主题清晰</td><td>学习与集成成本</td><td><b>Java 中台辅驾</b>优先评估</td></tr>
+      <tr><td>自研编排挂工单</td><td>合规</td><td>权限最贴</td><td>工期长</td><td>强监管、工具面极窄</td></tr>
+    </tbody>
+  </table>
+  <div class="plain"><div class="label">人话版</div>人话：别在评审里赌咒「某某框架天下第一」。讲清：我们要 HITL 吗？工具要沙箱吗？团队是 Java 还是 Python？红线是否同一套？</div>
+
+
+  <h3 id="tas-order-spine">挂回订单脊柱的最小闭环</h3>
+  <ol>
+    <li>只读 MCP：order.get / ticket.get（见 <a href="#t-mcp">T-MCP</a>）</li>
+    <li>RAG：售后 SOP + 优惠规则版本（见 <a href="#t-rag">T-RAG</a>）</li>
+    <li>Skill：质检/部分退检查单（见 <a href="#t-skills">T-Skills</a>）</li>
+    <li>编排：质检 Agent → HITL → 工单状态机；无退款 execute</li>
+    <li>观测：工具拒绝次数、HITL 时长、幻觉抽样</li>
+  </ol>
+
   <div class="qa">
     <div class="q">【对比】AgentScope vs LangChain 怎么在评审里讲？</div>
     <div class="a answer-detail">
@@ -3015,7 +3093,718 @@ flowchart TB
   </div>
   <div class="reflect" data-reflect="tas-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
+  <div class="qa">
+    <div class="q">【需求】中厂第一期上什么？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>先 RAG Runbook + 只读查单工具 + CR/质检草稿 Bot；多 Agent 编排与 AgentScope 深度集成放二期。</div>
+      <div class="layer"><b>② 场景</b>预算紧。</div>
+      <div class="layer"><b>③ 坑</b>一期上全家桶。</div>
+      <div class="layer"><b>④ 怎么落地</b>用采纳率与拦截数证明后再加编排。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「先真相库与只读手，再多角色。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tas-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【本质】换掉 AgentScope 业务会坏吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>不应坏：业务状态机与账务在原系统；坏的是辅驾工程化能力，可用同类替代。</div>
+      <div class="layer"><b>② 场景</b>架构锁定恐慌。</div>
+      <div class="layer"><b>③ 坑</b>把账务写进框架示例。</div>
+      <div class="layer"><b>④ 怎么落地</b>红线与工具网关与框架解耦。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「框架可换，脊柱不换。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tas-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
   <div class="reflect" data-reflect="tas-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-ai-stack" data-toc="T-AI-Stack · Skills/MCP/RAG总图" data-prio="p0">
+  <h2><span class="sys-id">T-AI-Stack</span>Skills · MCP · RAG · 智能体：挂在订单脊柱上的副驾栈</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>AI 重头戏总图：四件套服务 B-F/B-R 人效，不改生产账务写路径。<br><b>服务业务闭环：</b>客服/售后/优惠规则/值班复盘<br><b>挂回：</b>T8 提效红线 → 本栈 → T-AI/T-AS → S-Method⑤</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">让一线更快「查对事实、按对规则、写出草稿」，最终签字仍是人与状态机。</p>
+      <p>怕幻觉胡说退款口径、怕工具越权打钱、怕知识库过期误导客服。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">用结构消灭四类不确定：流程怎么做(Skills)、系统怎么查(MCP)、文档怎么信(RAG)、多角色怎么协作(Agent)。</p>
+      <p>Skills=可触发的操作手册；MCP=受控工具协议；RAG=带出处的检索增强；Agent=编排+HITL。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>缺 Skills→每人一套土办法；缺 MCP 边界→Agent 乱调接口；缺 RAG 版本→过期规则；缺 HITL→资损。</p>
+  </div>
+
+  <div class="plain"><div class="label">人话版</div>人话：副驾要三样东西——怎么干活的说明书（Skill）、能碰哪些按钮（MCP）、该翻哪本最新手册（RAG）。多智能体只是「几个副驾怎么分活」。</div>
+
+  <div class="mermaid-wrap" id="diag-ai-stack">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-ai-stack">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Spine[B-F / B-R 订单脊柱]
+  Skill[T-Skills 操作手册]
+  MCP[T-MCP 受控工具]
+  RAG[T-RAG 真相库]
+  Agent[T-AI 多角色]
+  AS[T-AS 编排运行时]
+  HITL[人工确认]
+  Spine --> Skill
+  Spine --> MCP
+  Spine --> RAG
+  Skill --> Agent
+  MCP --> Agent
+  RAG --> Agent
+  Agent --> AS
+  AS --> HITL
+  HITL -->|执行| Spine
+  Agent -.->|禁止直写| Ledger[(支付/退款账务)]
+
+    </pre>
+  </div>
+
+  <table>
+    <thead><tr><th>层</th><th>sys-id</th><th>一句话</th><th>挂主线哪步</th></tr></thead>
+    <tbody>
+      <tr><td>Skills</td><td><a href="#t-skills">T-Skills</a></td><td>把反复做的售后/优惠/复盘流程沉淀成可触发手册</td><td>B-R 质检、B-F 规则评审、值班</td></tr>
+      <tr><td>MCP</td><td><a href="#t-mcp">T-MCP</a></td><td>标准协议暴露「查单/查工单」只读工具，鉴权卡死写</td><td>客服查单、售后取证</td></tr>
+      <tr><td>RAG</td><td><a href="#t-rag">T-RAG</a></td><td>分块+版本+强制引用，压幻觉</td><td>规则文档、Runbook、客服话术</td></tr>
+      <tr><td>多智能体</td><td><a href="#t-agents-deep">T-Agents</a> / <a href="#t-as-deep">T-AS+</a></td><td>分工起草 + HITL；框架可换红线不换</td><td>质检/规则/复盘辅驾</td></tr>
+    </tbody>
+  </table>
+  <div class="koujue"><div class="label">口诀</div>栈口诀：Skill 教流程，MCP 给手，RAG 给书，Agent 写草稿，人按确认键。</div>
+
+  <div class="reflect" data-reflect="taistack-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-skills" data-toc="T-Skills · Agent Skill沉淀" data-prio="p0">
+  <h2><span class="sys-id">T-Skills</span>Agent Skills：何时沉淀、如何触发、挂售后/优惠</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>把「做对一次」变成「团队可复用的副驾说明书」。<br><b>服务业务闭环：</b>售后 Runbook、优惠互斥评审、资损 20 分钟戏本<br><b>挂回：</b>T-AI-Stack → 本层 → T-MCP/T-RAG</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">重复出现的业务操作（怎么审售后、怎么评优惠、怎么排障）不该只活在老人脑子里。</p>
+      <p>怕每人问 AI 得到不同口径；怕新人漏掉资损检查项。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">Skill = 带触发条件的结构化指令包：何时用、步骤、红线、输出格式。</p>
+      <p>目录化存放（项目/个人）、描述驱动自动/显式触发；可附脚本与参考文档，不等于可写生产库。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>没有 Skill：同一售后场景答案漂移；复盘不沉淀→同类资损再犯。</p>
+  </div>
+
+  <div class="company-prd">
+    <div class="label">像在公司做需求 · 评审口吻</div>
+    <p><b>背景：</b>客服/质检/研发反复问「部分退怎么退券」「优惠互斥怎么测」「逆向资损怎么止血」——希望 Agent 按统一戏本辅助。</p>
+    <p><b>In Scope：</b>沉淀 3 类 Skill：售后 Runbook、优惠规则评审、逆向资损排查；进项目目录可版本管理。</p>
+    <p><b>Out of Scope：</b>用 Skill 直接打退款；把密钥写进 Skill。</p>
+    <p><b>主流程：</b>用户/工单命中描述→加载 Skill→按步骤取证(MCP/RAG)→输出检查单/草稿→人确认。</p>
+    <p><b>异常流程：</b>证据不足→Skill 要求追问；命中红线步骤→强制 HITL。</p>
+    <p><b>验收：</b>同场景建议口径一致；检查单覆盖资损项；可 Git diff 审计变更。</p>
+    <p><b>上线观察：</b>Skill 命中率、草稿采纳率、因漏检导致的资损工单数。</p>
+  </div>
+
+
+  <h3 id="tskills-what">Agent Skill 是什么（别神化）</h3>
+  <div class="plain"><div class="label">人话版</div>人话：Skill 不是另一个微服务。它是给 Agent 看的「标准作业程序（SOP）」——YAML/Markdown 写清：什么时候该用我、按什么步骤做、绝对不能做什么、输出长什么样。</div>
+
+  <table>
+    <thead><tr><th>组成部分</th><th>作用</th><th>交易域例子</th></tr></thead>
+    <tbody>
+      <tr><td><code>name</code> / <code>description</code></td><td>触发匹配（描述要写清场景关键词）</td><td>「部分退货退券分摊」「售后质检取证」</td></tr>
+      <tr><td>正文步骤</td><td>强制检查顺序，防跳步</td><td>先查正向分摊行→再算应退→再对渠道状态</td></tr>
+      <tr><td>红线</td><td>禁止动作清单</td><td>禁止建议「再退一笔」除非渠道查询未退</td></tr>
+      <tr><td>参考/脚本</td><td>深材料与可重复校验</td><td>互斥表、对账 SQL 模板（只读）</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tskills-when">何时沉淀（判断标准）</h3>
+  <ul>
+    <li>同一问题被问 ≥3 次，或新人必踩坑</li>
+    <li>出错成本高（资损/合规），需要固定检查项</li>
+    <li>答案依赖「内部口径」而非公开常识</li>
+    <li>流程跨系统（订单+券+工单），容易漏环</li>
+  </ul>
+  <p><b>反模式：</b>把整本百科塞进一个 Skill；或把一次性个人偏好写成团队强制流程。</p>
+
+  <h3 id="tskills-layout">目录与触发</h3>
+  <table>
+    <thead><tr><th>位置</th><th>范围</th><th>建议</th></tr></thead>
+    <tbody>
+      <tr><td>仓库 <code>.cursor/skills/售后-部分退/</code></td><td>项目共享</td><td>售后/优惠类默认放这里，跟代码一起评审</td></tr>
+      <tr><td>个人 skills 目录</td><td>仅自己</td><td>面试叙事、个人排障习惯；勿放客户密钥</td></tr>
+      <tr><td>描述触发</td><td>Agent 自动选用</td><td>description 写清「何时用/不用」</td></tr>
+      <tr><td>显式点名</td><td>人工 @Skill</td><td>高风险戏本建议显式，避免误触发</td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-tskills-flow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tskills-flow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Q[用户/工单问题] --> Match{{描述命中?}}
+  Match -->|是| Load[加载 SKILL.md]
+  Match -->|否| Ask[普通对话+RAG]
+  Load --> Steps[按步骤取证]
+  Steps --> MCP[MCP 查单/工单]
+  Steps --> RAG[RAG 规则/Runbook]
+  Steps --> Out[检查单/草稿]
+  Out --> Human[人工确认]
+
+    </pre>
+  </div>
+
+
+  <h3 id="tskills-cases">案例：售后 Runbook Skill × 优惠规则 Skill</h3>
+  <div class="callout ok"><div class="label">Skill 切片 · 售后部分退</div>
+    <p><b>触发：</b>部分退货、退券、分摊、积分追回</p>
+    <p><b>步骤摘要：</b>①读订单分摊行 ②算本行应退钱/券/积分 ③查售后单状态机是否允许 ④查渠道退款状态 ⑤输出「建议退款申请草稿」而非执行</p>
+    <p><b>红线：</b>无分摊行不得按整单比例瞎估（除非产品书面接受）；禁止直调退款工具</p>
+  </div>
+  <div class="callout ok"><div class="label">Skill 切片 · 优惠互斥评审</div>
+    <p><b>触发：</b>满减/单品/券/会员/积分叠加评审</p>
+    <p><b>步骤摘要：</b>对照互斥表→标冲突→生成边界用例表→标历史资损案例→变更须走开关</p>
+    <p><b>与 RAG 关系：</b>互斥表与案例进 RAG 并钉版本；Skill 负责「评审动作顺序」</p>
+  </div>
+  <div class="callout danger"><div class="label">踩坑</div>Skill 写了「调用 refund()」却没鉴权网关——等于把资损按钮写进说明书。Skill 只描述到「生成草稿/提工单」，执行留在原 B-R 系统。</div>
+
+
+  <div class="qa">
+    <div class="q">【本质】Skill 和普通 Prompt 片段有何不同？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>Skill 有触发元数据、稳定步骤、红线与可版本管理；Prompt 碎片易漂移、难评审。</div>
+      <div class="layer"><b>② 场景</b>团队想统一售后口径。</div>
+      <div class="layer"><b>③ 坑</b>把聊天记录当真理。</div>
+      <div class="layer"><b>④ 怎么落地</b>项目 skills 目录 + PR 评审 description/红线。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「Skill 是可 Git 的 SOP。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tskills-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【需求】售后 Runbook 该进 Skill 还是只进 RAG？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>流程步骤与红线进 Skill；长文档/案例进 RAG；Skill 步骤里要求「引用 RAG 出处」。</div>
+      <div class="layer"><b>② 场景</b>值班要 20 分钟止血。</div>
+      <div class="layer"><b>③ 坑</b>只丢 PDF 进向量库无步骤。</div>
+      <div class="layer"><b>④ 怎么落地</b>Skill 固定检查单 + RAG 供深读。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「Skill 管动作，RAG 管证据。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tskills-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【对比】一个大 Skill vs 多个小 Skill？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>按资损边界拆：部分退 / 仅退款 / 寄修质检分开；大而全难维护易误触发。</div>
+      <div class="layer"><b>② 场景</b>技能库膨胀。</div>
+      <div class="layer"><b>③ 坑</b>一文件万行。</div>
+      <div class="layer"><b>④ 怎么落地</b>目录分域+清晰 description 负例（何时不要用）。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「小 Skill，清触发。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tskills-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【红线】Skill 里能放生产数据库账号吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>不能。凭证走密钥系统；Skill 只写工具名与只读约束。</div>
+      <div class="layer"><b>② 场景</b>图省事。</div>
+      <div class="layer"><b>③ 坑</b>密钥进仓库。</div>
+      <div class="layer"><b>④ 怎么落地</b>密钥扫描门禁+代码评审。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「说明书不含钥匙。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tskills-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="tskills-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-mcp" data-toc="T-MCP · 协议与资损红线" data-prio="p0">
+  <h2><span class="sys-id">T-MCP</span>MCP：工具暴露、鉴权与订单/工单示例</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>给 Agent 一双「受控的手」：标准协议发现工具、调用工具，权限与审计单独做死。<br><b>服务业务闭环：</b>客服查单、售后取证、值班只读排障<br><b>挂回：</b>T-Skills → 本层 → T-RAG/T-AI</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">Agent 需要查订单/工单/物流才能不瞎编；但不能拥有打款权。</p>
+      <p>怕越权看单、怕写接口被模型误点、怕审计缺失无法追责。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">MCP（Model Context Protocol）把「工具列表+调用」标准化：宿主发现 server、列举 tools、按 schema 调。</p>
+      <p>业务上仍要：身份、租户、只读/写分离、金额阈值、审计日志——协议不管你的资损红线，你自己管。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>没有 MCP/工具层：模型编造单号状态；工具无鉴权：一次幻觉=一次资损。</p>
+  </div>
+
+  <div class="company-prd">
+    <div class="label">像在公司做需求 · 评审口吻</div>
+    <p><b>背景：</b>客服 Agent 要查订单状态与售后工单，研发 Agent 要查只读日志摘要；均不得退款。</p>
+    <p><b>In Scope：</b>MCP Server：order.query、aftersale.get、ticket.search；OAuth/服务账号；全量审计。</p>
+    <p><b>Out of Scope：</b>refund.execute、任意 SQL、生产配置写入。</p>
+    <p><b>主流程：</b>会话带操作者身份→选工具→鉴权→执行→返回结构化结果→模型引用结果作答。</p>
+    <p><b>异常流程：</b>鉴权失败→拒绝并提示；下游超时→降级「请人工查后台」；可疑批量查单→限流告警。</p>
+    <p><b>验收：</b>写类工具调用次数=0；查单越权=0；审计可按工单回溯。</p>
+    <p><b>上线观察：</b>工具拒绝率、P99、越权拦截数。</p>
+  </div>
+
+
+  <h3 id="tmcp-proto">协议本质（面试可讲）</h3>
+  <div class="plain"><div class="label">人话版</div>人话：MCP 像「给大模型用的 USB 接口规范」——两边约定：有哪些工具、参数长什么样、怎么报错。它不自动等于安全；插头标准有了，你还得决定插座后面接不接电源（退款）。</div>
+
+  <ul>
+    <li><b>发现</b>：客户端列出 server 上的 tools/resources</li>
+    <li><b>调用</b>：按 JSON Schema 传参，拿结构化结果</li>
+    <li><b>边界</b>：协议≠授权；授权在网关/工具实现里做</li>
+  </ul>
+
+  <h3 id="tmcp-tools">工具暴露原则（订单域）</h3>
+  <table>
+    <thead><tr><th>原则</th><th>做法</th><th>反例</th></tr></thead>
+    <tbody>
+      <tr><td>最小权限</td><td>默认可读；写工具单独 server 且默认关闭</td><td>一个 server 暴露全部内部 API</td></tr>
+      <tr><td>身份穿透</td><td>调用带客服/用户上下文，做数据范围校验</td><td>服务账号可查全站任意单</td></tr>
+      <tr><td>结果最小化</td><td>脱敏手机号/地址；不回传支付密钥字段</td><td>整行订单 dump</td></tr>
+      <tr><td>可审计</td><td>tool名、参数摘要、操作者、时间、结果码</td><td>只打模型侧日志</td></tr>
+      <tr><td>可熔断</td><td>QPS/单日限额；异常模式自动禁用写意图</td><td>无限重试打爆订单库</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="tmcp-examples">示例工具（订单查询 / 工单）</h3>
+  <table>
+    <thead><tr><th>工具</th><th>参数（示意）</th><th>返回</th><th>鉴权</th></tr></thead>
+    <tbody>
+      <tr><td><code>order.get</code></td><td>orderId / userId</td><td>状态、金额、分摊摘要、物流摘要</td><td>客服仅本租户；用户仅本人</td></tr>
+      <tr><td><code>order.refund_status</code></td><td>orderId / refundId</td><td>渠道状态、本地售后状态、是否可再申请</td><td>只读；金额以渠道为准</td></tr>
+      <tr><td><code>ticket.get</code></td><td>ticketId</td><td>工单轨迹、质检附件元数据</td><td>售后组角色</td></tr>
+      <tr><td><code>ticket.search</code></td><td>orderId</td><td>关联工单列表</td><td>分页+上限</td></tr>
+      <tr><td><code>refund.apply_draft</code></td><td>建议字段</td><td>草稿 ID（不打款）</td><td>可选；仍须 HITL</td></tr>
+      <tr><td><code>refund.execute</code></td><td>—</td><td>—</td><td><b>默认不暴露</b></td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-tmcp-auth">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tmcp-auth">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Agent[Agent] --> MCPC[MCP Client]
+  MCPC --> GW[工具网关]
+  GW --> Auth[鉴权/租户/限流]
+  Auth -->|允许| RO[只读 Tools]
+  Auth -->|拒绝| Deny[审计+拒绝]
+  RO --> Order[(订单/售后读模型)]
+  GW -.->|无白名单| PayX[退款/支付写]
+
+    </pre>
+  </div>
+
+  <div class="failbox"><div class="label">故障模式 · 幻觉调退款</div>模型编造「渠道已失败可再退」并试图调写工具。防线：写工具不在白名单；读工具返回渠道实据；Skill 红线禁止无证据再退。</div>
+
+  <div class="callout"><div class="label">生产 Runbook · MCP 工具疑似越权</div>
+    <ol>
+      <li>冻结相关写意图开关（若有）。</li>
+      <li>拉审计：操作者、tool、单号、频率。</li>
+      <li>核对数据范围策略是否失效（租户/本人）。</li>
+      <li>轮换服务账号密钥；复盘 schema 是否过宽。</li>
+    </ol>
+</div>
+
+
+  <h3 id="tmcp-alts">同一需求 · 多种解法</h3>
+  <table>
+    <thead><tr><th>需求：客服查单</th><th>视角</th><th>优点</th><th>代价</th><th>边界</th></tr></thead>
+    <tbody>
+      <tr><td>后台页面人工查</td><td>可控</td><td>无幻觉</td><td>慢</td><td>单量小</td></tr>
+      <tr><td>内部 REST + 自研 Function Calling</td><td>贴合现网</td><td>快</td><td>每模型重接</td><td>已有中台</td></tr>
+      <tr><td>MCP Server 暴露只读工具</td><td>标准/可换客户端</td><td>发现与 schema 统一</td><td>要网关与审计</td><td><b>推荐</b>多 Agent 客户端</td></tr>
+      <tr><td>直连生产库 SQL</td><td>—</td><td>看似万能</td><td>注入/泄露/不可审计</td><td><b>禁止</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="qa">
+    <div class="q">【本质】MCP 解决什么、不解决什么？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>解决工具发现与调用协议统一；不解决鉴权、资损、幻觉——那些是你的网关与 HITL。</div>
+      <div class="layer"><b>② 场景</b>选型会。</div>
+      <div class="layer"><b>③ 坑</b>以为上了 MCP 就安全。</div>
+      <div class="layer"><b>④ 怎么落地</b>协议+网关+审计三件套一起讲。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「MCP 是插头，红线是保险丝。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tmcp-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【需求】订单查询工具如何防越权？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>参数强制带资源归属校验；服务端忽略模型乱填的 userId；客服角色范围用组织数据权限。</div>
+      <div class="layer"><b>② 场景</b>客服帮用户查单。</div>
+      <div class="layer"><b>③ 坑</b>信任模型传入的 userId。</div>
+      <div class="layer"><b>④ 怎么落地</b>IDOR 测试用例进 CI。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「工具比模型更不信任入参。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tmcp-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【红线】能不能给 Agent 一个「退款」MCP 工具？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>默认否。若业务强推：独立 server、双人审批、金额阈值、二次确认、全审计，且不走自动。</div>
+      <div class="layer"><b>② 场景</b>提效压力。</div>
+      <div class="layer"><b>③ 坑</b>与查单工具混在一个 server。</div>
+      <div class="layer"><b>④ 怎么落地</b>写路径与读路径物理隔离。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「AI 不直接改生产账务。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tmcp-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】工具返回超时，Agent 说「已退款成功」？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>超时≠成功；Skill 规定必须拿到明确状态码；否则输出「未知，请人工」。</div>
+      <div class="layer"><b>② 场景</b>渠道抖动。</div>
+      <div class="layer"><b>③ 坑</b>把异常当成功。</div>
+      <div class="layer"><b>④ 怎么落地</b>超时映射+强制再查 refund_status。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「没回执就没有成功叙事。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tmcp-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="tmcp-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-rag" data-toc="T-RAG · 分块引用与幻觉" data-prio="p0">
+  <h2><span class="sys-id">T-RAG</span>RAG：分块、更新、引用、幻觉——客服/售后/规则生产案例</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>给副驾一本「带页码的最新手册」；没出处的话当没说。<br><b>服务业务闭环：</b>客服话术、售后口径、优惠规则、值班 Runbook<br><b>挂回：</b>T-MCP → 本层 → T-AI → S-Method⑤复盘</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">员工要快速找到「当前有效」的退款/优惠/质检口径，而不是靠口口相传。</p>
+      <p>怕过期文档害错退；怕模型编造不存在的条款。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">RAG=检索增强生成：把真相切片索引，答题前先取片段，再生成，并强制引用。</p>
+      <p>生产关键是分块策略、版本/更新、权限、评测集与幻觉门禁——不是「上个向量库」本身。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>没有版本钉扎→规则变更后仍引用旧满减；没有强制引用→客服被自信语气带沟里。</p>
+  </div>
+
+  <div class="company-prd">
+    <div class="label">像在公司做需求 · 评审口吻</div>
+    <p><b>背景：</b>客服与售后要问规则/流程；优惠变更频繁；希望 Agent 回答带来源与版本。</p>
+    <p><b>In Scope：</b>知识库：规则中心导出、售后 SOP、事故复盘、表结构说明；分块入库；问答强制引用；变更重建索引。</p>
+    <p><b>Out of Scope：</b>整仓代码无过滤塞入；未脱敏工单原文上云。</p>
+    <p><b>主流程：</b>提问→检索 TopK→重排→生成→展示引用→无命中则拒答。</p>
+    <p><b>异常流程：</b>检索空→明确不知道；冲突条款→出示多来源请人裁；敏感问→拒答。</p>
+    <p><b>验收：</b>抽样幻觉率&lt;阈值；规则变更后 1 小时内索引更新；回答含文档版本号。</p>
+    <p><b>上线观察：</b>引用点击率、拒答率、错误建议拦截数。</p>
+  </div>
+
+
+  <h3 id="trag-chunk">分块（Chunking）怎么服务交易文档</h3>
+  <table>
+    <thead><tr><th>文档类型</th><th>分块建议</th><th>元数据必带</th></tr></thead>
+    <tbody>
+      <tr><td>优惠互斥表</td><td>按规则 ID / 互斥组切，勿把整表糊成一块</td><td>ruleId、生效版本、生效时间</td></tr>
+      <tr><td>售后 SOP</td><td>按场景步骤切（仅退款/退货/寄修）</td><td>场景、适用订单状态</td></tr>
+      <tr><td>事故复盘</td><td>按「现象/根因/动作」切</td><td>日期、服务、资损级别</td></tr>
+      <tr><td>接口契约</td><td>按 API/错误码切</td><td>服务名、版本</td></tr>
+    </tbody>
+  </table>
+  <div class="plain"><div class="label">人话版</div>人话：切太碎找不到上下文；切太整检索像大海捞针。交易规则按「一条可执行口径」切最好——跟人写制度的章节一致。</div>
+
+
+  <h3 id="trag-update">更新与发布（知识库也有发布）</h3>
+  <ul>
+    <li>规则中心变更 → 导出 webhook → 重建/增量索引</li>
+    <li>文档带 <b>effectiveFrom / deprecated</b>；过期默认不可检索</li>
+    <li>回答展示「规则版本 v2026.08.01」；与线上开关版本对齐</li>
+    <li>回滚规则 = 回滚索引别名（蓝绿索引）</li>
+  </ul>
+  <div class="callout danger"><div class="label">踩坑</div>只更新业务开关忘记重建 RAG → Agent 继续引用旧满减叠券口径，造成客服口头承诺无法兑付。</div>
+
+
+  <h3 id="trag-cite">引用与反幻觉门禁</h3>
+  <ul class="checklist">
+    <li>□ 无检索命中不得臆答资损相关问题</li>
+    <li>□ 每个关键数字/口径必须带来源片段</li>
+    <li>□ 涉金额以 MCP 工具实据为准，文档只解释规则</li>
+    <li>□ 冲突来源并列，不让模型私自裁断</li>
+    <li>□ 定期用「黄金问题集」回归（含故意过期题）</li>
+  </ul>
+  <div class="mermaid-wrap" id="diag-trag-flow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-trag-flow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Q[问题] --> R[检索 TopK]
+  R --> F{{命中且未过期?}}
+  F -->|否| Refuse[拒答/转人工]
+  F -->|是| G[生成+引用]
+  G --> Cite[展示片段与版本]
+  Cite --> Human[客服确认后答复用户]
+
+    </pre>
+  </div>
+
+
+  <h3 id="trag-prod">生产案例三则</h3>
+  <div class="case-loop">
+    <div class="cl-item"><b>客服</b>「这单用了平台券还能退多少？」→ RAG 出退券规则片段 + MCP 查分摊实据 → 话术草稿 → 坐席确认。</div>
+    <div class="cl-item"><b>售后质检</b>「外观破损是否一律驳回？」→ SOP 场景块 + 历史案例 → 质检草稿；合格仍人点。</div>
+    <div class="cl-item"><b>优惠规则</b>变更评审 → 拉互斥表版本 diff + 历史资损复盘块 → 生成漏测用例列表。</div>
+  </div>
+
+  <h3 id="trag-alts">同一需求 · 多种解法</h3>
+  <table>
+    <thead><tr><th>需求：售后口径问答</th><th>视角</th><th>优点</th><th>代价</th><th>边界</th></tr></thead>
+    <tbody>
+      <tr><td>Confluence 人工搜</td><td>成本</td><td>可控</td><td>慢、版本乱</td><td>早期</td></tr>
+      <tr><td>长上下文塞全手册</td><td>简单</td><td>实现快</td><td>贵、易淹没、难更新</td><td>手册极短</td></tr>
+      <tr><td>RAG+强制引用+版本</td><td>人效/安全</td><td>可审计可回滚</td><td>要数据管道</td><td><b>推荐</b></td></tr>
+      <tr><td>微调把规则灌进模型</td><td>—</td><td>貌似内化</td><td>改规则要重训；难追责</td><td>极稳定短规则可试点，主线慎用</td></tr>
+    </tbody>
+  </table>
+  <div class="failbox"><div class="label">故障模式 · 幻觉承诺</div>模型回答「签收后 30 天无理由」但条款已改 7 天。防线：过期文档下线+回答打版本+坐席确认。</div>
+
+
+  <div class="qa">
+    <div class="q">【本质】为什么说 RAG 消灭的是检索不确定，不是资金一致？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>RAG 保证「更可能读到正确文档」；钱是否退对仍靠分摊/幂等/对账与人工确认。</div>
+      <div class="layer"><b>② 场景</b>老板以为上了知识库就不会错退。</div>
+      <div class="layer"><b>③ 坑</b>用 RAG 替代状态机。</div>
+      <div class="layer"><b>④ 怎么落地</b>叙事分开：文档辅驾 vs 账务闭环。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「RAG 管口径，账务管分摊。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="trag-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【落地】优惠规则文档如何分块与更新？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>按 ruleId 切；变更 webhook 重建；回答带版本；与开关版本号对齐。</div>
+      <div class="layer"><b>② 场景</b>大促改叠券。</div>
+      <div class="layer"><b>③ 坑</b>整 PDF 一锅炖。</div>
+      <div class="layer"><b>④ 怎么落地</b>蓝绿索引+黄金题回归。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「规则有发布，索引也有发布。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="trag-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【幻觉】如何做反幻觉验收？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>黄金集含：过期题、冲突题、无文档题（应拒答）、金额题（必须调工具）。</div>
+      <div class="layer"><b>② 场景</b>上线门禁。</div>
+      <div class="layer"><b>③ 坑</b>只看演示喜感。</div>
+      <div class="layer"><b>④ 怎么落地</b>抽样+拦截指标进看板。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「拒答也是一种正确。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="trag-q3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【对比】客服 RAG vs 研发 Runbook RAG 能混库吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>权限与话术风险不同：分库或分索引+ACL；研发复盘可能含内部根因不宜给全员客服。</div>
+      <div class="layer"><b>② 场景</b>一个向量库省事。</div>
+      <div class="layer"><b>③ 坑</b>混权。</div>
+      <div class="layer"><b>④ 怎么落地</b>按角色检索范围。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「知识库也要多租户。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="trag-q4"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【故障】Agent 引用了正确文档但算错应退金额？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>文档解释规则，金额以 MCP 分摊/渠道为准；Skill 规定数字不得口算。</div>
+      <div class="layer"><b>② 场景</b>部分退。</div>
+      <div class="layer"><b>③ 坑</b>让模型心算。</div>
+      <div class="layer"><b>④ 怎么落地</b>工具算、文档释。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「数字走工具，句子走 RAG。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="trag-q5"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="trag-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-agents-deep" data-toc="T-Agents · 多智能体正逆向专章" data-prio="p0">
+  <h2><span class="sys-id">T-Agents</span>多智能体专章：角色分工 · 人机审批 · 禁止改账</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>编排专章：Skills/MCP/RAG 之上的多角色协作；导读见 T-AI。<br><b>服务业务闭环：</b>质检/优惠评审/复盘/用例<br><b>挂回：</b>T-RAG → 本页 → T-AS / S-Method</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">复杂售后与规则问题拆给多个专家角色，降低单模型既当法官又当出纳的风险。</p>
+      <p>怕角色越权与责任模糊；验收=最小工具集、HITL、审计可回放。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">消灭「一个万能 Bot 包打天下」的幻觉放大。</p>
+      <p>分工+工具分级+暂停恢复；与 B-R 状态机咬合，确认事件才迁态。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>没有 HITL：自动合格并退款；没有分工：复盘 Agent 乱改优惠。</p>
+  </div>
+
+  <div class="company-prd">
+    <div class="label">像在公司做需求 · 评审口吻</div>
+    <p><b>背景：</b>寄修质检积压 + 优惠规则周更 + 故障复盘材料散，要多 Agent 提效。</p>
+    <p><b>In Scope：</b>质检/规则/复盘/用例四角色；只读 MCP+RAG；输出草稿；人确认驱状态机。</p>
+    <p><b>Out of Scope：</b>Agent 直连退款与改配置。</p>
+    <p><b>主流程：</b>工单进入→编排选角色→取证→HITL→原系统执行。</p>
+    <p><b>异常流程：</b>证据不足追问；工具失败转人工；疑似资损升级值班。</p>
+    <p><b>验收：</b>零 L3 写工具调用；错判抽检；人确认才迁态。</p>
+    <p><b>上线观察：</b>HITL 等待、工具拒绝次数、采纳率。</p>
+  </div>
+
+  <table>
+    <thead><tr><th>角色</th><th>挂主线</th><th>工具</th><th>人机</th></tr></thead>
+    <tbody>
+      <tr><td>质检助手</td><td>B-R 待质检</td><td>轨迹/SN/SOP RAG</td><td>质检员确认</td></tr>
+      <tr><td>优惠规则评审</td><td>B-F 规则变更</td><td>规则仓库+资损复盘</td><td>变更评审签字</td></tr>
+      <tr><td>故障复盘</td><td>告警/发布后</td><td>日志 MCP+发布记录</td><td>值班定根因</td></tr>
+      <tr><td>用例生成</td><td>需求后</td><td>PRD+状态机文档</td><td>测试采纳</td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-agents-hitl">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-agents-hitl">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as 人
+  participant O as 编排
+  participant A as 质检Agent
+  participant H as HITL
+  participant S as 售后状态机
+  U->>O: 待质检工单
+  O->>A: 只读取证
+  A->>H: 草稿
+  H->>S: 确认事件
+  Note over S: 禁止Agent直接退款
+
+    </pre>
+  </div>
+
+  <h3>五步法跑穿寄修质检提效</h3>
+  <ol>
+    <li><b>钉</b>：证据充分才修/换/退；质检主管签字。</li>
+    <li><b>拆</b>：寄修→质检→维修/换新；异=SN 不符；逆=驳回重寄。</li>
+    <li><b>标</b>：并发确认、重复提交。</li>
+    <li><b>选</b>：多 Agent 草稿+HITL；不选自动退款。</li>
+    <li><b>验</b>：错判抽检、零 L3 调用、复盘进 RAG。</li>
+  </ol>
+  <h4>多解法</h4>
+  <table>
+    <thead><tr><th>解法</th><th>维度</th><th>边界</th></tr></thead>
+    <tbody>
+      <tr><td>加人质检</td><td>成本/可控</td><td>单量稳</td></tr>
+      <tr><td>纯规则自动审</td><td>性能</td><td>标准件</td></tr>
+      <tr><td>多 Agent+HITL</td><td>人效×风险</td><td><b>推荐</b>复杂寄修</td></tr>
+      <tr><td>单 Agent 自动关单退款</td><td>—</td><td><b>禁止</b></td></tr>
+    </tbody>
+  </table>
+  <div class="koujue"><div class="label">口诀</div>分工取证，一人签字，状态机记账，模型不碰金库。</div>
+
+  <div class="qa">
+    <div class="q">【红线】为何多 Agent 仍禁止直改账？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>角色再多也是拟稿系统；账务权威在支付/售后状态机与对账。</div>
+      <div class="layer"><b>② 场景</b>提效压力。</div>
+      <div class="layer"><b>③ 坑</b>给退款 tool「省一道」。</div>
+      <div class="layer"><b>④ 怎么落地</b>工具表物理不注册 L3。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「编排替代不了账本。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tagd-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="qa">
+    <div class="q">【并发】两人同时确认质检？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>售后单版本；确认幂等；失败重拉。</div>
+      <div class="layer"><b>② 场景</b>工单。</div>
+      <div class="layer"><b>③ 坑</b>以模型时间戳为准。</div>
+      <div class="layer"><b>④ 怎么落地</b>乐观锁。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「人确认也要幂等。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tagd-q2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="tagd-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+</section>
+
+<section class="block" id="t-as-deep" data-toc="T-AS+ · AgentScope生产嵌入" data-prio="p0">
+  <h2><span class="sys-id">T-AS+</span>AgentScope 生产嵌入（对照加深）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>框架加深；基础对照见 T-AS。<br><b>服务业务闭环：</b>Java/Python 多 Agent 运行时<br><b>挂回：</b>T-Agents → 本页 → S-Method</div>
+
+  <div class="essence">
+    <div class="essence-col">
+      <div class="label">业务本质</div>
+      <p class="one">选可审计、可 HITL、可扩展的运行时嵌进正逆向辅驾，不换账务系统。</p>
+      <p>怕工具越权与锁死；验收=能拒绝 L3、能暂停、能会话恢复。</p>
+    </div>
+    <div class="essence-col">
+      <div class="label">技术本质</div>
+      <p class="one">消灭手工作坊 Prompt 在权限/分布式上的不确定。</p>
+      <p>AgentScope 公开能力偏多 Agent/HITL/沙箱/企业部署；与 LangChain 等按栈取舍。</p>
+    </div>
+    <p><b>若没有它，业务哪一步会坏：</b>没有人机边界：框架越强，误挂退款工具后果越大。</p>
+  </div>
+
+  <ul>
+    <li>Agent 独立 Deployment（T-K8s），与订单进程隔离。</li>
+    <li>工具双闸：MCP 网关 + 框架权限中间件。</li>
+    <li>输出进 PR/工单/飞书；执行走 B-F/B-R。</li>
+    <li>Skill 教步骤，RAG 给现行文档，编排只接线。</li>
+  </ul>
+  <table>
+    <thead><tr><th>解法</th><th>视角</th><th>推荐边界</th></tr></thead>
+    <tbody>
+      <tr><td>AgentScope</td><td>企业向/HITL</td><td>Java 中台要生产运行时</td></tr>
+      <tr><td>LangChain/LangGraph 等</td><td>生态/速度</td><td>Python 试点</td></tr>
+      <tr><td>自研编排</td><td>合规最小面</td><td>工具极少</td></tr>
+      <tr><td>纯 Prompt</td><td>成本</td><td>不进售后主路径</td></tr>
+    </tbody>
+  </table>
+  <div class="callout ok"><div class="label">真实需求 / PRD 切片</div>
+    <p><b>一句话需求：</b>搭规则评审+用例生成双 Agent，服务优惠互斥变更，禁止改生产配置。</p>
+    <p><b>谁：</b>营销研发/测试　<b>要什么：</b>冲突报告与用例进 PR</p>
+    <p><b>约束：</b>无配置写权限；要审计</p>
+    <p><b>验收口径：</b>无直写；建议带来源；人合并生效</p>
+  </div>
+  <div class="case-loop">
+    <div class="cl-item"><b>1. 需求拆解</b>双 Agent；只读规则 MCP；HITL。</div>
+    <div class="cl-item"><b>2. 技术溯源（每项技术对应哪条需求）</b>编排←多角色；MCP←规则；RAG←资损史；CI←门禁。</div>
+    <div class="cl-item"><b>3. 方案（只为验收）</b>独立 Agent 服务出 PR；配置走人审。</div>
+    <div class="cl-item"><b>设计模式（为需求服务）</b>门面/HITL 暂停。</div>
+    <div class="cl-item"><b>并发考点（来自非功能/资损）</b>变更单会话隔离。</div>
+    <div class="cl-item"><b>4. 验收用例 / 对账 / 监控</b>写配置被拒；漏测人工补。</div>
+    <div class="cl-item"><b>5. 中厂裁剪</b>先单 Agent 检查清单。</div>
+  </div>
+
+  <div class="qa">
+    <div class="q">【红线】框架能挂异步退款工具吗？</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>技术能≠业务能。资金指令不进 Agent 工具表。</div>
+      <div class="layer"><b>② 场景</b>提效。</div>
+      <div class="layer"><b>③ 坑</b>先自动再说。</div>
+      <div class="layer"><b>④ 怎么落地</b>L3 禁止列表写进架构评审。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「能力≠授权。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="tasd-q1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+  <div class="reflect" data-reflect="tasd-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
 </section>
 
@@ -5050,205 +5839,316 @@ flowchart LR
 </footer>
 </article>
 
-<section class="block" id="s-method" data-toc="S-Method · 我的技术×业务方法论" data-prio="p0">
-  <h2><span class="sys-id">S-Method</span>我的技术×业务方法论（可带走的操作系统）</h2>
-  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>全书收官：把 S0–S4、B0 正逆向、T 层、S-MS、T-K8s/T-AI 收成一套可每周复用的个人 OS。<br><b>服务业务闭环：</b>换甲方仍能开工的判断框架<br><b>挂回：</b>整书脊柱 → 本页带走 → 周复盘/面试叙事</div>
+<section class="block" id="s-method" data-toc="S-Method · 钉拆标选验五步法" data-prio="p0">
+  <span id="s-five-steps"></span>
+  <h2><span class="sys-id">S-Method</span>技术×业务五步法（钉拆标选验）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>全书收官 OS：把正逆向主线、T 层、S-MS、K8s、AI 重头戏收成一套每周能用的五步。<br><b>服务业务闭环：</b>换甲方仍能开工<br><b>挂回：</b>整书 → 本页带走</div>
 
   <div class="essence">
     <div class="essence-col">
       <div class="label">业务本质</div>
-      <p class="one">先钉业务本质（交换什么、怕什么资损、谁验收），再让技术去消灭那种不确定性。</p>
-      <p>外包高级的验收不是「用过多少中间件」，而是「能否在预算内把正逆向闭环讲清、落地、救火」。</p>
+      <p class="one">先钉「怕什么资损、谁签字」，再谈中间件。</p>
+      <p>外包高级验收：能把买成/退成讲清、落地、救火，而不是背框架名。</p>
     </div>
     <div class="essence-col">
       <div class="label">技术本质</div>
-      <p class="one">技术本质=用结构换确定性：一致性、时效、并发冲突、可追溯、爆炸半径。</p>
-      <p>每上一门技术，必须能指回主线上的某一步；指不回就是拼凑。</p>
+      <p class="one">五步消灭的是「散装知识点无法变成交付」的不确定性。</p>
+      <p>每一步都有为什么、怎么做、反模式、正逆向例子——禁止为空喊方法论而方法论。</p>
     </div>
-    <p><b>若没有它，业务哪一步会坏：</b>没有这套方法：需求评审只会堆名词；故障复盘只会重启；面试只会背点。</p>
+    <p><b>若没有它，业务哪一步会坏：</b>没有五步：评审堆名词、故障只会重启、面试只会报技术栈。</p>
   </div>
 
-  <div class="plain"><div class="label">人话版</div>人话：这不是鸡汤。这是你进项目第一周就可以贴在显示器边上的检查单——下面每一节都能直接填空使用。</div>
+  <div class="plain"><div class="label">人话版</div>人话：这不是鸡汤海报。是你进组第一周贴显示器上的操作手册——下面用「下单正向（拼团+券积分）→ 未成团逆向退 → 签收后售后退货」把五步从头跑到尾。</div>
 
 
-  <h3 id="sm-one">1 · 一句话总纲</h3>
-  <div class="callout ok"><div class="label">总纲</div>
-    <p><b>业务本质优先；技术为不确定性服务；验收与对账闭环才算做完。</b></p>
-    <p>扩展：钱/货/券/积分/权益五条账对得上，才叫交易做完；发布与 AI 都不得撕破这条。</p>
+  <div class="callout ok"><div class="label">一句话总纲</div>
+    <p><b>钉拆标选验：①钉业务本质与验收 → ②拆主/异常/逆向 → ③标并发与一致性矛盾 → ④选型（每项对需求，多解法取舍）→ ⑤验收·观测·回滚·复盘。</b></p>
+    <p>钱/货/券/积分/权益对得上才叫做完；发布与 AI 都不得撕破这条。锚点：<code>#s-method</code> / <code>#s-five-steps</code>。</p>
   </div>
-  <div class="koujue"><div class="label">口诀</div>四句落地：这单生意怕什么？技术消什么不确定？没有它坏哪步？如何验收与回滚？</div>
+  <div class="koujue"><div class="label">口诀</div>五步口诀：先签字再画图；先矛盾再选型；先对账再庆祝。</div>
 
 
-  <h3 id="sm-req4">2 · 需求闭环四步（背景→本质→方案→验收）</h3>
-  <ol>
-    <li><b>背景</b>：谁在什么场景疼？流量/合规/预算？</li>
-    <li><b>本质</b>：业务本质一句话 + 技术本质一句话（用本书 essence 框）。</li>
-    <li><b>方案</b>：主流程 / 异常流程 / 状态与接口契约；技术点逐条映射需求。</li>
-    <li><b>验收</b>：功能用例 + 对账口径 + 监控 + 回滚；上线观察窗口。</li>
-  </ol>
-  <ul class="checklist">
-    <li>□ 能说出资损模式（重复/漏/多/悬空）</li>
-    <li>□ In / Out of Scope 写清</li>
-    <li>□ 每个中间件能答「没有它坏哪步」</li>
-    <li>□ 有日终或准实时对账点</li>
-    <li>□ 有回滚/开关/补偿剧本</li>
+  <div class="mermaid-wrap" id="diag-sm-os">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-sm-os">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  S1[①钉本质验收]
+  S2[②拆主/异/逆]
+  S3[③标并发一致]
+  S4[④选型对需求]
+  S5[⑤验·观·滚·复盘]
+  S1 --> S2 --> S3 --> S4 --> S5
+  S5 -.->|下周需求| S1
+
+    </pre>
+  </div>
+
+
+  <!-- ========== 五步详解 ========== -->
+  <h3 id="sm-step1">① 钉业务本质与验收</h3>
+  <p><b>为什么：</b>本质没钉死，后面所有技术都在赌。资损场景必须先点名，签字人必须明确。</p>
+  <p><b>怎么做：</b></p>
+  <ul>
+    <li>一句话业务本质：交换什么？</li>
+    <li>资损清单：重复 / 漏 / 多 / 悬空（券积分权益）</li>
+    <li>验收句：可测、可对账、可监控（不是「体验好」）</li>
+    <li>签字人：产品/财务/仓储/研发值班谁说了算</li>
   </ul>
+  <div class="callout danger"><div class="label">反模式</div>
+    <ul>
+      <li>把「上微服务/Kafka/网格」写成需求本身</li>
+      <li>验收写成「系统稳定」「体验流畅」——无法对账</li>
+      <li>资损清单空着，却先排期中间件</li>
+    </ul>
+  </div>
+  <p><b>正逆向例：</b>拼团未成团——本质是「未买成要退成」；怕重复退、积分悬挂；财务对退款成功率与券流水签字。售后退货——本质是「退对钱且货权清晰」；仓储对质检终态签字。</p>
+  <p><b>面试怎么讲：</b>「我先问怕什么资损、谁验收，再谈中间件；未成团验收是退款可对账、券悬挂为 0。」</p>
 
-  <h3 id="sm-tech5">3 · 技术选型五问</h3>
+  <h3 id="sm-step2">② 拆主流程 / 异常 / 逆向</h3>
+  <p><b>为什么：</b>Happy path 只占总故障的一小截；逆向和异常才是资损高发区。</p>
+  <p><b>怎么做：</b>画主流程 → 标每个不可逆点 → 列出异常（超时/重复/缺货/驳回）→ 列出逆向入口（仅退/退货/寄修）。写伪 PRD：In/Out、主/异常、状态流转。</p>
+  <div class="callout danger"><div class="label">反模式</div>
+    <ul>
+      <li>只画「下单→支付成功」就开工</li>
+      <li>取消与拣货并发在图上没位置</li>
+      <li>售后另起一套 CRUD，不引用正向分摊</li>
+    </ul>
+  </div>
+  <p><b>正逆向例：</b>正向：开团→支付占座→成团确认→OMS→签收；异常：超时解散、支付晚到；逆向：失败自动退、签收后退货质检→分摊回退→权益回收。</p>
+  <p><b>面试怎么讲：</b>「我按主/异/逆三张表拆，不可逆点（出库/出餐/清关）单独标。」</p>
+
+  <h3 id="sm-step3">③ 标并发与一致性矛盾</h3>
+  <p><b>为什么：</b>技术选型的燃料是矛盾，不是爱好。标不清矛盾，就会用错锁/错队列。</p>
+  <p><b>怎么做：</b>对每个热点写：谁并发？争什么资源？要的是哪种一致（强/最终）？乱序从哪来（回调/MQ/人工）？</p>
+  <div class="callout danger"><div class="label">反模式</div>
+    <ul>
+      <li>未标矛盾就上全链路分布式事务</li>
+      <li>口头「最终一致」却无对账、无补偿</li>
+      <li>用一把全局锁「解决一切并发」</li>
+    </ul>
+  </div>
+  <p><b>正逆向例：</b>成团临界抢名额（原子/版本）；支付回调至少一次（幂等）；退款重复点击（唯一进行中售后）；质检回执乱序（版本）。</p>
+  <p><b>面试怎么讲：</b>「矛盾是名额 CAS + 回调幂等 + 退款唯一键；不是先上两阶段提交。」</p>
+
+  <h3 id="sm-step4">④ 选型：每项技术对需求（多解法取舍）</h3>
+  <p><b>为什么：</b>零件必须能回答「没有它坏主线哪一步」。同一需求允许多解，用取舍表决策。</p>
+  <p><b>怎么做：</b>列技术溯源表；同一需求给 2～4 解（见下章取舍）；过选型五问；写 ADR 一页。</p>
+  <div class="callout danger"><div class="label">反模式</div>
+    <ul>
+      <li>为简历上 Kafka/Service Mesh，溯源表填不出「坏哪步」</li>
+      <li>只给一种「标准答案」，讲不清中厂裁剪</li>
+      <li>AI/Agent 选型脱离 HITL，企图直改账务</li>
+    </ul>
+  </div>
+  <p><b>正逆向例：</b>未成团退款：状态机+退款幂等必选；MQ 可用 Outbox 表轮询裁剪；规则引擎非必须。售后提效：RAG+Agent 草稿+HITL，禁止 Agent 直退。</p>
+  <p><b>面试怎么讲：</b>「我给过三种解法的成本/一致性/可运维对比，中厂选 Outbox 表+幂等表。」</p>
+
+  <h3 id="sm-step5">⑤ 验收 · 观测 · 回滚 · 复盘</h3>
+  <p><b>为什么：</b>没观测的上线叫裸奔；没回滚的发布叫赌博；没复盘的故障会再来。</p>
+  <p><b>怎么做：</b>验收用例+对账任务；核心指标（支付/退款成功率、Outbox 堆积、分摊不平衡）；开关/金丝雀/revision 回滚；复盘进 <a href="#t-rag">RAG</a>/<a href="#t-skills">Skill</a>。</p>
+  <div class="callout danger"><div class="label">反模式</div>
+    <ul>
+      <li>「看了下页面没事」当验收</li>
+      <li>资损口径变更全量发布、无金丝雀</li>
+      <li>复盘只写「已重启」，不落唯一约束/对账/Skill</li>
+    </ul>
+  </div>
+  <p><b>正逆向例：</b>日终团失败数=退款成功+挂账；金丝雀看退款成功率；故障后沉淀「逆向资损 20 分钟」Runbook/Skill。</p>
+  <p><b>面试怎么讲：</b>「上线认三针：支付成功、退款成功、Outbox；超阈回滚；复盘必落预防动作。」</p>
+
+  <!-- ========== 跑穿案例 ========== -->
+  <h3 id="sm-walkthrough">端到端跑穿：下单正向 + 未成团逆向 + 售后退货</h3>
+  <div class="company-prd">
+    <div class="label">像在公司做需求 · 评审口吻</div>
+    <p><b>背景：</b>大促拼团商品，支持平台券+积分；未成团自动退；签收后 7 天可退货退款并回收延保。</p>
+    <p><b>In Scope：</b>成团/失败、分摊落单、自动退、退货质检、分摊回退、权益回收。</p>
+    <p><b>Out of Scope：</b>推荐排序、直播间玩法。</p>
+    <p><b>主流程：</b>开团→参团支付→成团→OMS→签收；或超时失败→退款。</p>
+    <p><b>异常流程：</b>支付晚到已解散、重复退申请、质检不合格、渠道退款成功本地失败。</p>
+    <p><b>验收：</b>未成团可对账退清；退货不超额；延保无悬挂。</p>
+    <p><b>上线观察：</b>退款成功率、券悬挂、分摊不平衡、权益悬挂。</p>
+  </div>
+
+
+  <h4>①钉（本需求）</h4>
+  <p>业务本质：拼得成要履约买成；拼不成要退成；签收后退货要退对。资损：重复退、漏退、券/积分悬挂、延保悬空。验收签字：财务（退款/券流水）、仓储（质检终态）、研发（对账任务）。</p>
+  <h4>②拆（主 / 异 / 逆）</h4>
   <table>
-    <thead><tr><th>#</th><th>问</th><th>不合格信号</th></tr></thead>
+    <thead><tr><th>类型</th><th>路径</th><th>不可逆点</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>没有它，业务哪一步会坏？</td><td>答不上具体步骤</td></tr>
-      <tr><td>2</td><td>复杂度换来的是哪种确定性？</td><td>「业界都在用」</td></tr>
-      <tr><td>3</td><td>失败怎么退（补偿/回滚/人工）？</td><td>只有 happy path</td></tr>
-      <tr><td>4</td><td>怎么观测（指标/日志/trace/对账）？</td><td>上线靠感觉</td></tr>
-      <tr><td>5</td><td>中厂能否裁剪到 MVP？</td><td>必须上全家桶才肯做</td></tr>
+      <tr><td>主</td><td>开团→支付占座→成团→OMS→WMS→签收</td><td>成团确认、出库</td></tr>
+      <tr><td>异</td><td>超时解散、支付晚到、缺货、回调重复</td><td>已退款不可再占同幂等键</td></tr>
+      <tr><td>逆①</td><td>未成团自动退：钱/券/积分归位</td><td>渠道退款成功</td></tr>
+      <tr><td>逆②</td><td>签收后退货：申请→审核→寄回→质检→分摊回退→权益回收</td><td>质检合格后的退款指令</td></tr>
+    </tbody>
+  </table>
+  <h4>③标（矛盾清单）</h4>
+  <ul>
+    <li>成团名额：多人最后一名额 → CAS/版本</li>
+    <li>支付回调至少一次 → 支付幂等键</li>
+    <li>用户连点退款 → 售后单「进行中」唯一</li>
+    <li>质检回执乱序 → 状态机合法迁移+版本</li>
+    <li>部分退 vs 整单券 → 必须引用正向分摊行</li>
+  </ul>
+  <h4>④选（技术溯源 + 默认解）</h4>
+  <table>
+    <thead><tr><th>需求点</th><th>技术</th><th>没有它坏哪步</th><th>中厂默认</th></tr></thead>
+    <tbody>
+      <tr><td>成团占座</td><td>状态机+库存/名额预占</td><td>超卖/超成团</td><td>DB 条件更新或 Redis+对账</td></tr>
+      <tr><td>支付→OMS</td><td>Outbox</td><td>已支付无履约单</td><td>Outbox 表+轮询</td></tr>
+      <tr><td>未成团退</td><td>退款幂等表+扫表/延迟消息</td><td>漏退/双退</td><td>扫表 MVP</td></tr>
+      <tr><td>优惠可退</td><td>下单分摊落表</td><td>部分退算不清</td><td>allocation 行</td></tr>
+      <tr><td>质检提效</td><td>Skill+RAG+只读 MCP+HITL</td><td>积压；或幻觉错判</td><td>草稿助手，禁直退</td></tr>
+    </tbody>
+  </table>
+  <h4>⑤验（对账 / 观测 / 回滚 / 复盘）</h4>
+  <ul>
+    <li><b>验收用例：</b>未成团退清；重复回调不双入账；部分退不超额；延保回收；Agent 调退款被拒</li>
+    <li><b>对账：</b>日终 团失败≈退款成功+挂账；支付↔订单↔券；售后↔渠道</li>
+    <li><b>观测：</b>支付/退款成功率、Outbox 堆积、分摊不平衡、权益悬挂</li>
+    <li><b>回滚：</b>退款口径变更金丝雀；超阈 revision；特征开关关新逻辑</li>
+    <li><b>复盘：</b>动作进 <a href="#t-skills">T-Skills</a> + 口径进 <a href="#t-rag">T-RAG</a></li>
+  </ul>
+  <table>
+    <thead><tr><th>五步</th><th>一句话收口</th></tr></thead>
+    <tbody>
+      <tr><td>①钉</td><td>买不成退成、退货退对；财务+仓储签字</td></tr>
+      <tr><td>②拆</td><td>主成团履约；异超时晚到；逆自动退+退货质检</td></tr>
+      <tr><td>③标</td><td>名额、回调、退款双点、回执乱序、分摊引用</td></tr>
+      <tr><td>④选</td><td>状态机+预占+幂等+分摊+Outbox；AI 只草稿</td></tr>
+      <tr><td>⑤验</td><td>三联对账+三针+金丝雀；复盘进 Skill/RAG</td></tr>
+    </tbody>
+  </table>
+  <div class="qa">
+    <div class="q">【口述】90 秒用钉拆标选验讲上述「正向+售后」需求。</div>
+    <div class="a answer-detail">
+      <div class="layer"><b>① 原理</b>按五步各两句：本质验收→主异逆→矛盾→选型溯源→三针与回滚。</div>
+      <div class="layer"><b>② 场景</b>面试。</div>
+      <div class="layer"><b>③ 坑</b>只报 Redis/Kafka。</div>
+      <div class="layer"><b>④ 怎么落地</b>结尾补中厂裁剪：Outbox 表轮询可替事务消息；AI 禁直退。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「五步叙事，不报菜单。」</div>
+    </div>
+  </div>
+  <div class="reflect" data-reflect="sm-walk-1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
+
+
+  <!-- ========== 多解法 ========== -->
+  <h3 id="sm-alts">同一需求 · 多种解法（取舍表）</h3>
+  <div class="plain"><div class="label">人话版</div>人话：资深不是只会一种标准答案，而是能按性能/成本/一致性/可运维/中厂裁剪把边界讲清，并推荐默认项。</div>
+
+
+  <h4>需求 A：支付成功必须进入 OMS</h4>
+  <table>
+    <thead><tr><th>解法</th><th>视角</th><th>优点</th><th>代价</th><th>推荐边界</th></tr></thead>
+    <tbody>
+      <tr><td>本地事务 + 同步调 OMS</td><td>简单/延迟低</td><td>实现快</td><td>OMS 抖则支付事务长；难扩</td><td>QPS 低、同进程模块化</td></tr>
+      <tr><td>Outbox 表 + 轮询/投递</td><td>一致性/中厂</td><td>可靠、可审计</td><td>秒级延迟</td><td><b>默认推荐</b>中厂主线</td></tr>
+      <tr><td>事务消息（RocketMQ 等）</td><td>性能/解耦</td><td>吞吐好</td><td>平台依赖与运维</td><td>已有成熟 MQ 平台</td></tr>
+      <tr><td>TCC 跨服务</td><td>强一致外观</td><td>交互清晰</td><td>编码与空回复杂</td><td>资金类强约束，慎用于 OMS 通知</td></tr>
     </tbody>
   </table>
 
-  <h3 id="sm-trade">4 · 正逆向交易方法论（通用分析模板）</h3>
-  <p><b>正向（B-F）填空：</b>优惠（互斥/最优/分摊）→ 风控预算 → 支付幂等 → OMS 状态 → WMS 回执 → 物流签收。每段写：权威数据在哪、事件是什么、超时怎么办。</p>
-  <p><b>逆向（B-R）填空：</b>类型策略 → 审核/寄回/质检 → 钱券积分权益回退 → 回库/维修/换新/翻新。每段写：是否引用正向分摊、幂等键、不可逆点（出餐/出库/清关）。</p>
-  <ul class="checklist">
-    <li>□ 分摊表是否落单（退款才能跟行走）</li>
-    <li>□ 退款双幂等（申请号+渠道号）</li>
-    <li>□ 权益终态是否与主品售后联动</li>
-    <li>□ 行业不可逆点是否配置化（餐饮/跨境）</li>
-  </ul>
-
-  <h3 id="sm-risk">5 · 并发与资损方法论</h3>
+  <h4>需求 B：未成团自动退款</h4>
   <table>
-    <thead><tr><th>主题</th><th>做法</th><th>挂回</th></tr></thead>
+    <thead><tr><th>解法</th><th>视角</th><th>优点</th><th>代价</th><th>推荐边界</th></tr></thead>
     <tbody>
-      <tr><td>热点</td><td>原子预占/分段/队列化；保护核心下单</td><td>T-Redis / B-F</td></tr>
-      <tr><td>幂等</td><td>业务唯一键 + 状态机合法迁移</td><td>支付/退款/Outbox</td></tr>
-      <tr><td>分摊回退</td><td>退款引用 allocation；尾差规则闭合</td><td>B-F F2 / B-R</td></tr>
-      <tr><td>对账</td><td>日终三联（支付↔订单↔券/售后）；差异工单</td><td>T-一致性 / B-L</td></tr>
+      <tr><td>定时扫到期团 + 退款幂等表</td><td>成本/中厂</td><td>够用</td><td>分钟级延迟</td><td><b>MVP 默认</b></td></tr>
+      <tr><td>延迟消息到点解散</td><td>时效</td><td>更准时</td><td>依赖 MQ 延迟能力</td><td>大促时效要求高</td></tr>
+      <tr><td>工作流引擎编排</td><td>可运维/可视</td><td>运营可读</td><td>过重、难测</td><td>多级人工审批并行时</td></tr>
     </tbody>
   </table>
-  <div class="koujue"><div class="label">口诀</div>资损三板斧：唯一约束、状态机、对账；缺一就靠人肉运气。</div>
 
+  <h4>需求 C：部分退货时优惠如何退</h4>
+  <table>
+    <thead><tr><th>解法</th><th>视角</th><th>优点</th><th>代价</th><th>推荐边界</th></tr></thead>
+    <tbody>
+      <tr><td>按下单分摊行回退</td><td>一致性/财务</td><td>可对账</td><td>依赖正向分摊质量</td><td><b>主线默认</b></td></tr>
+      <tr><td>整单比例估算</td><td>成本</td><td>实现简单</td><td>财务常争议</td><td>仅演示/非财务验收</td></tr>
+      <tr><td>人工算差额工单</td><td>可运维兜底</td><td>灵活</td><td>人效差</td><td>长尾边缘单</td></tr>
+    </tbody>
+  </table>
 
-  <h3 id="sm-ms">6 · 架构与微服务方法论（决策树）</h3>
+  <h4>需求 D：售后质检提效（含 AI）</h4>
+  <table>
+    <thead><tr><th>解法</th><th>视角</th><th>优点</th><th>代价</th><th>推荐边界</th></tr></thead>
+    <tbody>
+      <tr><td>纯人工质检清单</td><td>成本/可控</td><td>无幻觉</td><td>慢</td><td>单量小</td></tr>
+      <tr><td>规则引擎自动合格/驳回</td><td>性能</td><td>快</td><td>规则僵硬</td><td>标准件外观类</td></tr>
+      <tr><td>RAG+Agent 草稿 + HITL</td><td>人效/安全</td><td>快且可审</td><td>要工具边界</td><td><b>推荐</b>见 AI 重头戏</td></tr>
+      <tr><td>Agent 直写合格并退款</td><td>—</td><td>看似快</td><td>资损不可控</td><td><b>禁止</b></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ========== 附：决策树与复盘 ========== -->
+  <h3 id="sm-ms">微服务何时拆（决策树，挂五步③④）</h3>
   <div class="mermaid-wrap" id="diag-sm-ms-tree">
     <div class="diag-actions"><button class="btn" type="button" data-png="diag-sm-ms-tree">导出 PNG</button></div>
     <pre class="mermaid">
 flowchart TD
-  Start[要不要拆?] --> Q1{资损边界是否清晰?}
-  Q1 -->|否| Mod[先模块化单体/模块<br/>跑通正逆向]
-  Q1 -->|是| Q2{是否独立扩展/发布?}
+  Start[要不要拆?] --> Q1{资损边界清晰?}
+  Q1 -->|否| Mod[模块化跑通正逆向]
+  Q1 -->|是| Q2{要独立扩/发?}
   Q2 -->|否| Mod
-  Q2 -->|是| Q3{团队能否扛分布式?}
+  Q2 -->|是| Q3{团队能扛分布式?}
   Q3 -->|否| Mod
-  Q3 -->|是| Split[拆服务]
-  Split --> Gate[卡点清单:<br/>幂等/事务/观测/发布]
-  Gate --> Hard[难点: 失败传播/热点]
-  Hard --> Light[亮点叙事: 边界+裁剪]
+  Q3 -->|是| Split[拆] --> Gate[幂等/观测/发布卡点]
 
     </pre>
   </div>
 
-  <p>详解挂 <a href="#s-ms">S-MS</a>：卡点未解先别深潜；亮点是「何时不该拆」也能讲清楚。</p>
 
-  <h3 id="sm-eng-ai">7 · 工程与 AI 方法论</h3>
-  <ul>
-    <li><b>Docker/K8s</b>：服务「发布回滚与弹性」——金丝雀看支付/退款针；探针分活着/接客；Secret 不进镜像。见 <a href="#t-docker-k8s">T-K8s</a>。</li>
-    <li><b>多 Agent / AgentScope</b>：服务「检索与草稿」——质检/规则/复盘；工具白名单；HITL；<b>AI 不直接改生产账务</b>。见 <a href="#t-ai-agents">T-AI</a> / <a href="#t-agentscope">T-AS</a>。</li>
-  </ul>
-
-  <h3 id="sm-week">8 · 周复盘模板 + 面试叙事模板</h3>
+  <h3 id="sm-week">周复盘 + 面试叙事（套五步）</h3>
   <div class="company-prd">
     <div class="label">周复盘（30 分钟）</div>
-    <p><b>本周闭环：</b>推进了正向/逆向哪一段？</p>
-    <p><b>本质：</b>业务本质 / 技术本质各一句。</p>
-    <p><b>五问：</b>新引入的技术过选型五问了吗？</p>
-    <p><b>资损：</b>新增了哪些唯一约束/对账/开关？</p>
-    <p><b>故障：</b>一次时间线 + 一个预防动作。</p>
-    <p><b>裁剪：</b>若预算砍半，保留什么？</p>
+    <p>①本周钉清了哪个本质/验收？②拆清了哪条异/逆？③新标了哪个矛盾？④选型过五问了吗？⑤观测/回滚/复盘落了哪条？</p>
   </div>
   <div class="company-prd">
-    <div class="label">面试叙事（90 秒）</div>
-    <p><b>背景</b>→<b>资损/约束</b>→<b>本质</b>→<b>方案（模式+架构+并发）</b>→<b>验收/对账</b>→<b>故障与回滚</b>→<b>中厂裁剪</b>。</p>
-    <p>禁止：只报技术栈列表。必须出现「没有 X 会坏哪一步」。</p>
+    <div class="label">面试 90 秒</div>
+    <p>按钉→拆→标→选→验讲一个正逆向案例；中间插一句多解法取舍；结尾中厂裁剪。</p>
   </div>
-
-  <h3 id="sm-map">9 · 方法论总图</h3>
-  <div class="mermaid-wrap" id="diag-sm-os">
-    <div class="diag-actions"><button class="btn" type="button" data-png="diag-sm-os">导出 PNG</button></div>
-    <pre class="mermaid">
-flowchart TB
-  O[一句话总纲<br/>业务本质优先]
-  R[需求四步<br/>背景→本质→方案→验收]
-  T5[技术选型五问]
-  BF[正向模板 B-F]
-  BR[逆向模板 B-R]
-  Risk[并发与资损<br/>幂等/分摊/对账]
-  MS[微服务决策树 S-MS]
-  Eng[K8s 发布弹性]
-  AI[Agent 人机边界]
-  Week[周复盘]
-  IV[面试叙事]
-  O --> R --> T5
-  T5 --> BF --> BR
-  BR --> Risk
-  Risk --> MS
-  MS --> Eng
-  Eng --> AI
-  AI --> Week --> IV
-  IV -.->|回炉| O
-
-    </pre>
-  </div>
-
-
-  <h3 id="sm-drill">10 · 练手：用方法论拆解综合需求</h3>
 
   <div class="qa">
-    <div class="q">【综合需求 A】大促拼团 + 平台券：未成团自动退，且部分用户已用积分；请用方法论四步+五问拆解。</div>
+    <div class="q">【综合】大促拼团+平台券+积分：用五步拆解并给「自动退」两种以上解法。</div>
     <div class="a answer-detail">
-      <div class="layer"><b>① 原理</b>业务本质：未成团要退成（钱/券/积分归位），怕重复退与悬挂积分。技术本质：消灭成团临界并发与回调乱序下的一致性不确定。</div>
-      <div class="layer"><b>② 场景</b>背景=大促拼团；In=成团状态机+退款+积分三态；Out=推荐算法。方案=占座/确认/失败退款命令+分摊引用。</div>
-      <div class="layer"><b>③ 坑</b>只上 Kafka 不写幂等；无对账。</div>
-      <div class="layer"><b>④ 怎么落地</b>验收：未成团退款成功率、券悬挂=0、积分超时扫回；五问逐条过 Outbox/幂等/限流。</div>
-      <div class="layer"><b>⑤ 30秒亮点口述</b>「四步钉闭环，五问钉零件；拼团是状态机不是消息Demo。」</div>
+      <div class="layer"><b>① 原理</b>①退成与悬挂；②主成团/异超时/逆自动退；③名额与回调；④状态机+幂等+（扫表|延迟消息）；⑤对账三针。</div>
+      <div class="layer"><b>② 场景</b>方案评审。</div>
+      <div class="layer"><b>③ 坑</b>只选一种却说不出边界。</div>
+      <div class="layer"><b>④ 怎么落地</b>表述清 MVP=扫表，高时效=延迟消息。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「五步+多解法边界。」</div>
     </div>
   </div>
   <div class="reflect" data-reflect="sm-d1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
-
   <div class="qa">
-    <div class="q">【综合需求 B】已发货退货退款 + 延保权益：质检不合格与换新分支，要求 AI 质检助手提效。</div>
+    <div class="q">【综合】已发货退货+延保：五步 + 为什么禁止 Agent 直退。</div>
     <div class="a answer-detail">
-      <div class="layer"><b>① 原理</b>业务本质：货不合格时钱与权益不能乱；换新是两段库存。技术本质：状态机合法迁移+权益终态；AI 只消「取证慢」。</div>
-      <div class="layer"><b>② 场景</b>In=售后状态机+分摊回退+权益回收+质检 HITL；Out=Agent 自动退款。</div>
-      <div class="layer"><b>③ 坑</b>Agent 直改合格并打款。</div>
-      <div class="layer"><b>④ 怎么落地</b>验收：重复申请不双退；质检结论须人确认；权益无悬挂；Agent 工具白名单审计。</div>
-      <div class="layer"><b>⑤ 30秒亮点口述</b>「维修换新跟 SN/库存，AI 跟草稿。」</div>
+      <div class="layer"><b>① 原理</b>①钱货权益终态；②质检分支；③重复申请；④分摊回退+HITL Agent；⑤权益悬挂监控。</div>
+      <div class="layer"><b>② 场景</b>AI 提效压力。</div>
+      <div class="layer"><b>③ 坑</b>给生产退款工具。</div>
+      <div class="layer"><b>④ 怎么落地</b>工具白名单+人确认才驱状态机。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「AI 草稿，状态机记账。」</div>
     </div>
   </div>
   <div class="reflect" data-reflect="sm-d2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
-
   <div class="qa">
-    <div class="q">【综合需求 C】OMS 热修要上 K8s 金丝雀：同时修「取消 vs 拣货」竞态。</div>
+    <div class="q">【综合】OMS 取消 vs 拣货竞态：五步 + 发布金丝雀怎么挂⑤。</div>
     <div class="a answer-detail">
-      <div class="layer"><b>① 原理</b>业务本质：取消能否秒退取决于仓内状态。技术本质：版本/令牌消灭双写不确定；金丝雀消灭发布爆炸半径不确定。</div>
-      <div class="layer"><b>② 场景</b>方案=OMS 版本+WMS 取消令牌+已下架转逆向；发布=5% 看取消成功率与缺货补偿。</div>
-      <div class="layer"><b>③ 坑</b>全量发+无回滚演练。</div>
-      <div class="layer"><b>④ 怎么落地</b>验收：竞态用例、发布窗口核心指标、revision 回滚演练记录。</div>
-      <div class="layer"><b>⑤ 30秒亮点口述</b>「竞态用状态机，发布用金丝雀；两套不确定性分开治。」</div>
+      <div class="layer"><b>① 原理</b>①能否秒退取决于仓态；②取消令牌；③版本并发；④OMS/WMS 协议；⑤金丝雀看取消成功率，超阈回滚。</div>
+      <div class="layer"><b>② 场景</b>热修。</div>
+      <div class="layer"><b>③ 坑</b>全量赌。</div>
+      <div class="layer"><b>④ 怎么落地</b>见 T-K8s。</div>
+      <div class="layer"><b>⑤ 30秒亮点口述</b>「矛盾用版本，发布用金丝雀。」</div>
     </div>
   </div>
   <div class="reflect" data-reflect="sm-d3"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
-
 
   <div class="reflect" data-reflect="sm-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
   <div class="reflect" data-reflect="sm-r2"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
-
-  <div class="callout"><div class="label">带走方式</div>
-    <p>把本节清单复制到你的笔记：每个新需求先填 essence 框与四步，再动代码。薄的项目用裁剪列，厚的项目用 S-MS/T 层零件——<b>同一操作系统，不同配置</b>。</p>
+  <div class="callout"><div class="label">带走</div>
+    <p>新需求先填五步再动代码。AI/Skills/MCP/RAG 重头戏见 <a href="#t-ai-stack">T-AI-Stack</a>——全部用五步④⑤约束：对上需求、禁止直改账务。</p>
   </div>
 </section>
 
