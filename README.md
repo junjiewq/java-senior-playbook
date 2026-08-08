@@ -5,7 +5,9 @@
 **认知闭环四段**：业务本质 → 技术实现 → 技术原理 → 业务实质（高并发贯穿：峰/热/削/降）。  
 **一年坚持**：S-Year · 12 月主题 × 52 周仪式 × 季度 OKR。  
 **收官五步法**：**钉拆标选验** — 钉本质验收 → 拆主/异/逆 → 标并发一致 → 选技对需求 → 验·观·滚·复盘。  
-**AI 重头戏**：Skills · MCP · RAG · 多智能体 · AgentScope（挂订单域，禁止直改账务）。
+**AI 重头戏**：Skills · MCP · RAG · 多智能体 · AgentScope（挂订单域，禁止直改账务）。  
+**极致加厚写法**：人话 → **掀底板**（源码/数据结构路径）→ 今天落地清单 → 回扣买成/退成。  
+**本地双文件**：`index.html` 与 `../高级Java外包-系统学习技术白皮书.html` **必须字节一致**（inject 后 `cp` + md5 校验）。
 
 ## 体系导航
 
@@ -16,6 +18,9 @@
 | **S-Year** | **一年坚持路线（52 周）** |
 | B0 / B-F / B-R / B-Ind | **业务主线** |
 | **B-X** | **生产级复杂场景 ×5** |
+| **S-MS-X / T-K8s-X / T-AI-X** | **微服务·云原生·AI 极致落地** |
+| **S-DDD-X / S-Mgmt-X / T-Found-X** | **DDD模式·管理排期·基础件掀底板** |
+| **X-大促** | **微服务×K8s×AI 演练剧本** |
 | T-K8s | 发布弹性（金丝雀/回滚） |
 | **T-AI-Stack** / Skills / MCP / RAG / Agents | **AI 重头戏** |
 | S-MS | 微服务卡点·难点·亮点 |
@@ -39,11 +44,23 @@
 | MCP | `#t-mcp` | https://junjiewq.github.io/java-senior-playbook/#t-mcp |
 | RAG | `#t-rag` | https://junjiewq.github.io/java-senior-playbook/#t-rag |
 | 多智能体专章 | `#t-agents-deep` | https://junjiewq.github.io/java-senior-playbook/#t-agents-deep |
+| **写法约束** | `#s-tone-x` | https://junjiewq.github.io/java-senior-playbook/#s-tone-x |
+| **微服务极致** | `#s-ms-x` | https://junjiewq.github.io/java-senior-playbook/#s-ms-x |
+| **云原生极致** | `#t-k8s-x` | https://junjiewq.github.io/java-senior-playbook/#t-k8s-x |
+| **AI 极致** | `#t-ai-x` | https://junjiewq.github.io/java-senior-playbook/#t-ai-x |
+| **DDD·模式** | `#s-ddd-x` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-x |
+| **管理排期** | `#s-mgmt-x` | https://junjiewq.github.io/java-senior-playbook/#s-mgmt-x |
+| **基础件掀底板** | `#t-found-x` | https://junjiewq.github.io/java-senior-playbook/#t-found-x |
+| MQ 选型矩阵 | `#found-mq-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-mq-matrix |
+| 锁/一致性矩阵 | `#found-lock-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-lock-matrix |
+| **大促三联** | `#x-promo-trinity` | https://junjiewq.github.io/java-senior-playbook/#x-promo-trinity |
 
 ## 本地打开
 
-[`index.html`](./index.html)（需联网 CDN）。导出 MD/PDF/Word 与反思框 UI 保留。  
-副本：`../高级Java外包-系统学习技术白皮书.html`（与 index 同步构建）
+1. [`index.html`](./index.html)（需联网 CDN）  
+2. **同内容副本**（必须 md5 一致）：`/Users/Zhuanz/Downloads/test2/高级Java外包-系统学习技术白皮书.html`  
+
+构建：`python3 _inject_pillars_extreme.py`（写 index + 强制 `cp` 中文名文件并校验 md5）。
 
 ## GitHub Pages
 
