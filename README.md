@@ -2,6 +2,8 @@
 
 **主线**：买成 → 履约 → 退成/修好（优惠分摊 / 支付 / OMS-WMS / 售后寄修换新）。  
 **写法**：业务本质 × 技术本质 × 像在公司做需求。  
+**认知闭环四段**：业务本质 → 技术实现 → 技术原理 → 业务实质（高并发贯穿：峰/热/削/降）。  
+**一年坚持**：S-Year · 12 月主题 × 52 周仪式 × 季度 OKR。  
 **收官五步法**：**钉拆标选验** — 钉本质验收 → 拆主/异/逆 → 标并发一致 → 选技对需求 → 验·观·滚·复盘。  
 **AI 重头戏**：Skills · MCP · RAG · 多智能体 · AgentScope（挂订单域，禁止直改账务）。
 
@@ -10,7 +12,10 @@
 | ID | 含义 |
 |----|------|
 | S0–S4 | 目标 → 问题域 → 方法 → 路考 → 复习 |
+| **S-C4** | **认知闭环四段** |
+| **S-Year** | **一年坚持路线（52 周）** |
 | B0 / B-F / B-R / B-Ind | **业务主线** |
+| **B-X** | **生产级复杂场景 ×5** |
 | T-K8s | 发布弹性（金丝雀/回滚） |
 | **T-AI-Stack** / Skills / MCP / RAG / Agents | **AI 重头戏** |
 | S-MS | 微服务卡点·难点·亮点 |
@@ -20,15 +25,20 @@
 
 | 章节 | 锚点 | URL |
 |------|------|-----|
+| **一年路线** | `#s-year` | https://junjiewq.github.io/java-senior-playbook/#s-year |
+| **认知四段** | `#s-c4` | https://junjiewq.github.io/java-senior-playbook/#s-c4 |
+| **B-X 总览** | `#bx-prod` | https://junjiewq.github.io/java-senior-playbook/#bx-prod |
+| 拼团+券分摊退 | `#bx-group-coupon` | https://junjiewq.github.io/java-senior-playbook/#bx-group-coupon |
+| 支付→WMS 缺货 | `#bx-pay-wms-short` | https://junjiewq.github.io/java-senior-playbook/#bx-pay-wms-short |
+| 寄修∥换新 | `#bx-repair-exchange` | https://junjiewq.github.io/java-senior-playbook/#bx-repair-exchange |
+| 餐饮餐损 | `#bx-food-peak` | https://junjiewq.github.io/java-senior-playbook/#bx-food-peak |
+| 跨境清关失败 | `#bx-cross-border` | https://junjiewq.github.io/java-senior-playbook/#bx-cross-border |
 | 五步法 | `#s-method` / `#s-five-steps` | https://junjiewq.github.io/java-senior-playbook/#s-method |
 | AI 总图 | `#t-ai-stack` | https://junjiewq.github.io/java-senior-playbook/#t-ai-stack |
 | Skills | `#t-skills` | https://junjiewq.github.io/java-senior-playbook/#t-skills |
 | MCP | `#t-mcp` | https://junjiewq.github.io/java-senior-playbook/#t-mcp |
 | RAG | `#t-rag` | https://junjiewq.github.io/java-senior-playbook/#t-rag |
 | 多智能体专章 | `#t-agents-deep` | https://junjiewq.github.io/java-senior-playbook/#t-agents-deep |
-| AgentScope 加深 | `#t-as-deep` | https://junjiewq.github.io/java-senior-playbook/#t-as-deep |
-| 多智能体导读 | `#t-ai-agents` | https://junjiewq.github.io/java-senior-playbook/#t-ai-agents |
-| AgentScope 对照 | `#t-agentscope` | https://junjiewq.github.io/java-senior-playbook/#t-agentscope |
 
 ## 本地打开
 
