@@ -48,7 +48,9 @@
 | **微服务极致** | `#s-ms-x` | https://junjiewq.github.io/java-senior-playbook/#s-ms-x |
 | **云原生极致** | `#t-k8s-x` | https://junjiewq.github.io/java-senior-playbook/#t-k8s-x |
 | **AI 极致** | `#t-ai-x` | https://junjiewq.github.io/java-senior-playbook/#t-ai-x |
+| **DDD·模式** | `#s-ddd-x` |
 | **DDD·模式** | `#s-ddd-x` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-x |
+| **聚合根唯一性/加载** | `#s-ddd-agg` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-agg |
 | **管理排期** | `#s-mgmt-x` | https://junjiewq.github.io/java-senior-playbook/#s-mgmt-x |
 | **基础件掀底板** | `#t-found-x` | https://junjiewq.github.io/java-senior-playbook/#t-found-x |
 | MQ 选型矩阵 | `#found-mq-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-mq-matrix |

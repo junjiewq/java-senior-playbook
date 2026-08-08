@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Rebuild pillars + encyclopedia, deepen P0 diag, inject doc-audit, sync mirror."""
+"""Full-book anti-water: rebuild pillars + encyclopedia + batch deepen + doc-audit + mirror sync."""
 from __future__ import annotations
 
 import hashlib
@@ -15,14 +15,14 @@ MIRROR = ROOT.parent / "高级Java外包-系统学习技术白皮书.html"
 PARTS = ROOT / "_pillar_parts"
 sys.path.insert(0, str(PARTS))
 
-from anti_water_boost import DOC_AUDIT, boost_p0_diag  # noqa: E402
+from batch_deepen_all import BOOSTS, DOC_AUDIT_V2, expand_ency_cases_html  # noqa: E402
+from anti_water_boost import boost_p0_diag  # noqa: E402
 
 
 def replace_section_inner(html: str, sid: str, insert_after_h2: str) -> str:
-    """Insert boost HTML after the section's h2 (keep rest). Idempotent via marker."""
+    """Insert boost HTML after the section's h2. Idempotent via marker."""
     mark = f"<!-- ANTI-WATER:{sid} -->"
     if mark in html:
-        # remove previous boost block until next marker end
         html = re.sub(
             rf"{re.escape(mark)}.*?<!-- /ANTI-WATER:{sid} -->\n?",
             "",
@@ -47,24 +47,23 @@ def inject_doc_audit(html: str) -> str:
         count=1,
         flags=re.S,
     )
-    # place before encyclopedia or at content end
+    body = DOC_AUDIT_V2
     if "<!-- ENCYCLOPEDIA-START -->" in html:
         html = html.replace(
             "<!-- ENCYCLOPEDIA-START -->",
-            f"{mark_s}\n{DOC_AUDIT}\n{mark_e}\n<!-- ENCYCLOPEDIA-START -->",
+            f"{mark_s}\n{body}\n{mark_e}\n<!-- ENCYCLOPEDIA-START -->",
             1,
         )
     else:
         html = html.replace(
             "  </div><!-- .content -->",
-            f"{mark_s}\n{DOC_AUDIT}\n{mark_e}\n  </div><!-- .content -->",
+            f"{mark_s}\n{body}\n{mark_e}\n  </div><!-- .content -->",
             1,
         )
     return html
 
 
 def deepen_bx_cases(html: str) -> str:
-    """Add dual mermaid to each BX case if missing."""
     boosts = {
         "bx-group-coupon": """
   <div class="mermaid-wrap" id="diag-bx1-flow">
@@ -190,6 +189,14 @@ flowchart LR
     for sid, frag in boosts.items():
         mark = f"<!-- BX-MMD:{sid} -->"
         if mark in html:
+            # refresh
+            html = re.sub(
+                rf"{re.escape(mark)}.*?(?=<section|<!-- BX-MMD:|<!-- ANTI-WATER:)",
+                f"{mark}\n{frag}\n",
+                html,
+                count=1,
+                flags=re.S,
+            )
             continue
         m = re.search(rf'(<section[^>]*id="{sid}"[^>]*>.*?</h2>)', html, re.S)
         if not m:
@@ -200,40 +207,72 @@ flowchart LR
     return html
 
 
+def apply_batch_boosts(html: str) -> tuple[str, int]:
+    n = 0
+    for sid, fn in BOOSTS.items():
+        try:
+            body = fn() if callable(fn) else fn
+        except Exception as e:
+            print(f"ERR boost {sid}: {e}")
+            continue
+        before = html
+        html = replace_section_inner(html, sid, body)
+        if html != before:
+            n += 1
+            print("boost+", sid)
+    return html, n
+
+
+def patch_readme_anchor() -> None:
+    readme = ROOT / "README.md"
+    if not readme.exists():
+        return
+    text = readme.read_text(encoding="utf-8")
+    needle = "| **DDD·模式** | `#s-ddd-x` |"
+    add = "| **聚合根唯一性/加载** | `#s-ddd-agg` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-agg |\n"
+    if "#s-ddd-agg" not in text and needle in text:
+        text = text.replace(
+            needle,
+            needle + "\n" + add.rstrip("\n").split("|")[0] + "| **DDD·模式** | `#s-ddd-x` |",
+            1,
+        )
+        # simpler insert after DDD line
+    if "#s-ddd-agg" not in text:
+        text = text.replace(
+            "| **DDD·模式** | `#s-ddd-x` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-x |\n",
+            "| **DDD·模式** | `#s-ddd-x` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-x |\n"
+            "| **聚合根唯一性/加载** | `#s-ddd-agg` | https://junjiewq.github.io/java-senior-playbook/#s-ddd-agg |\n",
+            1,
+        )
+        readme.write_text(text, encoding="utf-8")
+        print("README + #s-ddd-agg")
+
+
 def main() -> None:
     before = INDEX.stat().st_size if INDEX.exists() else 0
     print("BEFORE", before)
 
-    # 1) pillars extreme
     import _inject_pillars_extreme as pe
-
-    pe.main()
-
-    # 2) year depth refresh for BX hub (re-strip and re-add is complex; patch HTML directly)
-    html = INDEX.read_text(encoding="utf-8")
-
-    # deepen p0-diag
-    html = replace_section_inner(html, "p0-diag-playbook", boost_p0_diag())
-
-    # BX case mermaids
-    html = deepen_bx_cases(html)
-
-    # bx-prod hub boost if thin
-    if "diag-bx-hub-a" not in html and 'id="bx-prod"' in html:
-        html = replace_section_inner(html, "bx-prod", _boost_from_module())
-
-    INDEX.write_text(html, encoding="utf-8")
-
-    # 3) encyclopedia (includes PolarDB CN/DN/GMS)
     import _inject_ency as ie
 
+    pe.main()
     ie.main()
 
     html = INDEX.read_text(encoding="utf-8")
+    # legacy p0 (BOOSTS also covers); BX mermaids; book-wide deepen
+    html = replace_section_inner(html, "p0-diag-playbook", boost_p0_diag())
+    html = deepen_bx_cases(html)
+    html, n_boost = apply_batch_boosts(html)
+    html = expand_ency_cases_html(html)
     html = inject_doc_audit(html)
-    # re-apply p0/bx marks if ency strip somehow... ency shouldn't touch them
+
+    # ensure agg present (from pillars)
+    if 'id="s-ddd-agg"' not in html:
+        raise SystemExit("FAIL: #s-ddd-agg missing after pillar inject")
+
     INDEX.write_text(html, encoding="utf-8")
     shutil.copyfile(INDEX, MIRROR)
+    patch_readme_anchor()
 
     after = INDEX.stat().st_size
     h1 = hashlib.md5(INDEX.read_bytes()).hexdigest()
@@ -242,26 +281,24 @@ def main() -> None:
 
     html2 = INDEX.read_text(encoding="utf-8")
     checks = {
+        "s-ddd-agg": 'id="s-ddd-agg"' in html2,
+        "s-ddd-agg-uniq": 'id="s-ddd-agg-uniq"' in html2,
+        "s-ddd-agg-load": 'id="s-ddd-agg-load"' in html2,
+        "diag-ddd-agg-uniq-fail": "diag-ddd-agg-uniq-fail" in html2,
+        "diag-ddd-agg-load-goodbad": "diag-ddd-agg-load-goodbad" in html2,
         "ency-fm-polardb-cn": 'id="ency-fm-polardb-cn"' in html2,
         "ency-fm-polardb-dn": 'id="ency-fm-polardb-dn"' in html2,
-        "ency-fm-polardb-gms": 'id="ency-fm-polardb-gms"' in html2,
-        "ency-fm-polardb-cdc": 'id="ency-fm-polardb-cdc"' in html2,
         "doc-audit": 'id="doc-audit"' in html2,
-        "diag-aix-rag": "diag-aix-rag" in html2,
-        "diag-bx-hub": "diag-bx-hub" in html2 or "diag-bx1-flow" in html2,
-        "CN count in polar": html2[html2.find('id="ency-fm-polardb"'):html2.find('id="ency-fm-polardb"')+50000].count("CN") if 'id="ency-fm-polardb"' in html2 else 0,
+        "整书批处理": "整书批处理" in html2 or "本轮整书批处理" in html2,
     }
     print("AFTER", after, "DELTA", after - before)
     print("MD5", h1)
+    print("batch_boosts", n_boost)
+    print("mermaid total", html2.count('class="mermaid"'))
     for k, v in checks.items():
         print(f"  {k}: {v}")
-    print("mermaid total", html2.count('class="mermaid"'))
-
-
-def _boost_from_module() -> str:
-    from anti_water_boost import boost_bx_hub
-
-    return boost_bx_hub()
+        if v is False:
+            raise SystemExit(f"check failed: {k}")
 
 
 if __name__ == "__main__":
