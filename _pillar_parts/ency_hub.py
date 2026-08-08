@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""附录·百科全书总索引（ENCY）— 业务 / Java / 数据中间件 / 大数据 / AI"""
+"""附录索引：HARD GATE 以 ENCY-FM-* 为准"""
 from helpers import plain, koujue, reflect, spine, mermaid
 
 
@@ -7,57 +7,40 @@ def build() -> str:
     map_mmd = mermaid(
         "diag-ency-map",
         "flowchart TB\n"
-        "  ENCY[ENCY 百科索引] --> BIZ[ENCY-BIZ 业务全谱]\n"
-        "  ENCY --> J[ENCY-J Java]\n"
-        "  ENCY --> D[ENCY-D 数据与中间件]\n"
-        "  ENCY --> BD[ENCY-BD 大数据]\n"
-        "  ENCY --> AI[ENCY-AI AI]\n"
+        "  ENCY[ENCY 附录索引] --> FM[ENCY-FM HARD GATE 全貌]\n"
         "  ENCY --> CASE[ENCY-CASE 公开案例矩阵]\n"
-        "  BIZ --> B1[商品库存价格会员]\n"
-        "  BIZ --> B2[营销券积分分摊]\n"
-        "  BIZ --> B3[支付清结算风控]\n"
-        "  BIZ --> B4[OMS WMS 物流售后]\n"
-        "  D --> DB[PolarDB Gauss 达梦 TDSQL]\n"
-        "  D --> MW[MySQL Redis MQ ES]\n"
-        "  AI --> A1[RAG Agent MCP Skills]\n"
-        "  CASE --> PDD[拼多多餐饮阿里用友]\n"
-        "  CASE --> FIN[招行美团大疆顺丰]\n"
-        "  J -.交叉.-> Spine[B0 正逆向]\n"
-        "  BIZ --> Spine\n"
-        "  CASE --> Spine\n",
+        "  FM --> MQ[Rocket/Kafka/Rabbit]\n"
+        "  FM --> ST[Redis/MySQL/分布式库]\n"
+        "  FM --> RT[JVM/JUC/Spring]\n"
+        "  FM --> BD[Spark/Flink]\n"
+        "  CASE --> Spine[B0 正逆向]\n"
+        "  FM --> Spine\n",
     )
     return f"""
-<section class="block" id="ency" data-toc="ENCY · 附录百科全书总索引" data-prio="p1">
-  <h2><span class="sys-id">ENCY</span>附录·业务 / Java / 数据 / 大数据 / AI 百科全书</h2>
-{spine("主册之后追加的极致百科：业务全谱 + Java 底板 + 分布式库/中间件 + 大数据 + AI。不改写前序 B0/S/T 正文。",
-       serves="交易正逆向全链路、数据侧指标画像、AI 副驾工程化",
-       back="S0/B0/T* → 本附录深挖 → 挂回验收与选型")}
-{plain("人话：前面脊柱解决「买成→退成」怎么讲清楚；本附录把技术和业务做成可检索百科——每叶子按「人话→本质四段→掀底板→流程图→多解法→落地→多题详答→反思」。顶栏 <code>/</code> 可全文搜索跳转。")}
-
-  <div class="callout"><div class="label">怎么用本附录</div>
-    <ol>
-      <li>顶栏搜索或本页索引表跳转 sys-id。</li>
-      <li>每大节含 mermaid；业务回扣默认挂订单/售后/清结算。</li>
-      <li>与前序交叉：<a href="#t-found-x">T-Found-X</a> · <a href="#t-ai-stack">T-AI-Stack</a> · <a href="#t-as">T-AS</a> · <a href="#b-main-spine">B0</a>——百科补深，不重复灌水。</li>
-      <li><b>APPEND-ONLY</b>；目录由 <code>data-toc</code> 自动扫描。</li>
-    </ol>
+<section class="block" id="ency" data-toc="ENCY · 附录索引(HARD GATE)" data-prio="p0" data-tags="ency index">
+  <h2><span class="sys-id">ENCY</span>附录索引 · 以 FULLMAP 硬门槛为准</h2>
+{spine("主册之后追加。硬门槛条目在 ENCY-FM-*；公开公司套路在 ENCY-CASE-*。前序薄条目若存在仅作交叉，不以之为准。",
+       serves="生产选型/排障/面试叙事",
+       back="B0/T* → ENCY-FM → 验收")}
+{plain("人话：不要再看「只讲事务消息」的侧面文。进 <a href='#ency-fm'>#ency-fm</a>，RocketMQ 金标从 CommitLog/刷盘/复制/死信/顺序一路串到金融vs电商vs物流。顶栏 <code>/</code> 全文搜索。")}
+  <div class="callout danger"><div class="label">交付纪律</div>
+    本附录 HARD GATE：原理+源码、3～4 跨行业案例（含公开量级/示意效果）、全链路、配置、Runbook、题库。
+    不合格条目不进 ENCY-FM 区。
   </div>
-
 {map_mmd}
-
-  <h3>百科索引（全量）</h3>
   <table>
-    <thead><tr><th>域</th><th>sys-id 前缀</th><th>覆盖</th><th>入口</th></tr></thead>
+    <thead><tr><th>区</th><th>入口</th><th>门禁</th></tr></thead>
     <tbody>
-      <tr><td>业务</td><td>ENCY-BIZ*</td><td>商品→售后全谱、餐饮/跨境、银行并发对账</td><td><a href="#ency-biz">#ency-biz</a></td></tr>
-      <tr><td>Java</td><td>ENCY-J*</td><td>语言/并发/JVM/集合/IO/Netty/框架/测试/安全</td><td><a href="#ency-j">#ency-j</a></td></tr>
-      <tr><td>数据中间件</td><td>ENCY-D*</td><td>MySQL/Redis/MQ/ES/分库分表/<b>PolarDB·Gauss·达梦·TDSQL</b></td><td><a href="#ency-d">#ency-d</a></td></tr>
-      <tr><td>大数据</td><td>ENCY-BD*</td><td>数仓/同步/Spark/Flink/Hive/OLAP/治理指标</td><td><a href="#ency-bd">#ency-bd</a></td></tr>
-      <tr><td>AI</td><td>ENCY-AI*</td><td>训练推理微调/RAG/Agent/MCP/Skills/评测/向量/合规</td><td><a href="#ency-ai">#ency-ai</a></td></tr>
-      <tr><td>公开案例</td><td>ENCY-CASE*</td><td>拼多多/肯麦/阿里/用友/招行/美团饿了么/大疆/顺丰 · 落地套路归纳</td><td><a href="#ency-case">#ency-case</a></td></tr>
+      <tr><td>FULLMAP 总图</td><td><a href="#ency-fm">#ency-fm</a></td><td>PASS 索引</td></tr>
+      <tr><td>RocketMQ 金标</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td>PASS</td></tr>
+      <tr><td>Kafka / Rabbit</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a> · <a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td>PASS</td></tr>
+      <tr><td>Redis / MySQL</td><td><a href="#ency-fm-redis">#ency-fm-redis</a> · <a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>PASS</td></tr>
+      <tr><td>PolarDB/Gauss/达梦/TDSQL</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a>…</td><td>PASS</td></tr>
+      <tr><td>JVM/JUC/Spring/Spark/Flink</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a>…</td><td>PASS</td></tr>
+      <tr><td>公开公司案例矩阵</td><td><a href="#ency-case">#ency-case</a></td><td>PASS（案例归纳）</td></tr>
     </tbody>
   </table>
-{koujue("百科口诀：索引先跳，四段钉死，底板见血，流程图挂墙，搜索秒达。")}
+{koujue("索引口诀：FM 硬门槛，CASE 学套路，搜索秒达。")}
 {reflect("ency-hub-r1")}
 </section>
 """

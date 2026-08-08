@@ -17,12 +17,11 @@ MIRROR = ROOT.parent / "高级Java外包-系统学习技术白皮书.html"
 sys.path.insert(0, str(PARTS))
 
 from ency_hub import build as build_hub  # noqa: E402
-from ency_biz import build as build_biz  # noqa: E402
-from ency_java import build as build_java  # noqa: E402
-from ency_data import build as build_data  # noqa: E402
-from ency_bd import build as build_bd  # noqa: E402
-from ency_ai import build as build_ai  # noqa: E402
+from ency_fullmap_mq import build as build_fm_mq  # noqa: E402
+from ency_fullmap_store import build as build_fm_store  # noqa: E402
+from ency_fullmap_runtime import build as build_fm_runtime  # noqa: E402
 from ency_cases import build as build_cases  # noqa: E402
+# Legacy thin encyclopedia modules intentionally NOT shipped (FAIL hard gate).
 
 MARKER_START = "<!-- ENCYCLOPEDIA-START -->"
 MARKER_END = "<!-- ENCYCLOPEDIA-END -->"
@@ -249,13 +248,12 @@ def ensure_search_js(html: str) -> str:
 
 
 def build_ency_html() -> str:
+    # Ship ONLY hard-gate FULLMAP + company case matrix + index
     body = "\n".join([
         build_hub(),
-        build_biz(),
-        build_java(),
-        build_data(),
-        build_bd(),
-        build_ai(),
+        build_fm_mq(),
+        build_fm_store(),
+        build_fm_runtime(),
         build_cases(),
     ])
     return f"\n{MARKER_START}\n{body}\n{MARKER_END}\n"
@@ -306,11 +304,15 @@ def main() -> None:
     print(f"before={before} after={after} delta={after-before} ency_chunk≈{ency_bytes}")
     print(f"md5={h1}")
     for a in [
-        "ency", "ency-biz", "ency-j", "ency-d", "ency-d-dist", "ency-d-polardb",
-        "ency-d-gauss", "ency-d-dm", "ency-d-tdsql", "ency-bd", "ency-ai",
-        "ency-case", "ency-case-pdd", "ency-case-cmb", "ency-case-sf", "docSearch",
+        "ency", "ency-fm", "ency-fm-rocket", "ency-fm-rocket-storage",
+        "ency-fm-rocket-flush", "ency-fm-rocket-ha", "ency-fm-rocket-order",
+        "ency-fm-rocket-dlq", "ency-fm-rocket-fin-ecom",
+        "ency-fm-kafka", "ency-fm-rabbit", "ency-fm-redis", "ency-fm-mysql",
+        "ency-fm-polardb", "ency-fm-gauss", "ency-fm-dm", "ency-fm-tdsql",
+        "ency-fm-jvm", "ency-fm-juc", "ency-fm-spring", "ency-fm-spark",
+        "ency-fm-flink", "ency-case", "docSearch",
     ]:
-        print(f"  #{a}: {html2.count(a)}")
+        print(f"  #{a}: {html2.count(f'id=\"{a}\"' ) if a.startswith('ency') or a=='docSearch' else html2.count(a)}")
 
 
 if __name__ == "__main__":
