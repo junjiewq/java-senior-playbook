@@ -574,16 +574,87 @@ section.block.search-flash {
   <div class="hero-kicker">Requirement-Driven · 业务本质 × 技术本质 · Closed Loop</div>
   <h1>高级 Java · <em>下单正逆向闭环</em>白皮书</h1>
   <p class="hero-lead">主线只有一条：<b>买成 → 履约 → 退成/修好</b>。优惠分摊、支付 OMS/WMS、售后寄修换新都挂在这条线上。餐饮/跨境是行业旋钮；Docker/K8s/AI/AgentScope 必须服务主线本质。写法像在公司做需求，拒绝技术拼凑。一年维度用 <a href="#s-year">S-Year</a> 坚持；复杂场景强制 <a href="#s-c4">四段闭环</a>。收官带走 <a href="#s-method">钉拆标选验</a> OS。</p>
+  <p class="hero-lead" style="margin-top:-.5rem"><b>阅读前先看</b> <a href="#delivery-status">#delivery-status</a>：金标只有 3 块，其它多为骨架。</p>
   <div class="hero-meta">
     <span class="chip"><b>主线</b> 正逆向+售后</span>
     <span class="chip"><b>认知</b> 四段闭环</span>
     <span class="chip"><b>一年</b> 52 周 OKR</span>
     <span class="chip"><b>加深</b> B-X·极致支柱</span>
-    <span class="chip"><b>底板</b> 源码级原理</span>
+    <span class="chip"><b>冻结</b> <a href="#delivery-status" style="color:inherit">v1.1 诚实交付</a></span>
     <span class="chip"><b>收官</b> S-Method</span>
   </div>
 </header>
 
+
+<!-- DELIVERY-STATUS-V11 -->
+<section class="block" id="delivery-status" data-toc="交付冻结 v1.1 · 怎么读/能信什么" data-prio="p0" data-tags="delivery freeze honest">
+  <h2><span class="sys-id">DELIVERY v1.1</span>诚实交付冻结（停止无限加厚）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>
+    打开本书先看这里。承认：全书不可能「每一节都金标」。本页把<strong>能信什么 / 骨架可读什么 / 勿背什么</strong>钉死，避免假 PASS。
+  </div>
+  <div class="plain"><div class="label">人话版</div>
+    用户反馈「没法完了」「交付质量/态度有问题」——正确。继续整书无限加厚=永远交不了。
+    <b>v1.1 冻结策略：</b>结构与目录保留；只认 3 块金标；其余标明骨架或勿背；禁止再开「整书去水循环」。
+  </div>
+
+  <div class="callout danger"><div class="label">态度与纪律</div>
+    <ul>
+      <li>不把「有目录 / 有批处理加厚」说成「全书 HARD GATE PASS」。</li>
+      <li>金标只有下面三块；其它节即使字多，默认最多算「骨架可用」。</li>
+      <li>下一步深化由你按优先级点名（最多 5 项），不再自动扩 scope。</li>
+    </ul>
+  </div>
+
+  <h3>① 金标完成（可以认真学、可以对外讲）</h3>
+  <table>
+    <thead><tr><th>锚点</th><th>为何算金标</th><th>怎么用</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><a href="#s-ddd-agg"><code>#s-ddd-agg</code></a></td>
+        <td>聚合根唯一性多层（业务键/DB/并发/号段）+ 加载慢因与最小图 + 冲突/好坏加载图 + 跨行业案 + 详答</td>
+        <td>面试/进组讲「双单怎么防、加载为何慢」从这里进</td>
+      </tr>
+      <tr>
+        <td><a href="#ency-fm-rocket"><code>#ency-fm-rocket</code></a></td>
+        <td>CommitLog/ConsumeQueue/刷盘/复制/顺序/DLQ/事务存储链齐；金融 vs 电商 vs 物流</td>
+        <td>消息底座金标；T-Found-Rocket 只作入口</td>
+      </tr>
+      <tr>
+        <td><a href="#ency-fm-polardb"><code>#ency-fm-polardb</code></a>
+          （<a href="#ency-fm-polardb-cn">CN</a>·<a href="#ency-fm-polardb-dn">DN</a>·<a href="#ency-fm-polardb-gms">GMS</a>·<a href="#ency-fm-polardb-cdc">CDC</a>）</td>
+        <td>共享存储 vs PolarDB-X 控制面/数据面拆清；付后读主/CDC 边界</td>
+        <td>分布式库选型与排障从这里进</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>② 骨架可用（可浏览、可当索引；勿宣称完工）</h3>
+  <p>正逆向主线 B0/B-F/B-R、B-X 五案、S-MS-X / T-K8s-X / T-AI-X / T-Found 其它子章、多数 <code>#ency-fm-*</code>：结构在、能导航、有部分底板与案例，但<strong>深度不及上表三金标</strong>。节内若见「骨架·待深化」红/黄标，以该标缺项为准。</p>
+  <ul>
+    <li>用法：跟主线读 → 卡点再点名深化；不要整本顺序硬背。</li>
+    <li>ENCY 里除 Rocket / PolarDB 外，门禁列已降为「骨架可用」，不再假 PASS。</li>
+  </ul>
+
+  <h3>③ 未达标 · 勿背（单独拿出去会误导）</h3>
+  <ul>
+    <li>P1/P2 速查、glossary、cheatsheet：只有跳转价值，不是深度正文。</li>
+    <li>任何仍写「HARD GATE PASS」却不在上表三金标内的说法：以本页为准作废。</li>
+    <li>案例里的「工程目标/示意」量级：禁止当成某厂未公开 KPI。</li>
+    <li>Spark/Flink 等大数据条目：明显弱于 MQ 金标，面试主攻实时数仓勿只靠本节。</li>
+  </ul>
+
+  <h3>④ 若继续深化（最多 5 项 · 你来选）</h3>
+  <ol>
+    <li><code>#ency-fm-kafka</code> 或 <code>#ency-fm-mysql</code> 提到接近 Rocket 金标</li>
+    <li><code>#s-ms-x-orch</code> Outbox/Inbox 生产联调剧本补全</li>
+    <li><code>#t-k8s-x-release</code> 金丝雀 SLO/undo 可执行附件</li>
+    <li><code>#t-ai-x-rag</code> 评测集文件 + 陷阱题包</li>
+    <li>某一个 B-X 案（你指定）补真实字段映射与压测表</li>
+  </ol>
+  <p><b>冻结声明：</b>未点名之前，不启动「整书再去水」循环。审计页 <a href="#doc-audit">#doc-audit</a> / <a href="#ency-audit">#ency-audit</a> 已按 v1.1 对齐。</p>
+  <div class="koujue"><div class="label">口诀</div>先信三金标，骨架当地图，速查勿当饭，深化你点名。</div>
+</section>
+<!-- /DELIVERY-STATUS-V11 -->
 <section class="block" id="s0-system" data-toc="S0 · 体系总图与能力模型" data-prio="p0">
   <h2><span class="sys-id">S0</span>体系总图与能力模型</h2>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>操作系统入口：先认主线，再认方法与零件。旁支不得盖过 B0。<br><b>挂回：</b>学习闭环起点 → B0 → S-Method</div>
@@ -1171,6 +1242,14 @@ flowchart TB
 
 <section class="block" id="s-ddd-x-bc" data-toc="S-DDD-X · 聚合与上下文切分" data-prio="p0">
   <h2><span class="sys-id">S-DDD-X</span>聚合 / 限界上下文：订单·优惠·库存·履约·售后</h2>
+<!-- SKELETON-BANNER:s-ddd-x-bc -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>业务唯一键落点表可作索引</li><li>缺更多冲突演练剧本与真实慢 SQL 样例</li><li>加载最小图细节以 #s-ddd-agg 为准，本节勿单独背完</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ddd-x-bc -->
+
 <!-- ANTI-WATER:s-ddd-x-bc -->
   <div class="callout"><div class="label">掀底板 · 上下文切分与聚合唯一/加载挂钩</div>
     <p><b>底板结构/算法/协议：</b>每个上下文一张「写权威表」；订单聚合持单头+行+优惠成交快照+支付意图；库存/售后/轨迹不进订单写事务。跨上下文只传 ID+事件。唯一键落在写权威库，不靠他库 join 判重。</p>
@@ -1296,6 +1375,14 @@ flowchart LR
 
 <section class="block" id="s-ddd-x-acl" data-toc="S-DDD-X · 防腐层事件应用服务" data-prio="p0">
   <h2><span class="sys-id">S-DDD-X</span>防腐层 · 领域事件 · 应用服务（今天怎么写）</h2>
+<!-- SKELETON-BANNER:s-ddd-x-acl -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>调用链骨架在</li><li>缺多渠道 ACL 对照表深度</li><li>Outbox 与聚合协作细节分散在他节</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ddd-x-acl -->
+
 <!-- ANTI-WATER:s-ddd-x-acl -->
   <h4>ACL翻译</h4>
   <div class="mermaid-wrap" id="diag-ddd-acl-a">
@@ -1374,6 +1461,14 @@ public void onPaid(PaidCmd cmd) {
 
 <section class="block" id="s-ddd-x-patterns" data-toc="S-DDD-X · 模式对照真实需求" data-prio="p0">
   <h2><span class="sys-id">S-DDD-X</span>策略 / 责任链 / 状态 / 工厂 / 模板 / 观察者——对照需求</h2>
+<!-- SKELETON-BANNER:s-ddd-x-patterns -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>模式↔需求对照表可用</li><li>缺生产代码级策略注册/FSM 全表</li><li>并行寄修细节挂 B-X，勿当已完工</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ddd-x-patterns -->
+
 <!-- ANTI-WATER:s-ddd-x-patterns -->
   <h4>模式挂变更点</h4>
   <div class="mermaid-wrap" id="diag-ddd-pat-a">
@@ -1454,6 +1549,14 @@ flowchart LR
 
 <section class="block" id="s-ddd-x-arch" data-toc="S-DDD-X · 架构权衡与拆分" data-prio="p0">
   <h2><span class="sys-id">S-DDD-X</span>架构思维：权衡表 · 模块化单体 vs 微服务</h2>
+<!-- SKELETON-BANNER:s-ddd-x-arch -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>权衡维度表可用</li><li>缺完整 ADR 范文与团队编制算账</li><li>勿把「先边界后进程」当已落地清单</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ddd-x-arch -->
+
 <!-- ANTI-WATER:s-ddd-x-arch -->
   <h4>先边界后进程</h4>
   <div class="mermaid-wrap" id="diag-ddd-arch-a">
@@ -1545,6 +1648,14 @@ flowchart LR
 
 <section class="block" id="s-mgmt-x" data-toc="S-Mgmt-X · 管理思维排期交付" data-prio="p0">
   <h2><span class="sys-id">S-Mgmt-X</span>管理思维：排期 · 瀑布/敏捷 · 联调 UAT · 上线窗口</h2>
+<!-- SKELETON-BANNER:s-mgmt-x -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>排期/阶段门可用</li><li>缺完整故事拆卡范文库</li><li>财务门禁要写进你们 DoD</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-mgmt-x -->
+
 <!-- ANTI-WATER:s-mgmt-x -->
   <div class="callout"><div class="label">掀底板 · 排期与资损门禁</div>
     <p><b>底板结构/算法/协议：</b>故事含表/消息/开关/监控/回滚；财务口径变更有门禁。</p>
@@ -2677,6 +2788,14 @@ flowchart LR
 
 <section class="block" id="bx-group-coupon" data-toc="B-X · 大促拼团+券分摊退" data-prio="p0">
   <h2><span class="sys-id">B-X</span>大促拼团 + 券叠加 + 分摊后并发退款</h2>
+<!-- SKELETON-BANNER:bx-group-coupon -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>组合拳主路径在</li><li>缺你们券中心字段映射</li><li>压测数字为示意勿当 KPI</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:bx-group-coupon -->
+
 <!-- ANTI-WATER:bx-group-coupon -->
   <div class="callout"><div class="label">掀底板 · 拼团券退 一致性与加载/幂等</div>
     <p><b>底板结构/算法/协议：</b>写路径走聚合命令+幂等键；读路径读模型；跨上下文事件。</p>
@@ -2737,6 +2856,14 @@ flowchart LR
 
 <section class="block" id="bx-pay-wms-short" data-toc="B-X · 支付成功WMS缺货" data-prio="p0">
   <h2><span class="sys-id">B-X</span>支付成功 → OMS 下发 → WMS 缺货补偿</h2>
+<!-- SKELETON-BANNER:bx-pay-wms-short -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>Saga/补偿思路在</li><li>缺 WMS 状态机对接表</li><li>版本令牌需与仓系统对齐</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:bx-pay-wms-short -->
+
 <!-- ANTI-WATER:bx-pay-wms-short -->
   <div class="callout"><div class="label">掀底板 · 付后缺货 一致性与加载/幂等</div>
     <p><b>底板结构/算法/协议：</b>写路径走聚合命令+幂等键；读路径读模型；跨上下文事件。</p>
@@ -2799,6 +2926,14 @@ flowchart LR
 
 <section class="block" id="bx-repair-exchange" data-toc="B-X · 寄修∥换新锁库存" data-prio="p0">
   <h2><span class="sys-id">B-X</span>售后退货与寄修并行、换新锁定库存</h2>
+<!-- SKELETON-BANNER:bx-repair-exchange -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>并行寄修骨架在</li><li>缺质检回执码表</li><li>库存 TTL 参数需压测</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:bx-repair-exchange -->
+
 <!-- ANTI-WATER:bx-repair-exchange -->
   <div class="callout"><div class="label">掀底板 · 寄修换新 一致性与加载/幂等</div>
     <p><b>底板结构/算法/协议：</b>写路径走聚合命令+幂等键；读路径读模型；跨上下文事件。</p>
@@ -2858,6 +2993,14 @@ flowchart LR
 
 <section class="block" id="bx-food-peak" data-toc="B-X · 餐饮高峰取消餐损" data-prio="p0">
   <h2><span class="sys-id">B-X</span>餐饮高峰取消与餐损（不可逆点）</h2>
+<!-- SKELETON-BANNER:bx-food-peak -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>餐损规则思路在</li><li>缺门店态事件契约</li><li>高峰限流键要本地化</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:bx-food-peak -->
+
 <!-- ANTI-WATER:bx-food-peak -->
   <div class="callout"><div class="label">掀底板 · 餐饮餐损 一致性与加载/幂等</div>
     <p><b>底板结构/算法/协议：</b>写路径走聚合命令+幂等键；读路径读模型；跨上下文事件。</p>
@@ -2915,6 +3058,14 @@ flowchart LR
 
 <section class="block" id="bx-cross-border" data-toc="B-X · 跨境清关失败逆向" data-prio="p0">
   <h2><span class="sys-id">B-X</span>跨境清关失败后的逆向闭环</h2>
+<!-- SKELETON-BANNER:bx-cross-border -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>清关失败闸门在</li><li>缺海关/税接口细节</li><li>退税规则按主体重写</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:bx-cross-border -->
+
 <!-- ANTI-WATER:bx-cross-border -->
   <div class="callout"><div class="label">掀底板 · 跨境清关 一致性与加载/幂等</div>
     <p><b>底板结构/算法/协议：</b>写路径走聚合命令+幂等键；读路径读模型；跨上下文事件。</p>
@@ -3003,6 +3154,14 @@ flowchart LR
 
 <section class="block" id="p0-jvm" data-toc="T1 · 并发与JVM" data-prio="p0">
   <h2><span class="sys-id">T1</span>并发与 JVM 调优实战</h2>
+<!-- SKELETON-BANNER:p0-jvm -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>JVM 排障入口在</li><li>深度以 ENCY/Found 为准</li><li>本节勿单独当金标</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:p0-jvm -->
+
 <!-- ANTI-WATER:p0-jvm -->
   <div class="plain"><div class="label">人话版</div>人话：P0/jvm 不是口诀页——必须能按「告警→划界→单号串链→证明→止血→根治」跑完，并回扣支付成功/退款成功/Outbox 年龄。</div>
 
@@ -3629,6 +3788,14 @@ sequenceDiagram
 
 <section class="block" id="p0-mysql" data-toc="T4 · MySQL与分库分表" data-prio="p0">
   <h2><span class="sys-id">T4</span>MySQL：索引 / 执行计划 / 慢查询 / 分库分表边界</h2>
+<!-- SKELETON-BANNER:p0-mysql -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>MySQL 排障入口在</li><li>深度以 ENCY/Found 为准</li><li>本节勿单独当金标</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:p0-mysql -->
+
 <!-- ANTI-WATER:p0-mysql -->
   <div class="plain"><div class="label">人话版</div>人话：P0/mysql 不是口诀页——必须能按「告警→划界→单号串链→证明→止血→根治」跑完，并回扣支付成功/退款成功/Outbox 年龄。</div>
 
@@ -3788,6 +3955,14 @@ flowchart TD
 
 <section class="block" id="p0-redis" data-toc="T5 · Redis缓存与锁" data-prio="p0">
   <h2><span class="sys-id">T5</span>Redis：缓存模式、击穿/穿透/雪崩、分布式锁</h2>
+<!-- SKELETON-BANNER:p0-redis -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>Redis 排障入口在</li><li>深度以 ENCY/Found 为准</li><li>本节勿单独当金标</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:p0-redis -->
+
 <!-- ANTI-WATER:p0-redis -->
   <div class="plain"><div class="label">人话版</div>人话：P0/redis 不是口诀页——必须能按「告警→划界→单号串链→证明→止血→根治」跑完，并回扣支付成功/退款成功/Outbox 年龄。</div>
 
@@ -4871,6 +5046,14 @@ flowchart LR
 
 <section class="block" id="t-k8s-x-workload" data-toc="T-K8s-X · 订单链路工作负载" data-prio="p0">
   <h2><span class="sys-id">T-K8s-X</span>订单链路工作负载：JVM · 探针 · HPA · 秒杀</h2>
+<!-- SKELETON-BANNER:t-k8s-x-workload -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>支付舱壁拆分在</li><li>缺完整 YAML/HPA 基线全文</li><li>探针参数需按服务重测</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-k8s-x-workload -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>不同服务扩缩容节奏不同，禁止一个超级 Deployment 吃所有流量形态。<br><b>服务业务闭环：</b>订单回调、OMS 消费、售后出口<br><b>挂回：</b>T-K8s 拆单元 → 本页</div>
 
   <div class="c4-loop">
@@ -4987,6 +5170,14 @@ flowchart LR
 
 <section class="block" id="t-k8s-x-release" data-toc="T-K8s-X · 支付退款安全发布" data-prio="p0">
   <h2><span class="sys-id">T-K8s-X</span>金丝雀 / 蓝绿：支付与退款安全发布清单</h2>
+<!-- SKELETON-BANNER:t-k8s-x-release -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>金丝雀门禁思路在</li><li>缺具体 SLO 阈值与 undo 脚本</li><li>变更窗纪律要写进你们日历</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-k8s-x-release -->
+
 <!-- ANTI-WATER:t-k8s-x-release -->
   <h4>金丝雀门禁</h4>
   <div class="mermaid-wrap" id="diag-k8s-rel-a">
@@ -5070,6 +5261,14 @@ flowchart TD
 
 <section class="block" id="t-k8s-x-ops" data-toc="T-K8s-X · 配置密钥配额演练" data-prio="p0">
   <h2><span class="sys-id">T-K8s-X</span>配置 / 密钥 / 多环境 · 资源配额 · 节点故障演练</h2>
+<!-- SKELETON-BANNER:t-k8s-x-ops -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>配置/密钥/配额要点在</li><li>缺 Secret 轮换完整 Runbook</li><li>大促冻结清单需本地化</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-k8s-x-ops -->
+
 <!-- ANTI-WATER:t-k8s-x-ops -->
   <h4>配置密钥</h4>
   <div class="mermaid-wrap" id="diag-k8s-ops-a">
@@ -5143,6 +5342,14 @@ flowchart TD
 
 <section class="block" id="t-k8s-x-mesh" data-toc="T-K8s-X · Service Mesh决策" data-prio="p0">
   <h2><span class="sys-id">T-K8s-X</span>Service Mesh：中厂何时上 · 何时不上</h2>
+<!-- SKELETON-BANNER:t-k8s-x-mesh -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>要不要 Mesh 决策树在</li><li>缺 mTLS 分期落地步骤</li><li>中厂默认可不上——本节勿当已上 Mesh</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-k8s-x-mesh -->
+
 <!-- ANTI-WATER:t-k8s-x-mesh -->
   <h4>要不要Mesh</h4>
   <div class="mermaid-wrap" id="diag-k8s-mesh-a">
@@ -5207,6 +5414,14 @@ flowchart LR
 
 <section class="block" id="t-k8s-x-drills" data-toc="T-K8s-X · 落地清单与题" data-prio="p0">
   <h2><span class="sys-id">T-K8s-X</span>落地清单 · 故障 Runbook · 多题详答</h2>
+<!-- SKELETON-BANNER:t-k8s-x-drills -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>演练项列表在</li><li>缺杀节点/演练记录模板</li><li>探针混用坑需结合你们探针配置</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-k8s-x-drills -->
+
 <!-- ANTI-WATER:t-k8s-x-drills -->
   <h4>杀节点</h4>
   <div class="mermaid-wrap" id="diag-k8s-drill-a">
@@ -6427,6 +6642,14 @@ flowchart TD
 
 <section class="block" id="t-ai-x-prod" data-toc="T-AI-X · 生产架构五件套" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>生产架构：HITL · 工具白名单 · 审计 · 评测集 · 版本钉扎</h2>
+<!-- SKELETON-BANNER:t-ai-x-prod -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>五件套清单在</li><li>缺发布三联票据模板全文</li><li>大促降级开关需自配</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-prod -->
+
 <!-- ANTI-WATER:t-ai-x-prod -->
   <h4>五件套</h4>
   <div class="mermaid-wrap" id="diag-ai-prod-a">
@@ -6502,6 +6725,14 @@ flowchart LR
 
 <section class="block" id="t-ai-x-agents" data-toc="T-AI-X · 售后优惠复盘Agent" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>售后 / 优惠 / 复盘 Agent：需求→实现→原理→业务实质</h2>
+<!-- SKELETON-BANNER:t-ai-x-agents -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>多角色骨架在</li><li>缺生产编排配置</li><li>金额动作必须 HITL</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-agents -->
+
 <!-- ANTI-WATER:t-ai-x-agents -->
   <h4>多智能体</h4>
   <div class="mermaid-wrap" id="diag-ai-agents-a">
@@ -6592,6 +6823,14 @@ flowchart LR
 
 <section class="block" id="t-ai-x-rag" data-toc="T-AI-X · RAG评测与幻觉资损" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>RAG 评测与幻觉资损案例</h2>
+<!-- SKELETON-BANNER:t-ai-x-rag -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>cite/HITL/kbVer 门禁在</li><li>缺完整评测集文件</li><li>勿背成「已可自动退款」</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-rag -->
+
 <!-- ANTI-WATER:t-ai-x-rag -->
   <div class="callout"><div class="label">掀底板 · RAG 门禁加深</div>
     <p><b>底板结构/算法/协议：</b>块元数据 kbVer/生效期/domain；强制 cite；金额 HITL。</p>
@@ -6763,6 +7002,14 @@ flowchart TD
 
 <section class="block" id="t-ai-x-mcp" data-toc="T-AI-X · MCP威胁模型" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>MCP 安全威胁模型：提示注入 · 越权工具</h2>
+<!-- SKELETON-BANNER:t-ai-x-mcp -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>白名单/禁写思路在</li><li>缺具体 MCP server 注册表</li><li>协议≠已授权</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-mcp -->
+
 <!-- ANTI-WATER:t-ai-x-mcp -->
   <div class="callout"><div class="label">掀底板 · MCP 工具面</div>
     <p><b>底板结构/算法/协议：</b>白名单+鉴权+副作用分级；结果与系统提示隔离。</p>
@@ -6904,6 +7151,14 @@ flowchart TD
 
 <section class="block" id="t-ai-x-integrate" data-toc="T-AI-X · CI工单值班集成" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>与 CI / 工单 / 值班集成</h2>
+<!-- SKELETON-BANNER:t-ai-x-integrate -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>CI/工单接点在</li><li>缺流水线 YAML</li><li>值班 Agent 必须保持建议态</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-integrate -->
+
 <!-- ANTI-WATER:t-ai-x-integrate -->
   <div class="callout"><div class="label">掀底板 · CI/工单/值班接点</div>
     <p><b>底板结构/算法/协议：</b>评测门禁；工单只渲染草稿；值班建议态。</p>
@@ -6985,6 +7240,14 @@ flowchart TD
 
 <section class="block" id="t-ai-x-forbid" data-toc="T-AI-X · 禁止清单与题" data-prio="p0">
   <h2><span class="sys-id">T-AI-X</span>禁止清单（写死）· 多题详答</h2>
+<!-- SKELETON-BANNER:t-ai-x-forbid -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>禁止清单可用</li><li>缺违规审计样例</li><li>清单≠控制系统已上线</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-ai-x-forbid -->
+
 <!-- ANTI-WATER:t-ai-x-forbid -->
   <div class="callout danger"><div class="label">禁止清单（写死）</div><ul><li>模型直接调退款/改库存</li><li>无 cite 展示结论</li><li>聊天改生产提示</li><li>用生产账务数据微调外送</li></ul></div>
 
@@ -7076,6 +7339,14 @@ flowchart LR
 
 <section class="block" id="p0-diag-playbook" data-toc="P0 · 线上排障总戏本" data-prio="p0">
   <h2><span class="tag prio-p0">P0</span>线上排障总戏本：从告警到根因的通用路径</h2>
+<!-- SKELETON-BANNER:p0-diag-playbook -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>排障序可用</li><li>缺你们监控面板截图/链接</li><li>先取证再变更——需值班演练固化</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:p0-diag-playbook -->
+
 <!-- ANTI-WATER:p0-diag-playbook -->
   <div class="plain"><div class="label">人话版</div>人话：P0/diag 不是口诀页——必须能按「告警→划界→单号串链→证明→止血→根治」跑完，并回扣支付成功/退款成功/Outbox 年龄。</div>
 
@@ -7223,6 +7494,14 @@ jmap -histo:live &lt;pid&gt; | head
 
 <section class="block" id="p0-capacity" data-toc="P0 · 容量与告警工程" data-prio="p0">
   <h2><span class="tag prio-p0">P0</span>容量评估、SLO 与告警工程（生产向）</h2>
+<!-- SKELETON-BANNER:p0-capacity -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>容量/告警思路在</li><li>缺 SLO 数字基线</li><li>勿背示意量级当容量结论</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:p0-capacity -->
+
 <!-- ANTI-WATER:p0-capacity -->
   <div class="plain"><div class="label">人话版</div>人话：P0/cap 不是口诀页——必须能按「告警→划界→单号串链→证明→止血→根治」跑完，并回扣支付成功/退款成功/Outbox 年龄。</div>
 
@@ -8133,6 +8412,14 @@ flowchart LR
 
 <section class="block" id="t-found-jvm" data-toc="T-Found-X · JVM掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>JVM：支付 Pod 为啥「假死」与 OOMKill</h2>
+<!-- SKELETON-BANNER:t-found-jvm -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>GC/容器对齐要点在</li><li>缺完整 GC 日志判读案例集</li><li>DirectMemory/NMT 实战样例不足</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-jvm -->
+
 <!-- ANTI-WATER:t-found-jvm -->
   <h4>分配到停顿</h4>
   <div class="mermaid-wrap" id="diag-found-jvm-a">
@@ -8224,6 +8511,14 @@ JAVA_TOOL_OPTIONS: >-
 
 <section class="block" id="t-found-juc" data-toc="T-Found-X · JUC掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>JUC：回调池、AQS、ConcurrentHashMap、库存 CAS</h2>
+<!-- SKELETON-BANNER:t-found-juc -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>池/AQS/库存路径骨架在</li><li>缺完整 jstack 对照集</li><li>跨机互斥边界需结合 MySQL/Redis 节</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-juc -->
+
 <!-- ANTI-WATER:t-found-juc -->
   <h4>回调池路径</h4>
   <div class="mermaid-wrap" id="diag-found-juc-a">
@@ -8312,6 +8607,14 @@ flowchart LR
 
 <section class="block" id="t-found-mysql" data-toc="T-Found-X · MySQL掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>MySQL/InnoDB：订单行锁、幂等、分摊不平</h2>
+<!-- SKELETON-BANNER:t-found-mysql -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>幂等/短事务要点在</li><li>缺分库分表迁移全案</li><li>锁等待排查样例不够多</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-mysql -->
+
 <!-- ANTI-WATER:t-found-mysql -->
   <h4>支付短事务</h4>
   <div class="mermaid-wrap" id="diag-found-mysql-a">
@@ -8402,6 +8705,14 @@ UPDATE orders SET status='PAID', pay_time=NOW()
 
 <section class="block" id="t-found-redis" data-toc="T-Found-X · Redis掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>Redis：秒杀预占、过期、热 Key</h2>
+<!-- SKELETON-BANNER:t-found-redis -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>预占/击穿骨架在</li><li>缺 Cluster 槽迁移实战</li><li>大 Key 治理清单未成 Runbook 全集</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-redis -->
+
 <!-- ANTI-WATER:t-found-redis -->
   <h4>预占与账本</h4>
   <div class="mermaid-wrap" id="diag-found-redis-a">
@@ -8486,6 +8797,14 @@ return redis.call('DECRBY', KEYS[1], ARGV[1])
 
 <section class="block" id="t-found-kafka" data-toc="T-Found-X · Kafka掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>Kafka：高吞吐事件、对账流、分区有序</h2>
+<!-- SKELETON-BANNER:t-found-kafka -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>分区/ISR/幂等边界在</li><li>缺 Connect/CDC 作业级深度</li><li>EOS 边界勿背成「恰好一次账本」</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-kafka -->
+
 <!-- ANTI-WATER:t-found-kafka -->
   <h4>分区日志</h4>
   <div class="mermaid-wrap" id="diag-found-kafka-a">
@@ -8553,6 +8872,14 @@ flowchart TD
 
 <section class="block" id="t-found-rabbit" data-toc="T-Found-X · RabbitMQ掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>RabbitMQ：中厂轻量异步与重试</h2>
+<!-- SKELETON-BANNER:t-found-rabbit -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>Confirm/Ack/DLX 骨架在</li><li>缺 quorum 运维全案</li><li>高吞吐场景应转 Kafka/Rocket，本节勿吹满</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-rabbit -->
+
 <!-- ANTI-WATER:t-found-rabbit -->
   <h4>Confirm/Ack</h4>
   <div class="mermaid-wrap" id="diag-found-rabbit-a">
@@ -8610,6 +8937,14 @@ flowchart TD
 
 <section class="block" id="t-found-rocket" data-toc="T-Found-X · RocketMQ掀底板" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>RocketMQ：订单事务消息、延时关单</h2>
+<!-- SKELETON-BANNER:t-found-rocket -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>事务消息/关单要点在</li><li>存储链金标以 #ency-fm-rocket 为准</li><li>本节是入口不是金标正文</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-rocket -->
+
 <!-- ANTI-WATER:t-found-rocket -->
   <div class="plain"><div class="label">人话版</div>存储链加深挂 ENCY-FM：CommitLog/ConsumeQueue/刷盘/复制/DLQ——见 #ency-fm-rocket-storage。</div>
 
@@ -8720,6 +9055,14 @@ flowchart TD
 
 <section class="block" id="t-found-matrix" data-toc="T-Found-X · 选型与类比矩阵" data-prio="p0">
   <h2><span class="sys-id">T-Found-X</span>类比表 + 方案选型矩阵（服务落地，不炫博学）</h2>
+<!-- SKELETON-BANNER:t-found-matrix -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>选型矩阵可拍板用</li><li>缺每格 ADR 链接与压测数字</li><li>矩阵≠已完成中间件落地</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:t-found-matrix -->
+
 <!-- ANTI-WATER:t-found-matrix -->
   <h4>支付→OMS 选型</h4>
   <div class="mermaid-wrap" id="diag-found-mx-a">
@@ -9474,6 +9817,14 @@ flowchart TB
 
 <section class="block" id="s-ms-x-boundary" data-toc="S-MS-X · 服务划分与数据归属" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>服务划分与数据归属：订单 / 优惠 / 库存 / 履约</h2>
+<!-- SKELETON-BANNER:s-ms-x-boundary -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>写权威表思路在</li><li>缺账号/CI 扫描落地配置</li><li>跨服务禁止 join 的执法工具未写全</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-boundary -->
+
 <!-- ANTI-WATER:s-ms-x-boundary -->
   <h4>写权威</h4>
   <div class="mermaid-wrap" id="diag-ms-bound-a">
@@ -9575,6 +9926,14 @@ flowchart LR
 
 <section class="block" id="s-ms-x-orch" data-toc="S-MS-X · 同步编排与事件" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>同步调用 vs 编排 vs 编排+事件</h2>
+<!-- SKELETON-BANNER:s-ms-x-orch -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>Outbox/Inbox 骨架在</li><li>缺半消息/堆积联调剧本全集</li><li>超时矩阵需按你们环境重填</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-orch -->
+
 <!-- ANTI-WATER:s-ms-x-orch -->
   <h4>同步vs事件</h4>
   <div class="mermaid-wrap" id="diag-ms-orch-a">
@@ -9709,6 +10068,14 @@ sequenceDiagram
 
 <section class="block" id="s-ms-x-govern" data-toc="S-MS-X · 治理压测灰度" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>治理：限流熔断舱壁 · 超时矩阵 · 全链路压测 · 灰度回滚</h2>
+<!-- SKELETON-BANNER:s-ms-x-govern -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>舱壁/金丝雀门禁思路在</li><li>缺全链路压测签字模板全文</li><li>网格重试等平台细节未展开</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-govern -->
+
 <!-- ANTI-WATER:s-ms-x-govern -->
   <h4>超时矩阵</h4>
   <div class="mermaid-wrap" id="diag-ms-gov-a">
@@ -9811,6 +10178,14 @@ flowchart LR
 
 <section class="block" id="s-ms-x-observe" data-toc="S-MS-X · 可观测资损告警" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>可观测：正逆向关键节点 Trace · 资损告警</h2>
+<!-- SKELETON-BANNER:s-ms-x-observe -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>差账指标思路在</li><li>缺具体 Prometheus 规则全文</li><li>单号串链工具链需自建</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-observe -->
+
 <!-- ANTI-WATER:s-ms-x-observe -->
   <h4>单号串链</h4>
   <div class="mermaid-wrap" id="diag-ms-obs-a">
@@ -9893,6 +10268,14 @@ flowchart TD
 
 <section class="block" id="s-ms-x-scale" data-toc="S-MS-X · 中厂vs大厂对照" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>中厂裁剪 vs 大厂标配对照表</h2>
+<!-- SKELETON-BANNER:s-ms-x-scale -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>中厂裁剪表可用</li><li>缺编制/成本数字</li><li>勿抄大厂全家桶当已裁完</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-scale -->
+
 <!-- ANTI-WATER:s-ms-x-scale -->
   <h4>中厂裁剪</h4>
   <div class="mermaid-wrap" id="diag-ms-scale-a">
@@ -9960,6 +10343,14 @@ flowchart LR
 
 <section class="block" id="s-ms-x-drills" data-toc="S-MS-X · 场景题详答" data-prio="p0">
   <h2><span class="sys-id">S-MS-X</span>场景题详答：故障注入 · 重复支付 · 重复退款 · 下游超时</h2>
+<!-- SKELETON-BANNER:s-ms-x-drills -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>演练题骨架在</li><li>缺可执行故障注入脚本</li><li>证明幂等要用你们库态，勿背答案</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:s-ms-x-drills -->
+
 <!-- ANTI-WATER:s-ms-x-drills -->
   <h4>故障注入</h4>
   <div class="mermaid-wrap" id="diag-ms-drill-a">
@@ -10186,6 +10577,14 @@ spring.cloud.loadbalancer.retry.enabled: false
 
 <section class="block" id="x-promo-trinity" data-toc="X-大促 · 微服务×K8s×AI" data-prio="p0">
   <h2><span class="sys-id">X-大促</span>微服务 × K8s × AI：一起扛大促正逆向</h2>
+<!-- SKELETON-BANNER:x-promo-trinity -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>三联演练时钟在</li><li>缺完整 T-7 检查表附件</li><li>演练未做=未完成</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:x-promo-trinity -->
+
 <!-- ANTI-WATER:x-promo-trinity -->
   <h4>三联</h4>
   <div class="mermaid-wrap" id="diag-promo-x-a">
@@ -11633,6 +12032,16 @@ flowchart TD
 
 <section class="block" id="doc-audit" data-toc="DOC-AUDIT · 全书去水审计" data-prio="p0" data-tags="audit anti-water">
   <h2><span class="sys-id">DOC-AUDIT</span>全书去水审计（诚实 before/after · 本轮整书批处理）</h2>
+
+  <div class="callout danger"><div class="label">v1.1 交付冻结（取代「整书去水循环」）</div>
+    <p>停止无限加厚。诚实状态页：<a href="#delivery-status">#delivery-status</a>。</p>
+    <ul>
+      <li><b>金标：</b><code>#s-ddd-agg</code> · <code>#ency-fm-rocket</code> · <code>#ency-fm-polardb</code>（CN/DN/GMS/CDC）</li>
+      <li><b>其余：</b>骨架可用或勿背；ENCY 假「全 PASS」已撤销</li>
+      <li><b>深化：</b>仅当用户点名（最多 5 项），不再自动扩全书</li>
+    </ul>
+  </div>
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>质量账本。用户原话：「聚合根保证唯一性，加载为啥慢」是<strong>水的样例</strong>——本轮停止单点灭火，对全书 HARD GATE 做程序化审计后一批重写。</div>
   <div class="plain"><div class="label">人话版</div>合格线=原理+源码路径+全链路+3～4 跨行业案（场景/选型/坑/步骤/量级）+≥2 mermaid+题详答。一行公司案=不合格。</div>
 
@@ -11751,7 +12160,7 @@ flowchart TB
     </pre>
   </div>
 
-  <div class="koujue"><div class="label">口诀</div>门禁口诀：无源码不进门，无案例不进门，无全链路不进门，无锚点证据不算PASS。</div>
+  <div class="koujue"><div class="label">口诀</div>v1.1 口诀：Rocket 与 PolarDB 认金标；其它 FULLMAP 先当骨架地图；假全PASS已撤销。见 #delivery-status。</div>
 
 <div class="reflect" data-reflect="ency-fm-hub-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="四段闭环：业务本质→技术实现→技术原理→业务实质；附本周交付物与差距"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 </section>
@@ -11762,30 +12171,33 @@ flowchart TB
 
   <div class="plain"><div class="label">人话版</div>本表在本轮批量重写后生成。门禁列依据：专节锚点齐、≥2图、≥3案例、≥3题、源码/路径块非空。字节过短或缺控制面/CDC（对 PolarDB-X）直接 FAIL。</div>
 
+  
   <table>
-    <thead><tr><th>技术</th><th>专章</th><th>关键细锚点（证据）</th><th>门禁</th></tr></thead>
+    <thead><tr><th>技术</th><th>专章</th><th>关键细锚点（证据）</th><th>v1.1 门禁（诚实）</th></tr></thead>
     <tbody>
-      <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td><a href="#ency-fm-rocket-storage">storage</a> · <a href="#ency-fm-rocket-flush">flush</a> · <a href="#ency-fm-rocket-ha">ha</a> · <a href="#ency-fm-rocket-order">order</a> · <a href="#ency-fm-rocket-dlq">dlq</a> · <a href="#ency-fm-rocket-tx">tx</a> · <a href="#ency-fm-rocket-lag">lag</a> · <a href="#ency-fm-rocket-fin-ecom">fin-ecom</a></td><td>PASS（金标）</td></tr>
-      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a></td><td><a href="#ency-fm-kafka-log">log</a> · <a href="#ency-fm-kafka-isr">isr</a> · <a href="#ency-fm-kafka-eos">eos</a> · <a href="#ency-fm-kafka-cg">cg</a> · <a href="#ency-fm-kafka-connect">connect</a> · <a href="#ency-fm-kafka-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>RabbitMQ</td><td><a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td><a href="#ency-fm-rabbit-ex">ex</a> · <a href="#ency-fm-rabbit-ha">ha</a> · <a href="#ency-fm-rabbit-ttl">ttl</a> · <a href="#ency-fm-rabbit-flow">flow</a> · <a href="#ency-fm-rabbit-bound">bound</a></td><td>PASS</td></tr>
-      <tr><td>Redis</td><td><a href="#ency-fm-redis">#ency-fm-redis</a></td><td><a href="#ency-fm-redis-ds">ds</a> · <a href="#ency-fm-redis-expire">expire</a> · <a href="#ency-fm-redis-ha">ha</a> · <a href="#ency-fm-redis-cache">cache</a> · <a href="#ency-fm-redis-lock">lock</a> · <a href="#ency-fm-redis-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>MySQL</td><td><a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td><a href="#ency-fm-mysql-tx">tx</a> · <a href="#ency-fm-mysql-lock">lock</a> · <a href="#ency-fm-mysql-idx">idx</a> · <a href="#ency-fm-mysql-repl">repl</a> · <a href="#ency-fm-mysql-shard">shard</a> · <a href="#ency-fm-mysql-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>PolarDB / PolarDB-X</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a></td><td><a href="#ency-fm-polardb-shared">shared</a> · <a href="#ency-fm-polardb-lag">lag</a> · <a href="#ency-fm-polardb-cn">CN</a> · <a href="#ency-fm-polardb-dn">DN</a> · <a href="#ency-fm-polardb-gms">GMS</a> · <a href="#ency-fm-polardb-collab">collab</a> · <a href="#ency-fm-polardb-cdc">CDC</a> · <a href="#ency-fm-polardb-bound">bound</a></td><td>PASS</td></tr>
-      <tr><td>GaussDB</td><td><a href="#ency-fm-gauss">#ency-fm-gauss</a></td><td><a href="#ency-fm-gauss-topo">topo</a> · <a href="#ency-fm-gauss-consist">consist</a> · <a href="#ency-fm-gauss-compat">compat</a> · <a href="#ency-fm-gauss-mig">mig</a> · <a href="#ency-fm-gauss-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>达梦</td><td><a href="#ency-fm-dm">#ency-fm-dm</a></td><td><a href="#ency-fm-dm-ora">ora</a> · <a href="#ency-fm-dm-engine">engine</a> · <a href="#ency-fm-dm-ha">ha</a> · <a href="#ency-fm-dm-bak">bak</a> · <a href="#ency-fm-dm-bound">bound</a></td><td>PASS</td></tr>
-      <tr><td>TDSQL</td><td><a href="#ency-fm-tdsql">#ency-fm-tdsql</a></td><td><a href="#ency-fm-tdsql-arch">arch</a> · <a href="#ency-fm-tdsql-shard">shard</a> · <a href="#ency-fm-tdsql-xa">xa</a> · <a href="#ency-fm-tdsql-hot">hot</a> · <a href="#ency-fm-tdsql-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>JVM</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a></td><td><a href="#ency-fm-jvm-mem">mem</a> · <a href="#ency-fm-jvm-gc">gc</a> · <a href="#ency-fm-jvm-diag">diag</a> · <a href="#ency-fm-jvm-container">container</a> · <a href="#ency-fm-jvm-prod">prod</a></td><td>PASS</td></tr>
-      <tr><td>JUC</td><td><a href="#ency-fm-juc">#ency-fm-juc</a></td><td><a href="#ency-fm-juc-jmm">jmm</a> · <a href="#ency-fm-juc-aqs">aqs</a> · <a href="#ency-fm-juc-pool">pool</a> · <a href="#ency-fm-juc-chm">chm</a> · <a href="#ency-fm-juc-order">order</a></td><td>PASS</td></tr>
-      <tr><td>Spring</td><td><a href="#ency-fm-spring">#ency-fm-spring</a></td><td><a href="#ency-fm-spring-ioc">ioc</a> · <a href="#ency-fm-spring-aop">aop</a> · <a href="#ency-fm-spring-tx">tx</a> · <a href="#ency-fm-spring-boot">boot</a> · <a href="#ency-fm-spring-prod">prod</a></td><td>PASS</td></tr>
-      <tr><td>Spark</td><td><a href="#ency-fm-spark">#ency-fm-spark</a></td><td><a href="#ency-fm-spark-df">df</a> · <a href="#ency-fm-spark-shuffle">shuffle</a> · <a href="#ency-fm-spark-skew">skew</a> · <a href="#ency-fm-spark-tune">tune</a> · <a href="#ency-fm-spark-ops">ops</a></td><td>PASS</td></tr>
-      <tr><td>Flink</td><td><a href="#ency-fm-flink">#ency-fm-flink</a></td><td><a href="#ency-fm-flink-runtime">runtime</a> · <a href="#ency-fm-flink-ck">ck</a> · <a href="#ency-fm-flink-time">time</a> · <a href="#ency-fm-flink-back">back</a> · <a href="#ency-fm-flink-sink">sink</a></td><td>PASS</td></tr>
+      <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td><a href="#ency-fm-rocket-storage">storage</a> · flush · ha · order · dlq · tx</td><td><b>金标完成</b></td></tr>
+      <tr><td>PolarDB / PolarDB-X</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a></td><td><a href="#ency-fm-polardb-cn">CN</a> · <a href="#ency-fm-polardb-dn">DN</a> · <a href="#ency-fm-polardb-gms">GMS</a> · <a href="#ency-fm-polardb-cdc">CDC</a></td><td><b>金标完成</b></td></tr>
+      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a></td><td>log · isr · eos · cg</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>RabbitMQ</td><td><a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td>ex · ha · ttl · dlx</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>Redis</td><td><a href="#ency-fm-redis">#ency-fm-redis</a></td><td>ds · expire · lock · ops</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>MySQL</td><td><a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>tx · lock · idx · repl</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>GaussDB</td><td><a href="#ency-fm-gauss">#ency-fm-gauss</a></td><td>topo · mig · ops</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>达梦</td><td><a href="#ency-fm-dm">#ency-fm-dm</a></td><td>ora · ha · bak</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>TDSQL</td><td><a href="#ency-fm-tdsql">#ency-fm-tdsql</a></td><td>arch · shard · xa</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>JVM / JUC / Spring</td><td>对应 #ency-fm-*</td><td>见专章细锚</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>Spark / Flink</td><td>对应 #ency-fm-*</td><td>见专章细锚</td><td><b>未达标勿背作金标</b>（弱于 MQ）</td></tr>
     </tbody>
   </table>
-  <div class="callout"><div class="label">诚实说明</div>
-    公司案例矩阵 <a href="#ency-case">#ency-case</a> 为横切套路库，与 FULLMAP 专章互补；若某案过薄以专章内 3～4 案为准。
-    本轮已对全部 14 个 #ency-fm-* 专章做生成器级重写（非单点补丁）。若后续抽检发现单段仍偏短，整章再开一轮加深，而不是「说一个补一个」。
+  <div class="callout danger"><div class="label">v1.1 冻结 · 取消假 PASS</div>
+    旧表「14 项全 PASS」作废。全书只有 RocketMQ + PolarDB-X（CN/DN/GMS/CDC）+ 正文章 <a href="#s-ddd-agg">#s-ddd-agg</a> 认金标。
+    其余 FULLMAP 专章保留结构供导航，标「骨架可用」。详见 <a href="#delivery-status">#delivery-status</a>。
   </div>
-  <div class="koujue"><div class="label">口诀</div>审计口诀：点得开锚点，数得清案例，找得到源码路径，才叫PASS。</div>
+
+  <div class="callout"><div class="label">诚实说明（v1.1）</div>
+    公司案例矩阵 <a href="#ency-case">#ency-case</a> 为横切套路库。停止「整书再开一轮加深」循环；深化由用户点名（见 <a href="#delivery-status">#delivery-status</a>）。
+  </div>
+
+  <div class="koujue"><div class="label">口诀</div>审计口诀：金标看 #delivery-status 三块；点得开不等于全 PASS。</div>
 
 <div class="reflect" data-reflect="ency-audit-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="四段闭环：业务本质→技术实现→技术原理→业务实质；附本周交付物与差距"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 </section>
@@ -11797,7 +12209,7 @@ flowchart TB
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>PutMessage 顺序追加 CommitLog，再 dispatch 建 ConsumeQueue；SYNC/ASYNC_FLUSH 与主从复制定 RPO；顺序靠哈希到队列；失败进重试/%DLQ% 工单修数。事务消息只是全链路一块。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">金标门禁（v1.1 已达标 · 保持）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -12049,11 +12461,19 @@ retryTimesWhenSendFailed=2</code></pre>
 
 <section class="block" id="ency-fm-kafka" data-toc="ENCY-FM · Kafka全貌" data-prio="p0" data-tags="kafka isr eos connect fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-KAFKA</span>Kafka 全貌：日志·ISR·消费者组·EOS边界·Connect·多场景·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-kafka -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>日志/ISR/EOS 骨架在</li><li>生产调优与故障全集弱于 Rocket 金标</li><li>勿把 EOS 背成跨系统账本</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-kafka -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>轨迹/CDC/对账高吞吐事件。<br><b>服务业务闭环：</b>物流轨迹/清结算/画像<br><b>挂回：</b>T-Found-Kafka → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>Kafka=分布式提交日志。分区并行、ISR耐打、消费者组读进度；恰好一次有边界，外系统靠幂等。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -12262,11 +12682,19 @@ compression.type=zstd|lz4</code></pre>
 
 <section class="block" id="ency-fm-rabbit" data-toc="ENCY-FM · RabbitMQ全貌" data-prio="p0" data-tags="rabbitmq quorum dlx fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-RABBIT</span>RabbitMQ 全貌：交换·队列·仲裁·TTL/DLX·堆积·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-rabbit -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>路由/Confirm/DLX 骨架在</li><li>仲裁队列运维深度不足</li><li>高吞吐勿硬扛本节</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-rabbit -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>中厂通知与轻量异步。<br><b>服务业务闭环：</b>通知/轻补偿<br><b>挂回：</b>T-Found-Rabbit → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>Rabbit=路由邮局。交换机分流，队列存消息，quorum保活，confirm+ack才可靠，TTL/DLX处理过期死信。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -12464,11 +12892,19 @@ prefetch=按RT</code></pre>
 
 <section class="block" id="ency-fm-redis" data-toc="ENCY-FM · Redis全貌" data-prio="p0" data-tags="redis cluster persistence fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-REDIS</span>Redis 全貌：结构·过期淘汰·持久化·哨兵集群·缓存锁限流·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-redis -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>结构/过期/锁骨架在</li><li>Cluster 迁移与大 Key Runbook 未满金标</li><li>预占≠账本</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-redis -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>秒杀预占、会话、热点、限流。<br><b>服务业务闭环：</b>库存预占/风控频控<br><b>挂回：</b>T-Found-Redis → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>单线程命令执行+IO 多路复用；结构与编码定内存；复制异步；预占可以、账本不行。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -12677,11 +13113,19 @@ Cluster重试+幂等；禁无界大Key</code></pre>
 
 <section class="block" id="ency-fm-mysql" data-toc="ENCY-FM · MySQL全貌" data-prio="p0" data-tags="mysql innodb mvcc fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-MYSQL</span>MySQL/InnoDB 全貌：隔离·锁·索引·redo/binlog·复制HA·分片边界·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-mysql -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>MVCC/锁/索引骨架在</li><li>分库迁移与长事务全集弱于金标线</li><li>付后读主要配进你们读写路由</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-mysql -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>订单/支付/售后账本。<br><b>服务业务闭环：</b>正逆向事务<br><b>挂回：</b>T-Found-MySQL → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>InnoDB=聚簇索引账本+MVCC+redo/undo+binlog。订单幂等=唯一键+条件更新；付后读主。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -12896,7 +13340,7 @@ sync_binlog/innodb_flush_log_at_trx_commit 按RPO</code></pre>
 
   <div class="plain"><div class="label">人话版</div><b>开篇钉产品：</b>PolarDB=共享存储一写多读；PolarDB-X=CN/DN/GMS 分布式。先治读，写顶了再上X；CDC旁路，资损用Outbox。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">金标门禁（v1.1 已达标 · 保持）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -13161,11 +13605,19 @@ ro_lag_threshold_ms=...
 
 <section class="block" id="ency-fm-gauss" data-toc="ENCY-FM · GaussDB全貌" data-prio="p0" data-tags="gaussdb xinchuang fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-GAUSS</span>GaussDB 全貌：拓扑·一致性·兼容·迁移·备份演练·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-gauss -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>拓扑/迁移门禁骨架在</li><li>方言/隔离用例集未达金标</li><li>未签字拓扑前勿迁核心</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-gauss -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>信创订单/报备库。<br><b>服务业务闭环：</b>合规OLTP<br><b>挂回：</b>ENCY-D-GAUSS → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即门禁：</b>先认集中式/分布式拓扑与事务模型，再迁流量；方言/隔离静默差是最大坑。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -13366,11 +13818,19 @@ rollback_switch=ready</code></pre>
 
 <section class="block" id="ency-fm-dm" data-toc="ENCY-FM · 达梦全貌" data-prio="p0" data-tags="dameng xinchuang fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-DM</span>达梦全貌：Oracle替换·引擎事务·守护切换·备份演练·边界·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-dm -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>Oracle 替换路径骨架在</li><li>分页/空串/备份演练细节待补全</li><li>备份不演练=零</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-dm -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>信创交易/报备。<br><b>服务业务闭环：</b>合规OLTP<br><b>挂回：</b>ENCY-D-DM → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即路径：</b>达梦≈Oracle国产方向盘——习惯近，分页/空串/序列/工具链必须重测；备份不演练=零。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -13570,11 +14030,19 @@ restore_drill_last_30d=ok</code></pre>
 
 <section class="block" id="ency-fm-tdsql" data-toc="ENCY-FM · TDSQL全貌" data-prio="p0" data-tags="tdsql sharding fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-TDSQL</span>TDSQL 全貌：代理路由·分片键·分布式事务·热点·审计·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-tdsql -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>分片/跨片预算骨架在</li><li>热点片与全局索引实战待补</li><li>无键扫生产禁止</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-tdsql -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>高并发订单水平扩展。<br><b>服务业务闭环：</b>订单写扩展<br><b>挂回：</b>ENCY-D-TDSQL → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>数据切开。代理看分片键；跨片当事故预算；报表禁扫生产。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -13780,11 +14248,19 @@ report_to_warehouse=enforced</code></pre>
 
 <section class="block" id="ency-fm-jvm" data-toc="ENCY-FM · JVM全貌" data-prio="p0" data-tags="jvm gc fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-JVM</span>JVM 全貌：内存·GC·诊断·容器·生产配置·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-jvm -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>内存/GC/容器骨架在</li><li>判读案例集弱于金标</li><li>结合 T-Found-JVM 用</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-jvm -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>订单服务稳定性底座。<br><b>服务业务闭环：</b>RT/可用性<br><b>挂回：</b>T-Found-JVM → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>先分清堆/元空间/直接内存谁OOM；GC看P99；容器认cgroup limit；大促前压测不是上线后猜。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -13986,11 +14462,19 @@ GC日志落盘；直内存预算
 
 <section class="block" id="ency-fm-juc" data-toc="ENCY-FM · JUC全貌" data-prio="p0" data-tags="juc aqs fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-JUC</span>JUC 全貌：JMM·AQS·线程池·CHM·订单并发·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-juc -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>JMM/AQS/池骨架在</li><li>订单并发模式样例待补</li><li>结合 T-Found-JUC 用</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-juc -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>回调/履约并发与隔离。<br><b>服务业务闭环：</b>并发正确与隔离<br><b>挂回：</b>T-Found-JUC → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>JMM定可见有序；AQS是锁/信号量底板；线程池参数决定拒单还是堆积；跨机互斥别指望本地锁。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -14191,11 +14675,19 @@ weekly = add_new_pit_to_cases_and_conf()
 
 <section class="block" id="ency-fm-spring" data-toc="ENCY-FM · Spring全貌" data-prio="p0" data-tags="spring transaction fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-SPRING</span>Spring 全貌：IoC·AOP事务·Boot·生产边界·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-spring -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>IoC/事务代理骨架在</li><li>多数据源/失效场景全集待补</li><li>自调用坑必须用你们代码验</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-spring -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>订单服务应用框架。<br><b>服务业务闭环：</b>事务边界/装配<br><b>挂回：</b>P0-Spring → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>容器生命周期决定Bean如何来；事务靠代理，自调用会失效；短事务+Outbox，禁包HTTP。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -14397,11 +14889,19 @@ management.endpoints 鉴权收敛</code></pre>
 
 <section class="block" id="ency-fm-spark" data-toc="ENCY-FM · Spark全貌" data-prio="p0" data-tags="spark shuffle fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-SPARK</span>Spark 全貌：DF·Shuffle·倾斜·调优·对账·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-spark -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>DF/Shuffle/倾斜骨架在</li><li>算子级调优明显弱于 MQ 金标</li><li>对账作业规范需自建</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-spark -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>日终对账/批处理。<br><b>服务业务闭环：</b>批对账<br><b>挂回：</b>ENCY-BD-SPARK → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>DF/SQL走Catalyst；慢几乎都在Shuffle与倾斜；对账作业必须幂等覆盖写。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>
@@ -14598,11 +15098,19 @@ driver不收齐巨大结果</code></pre>
 
 <section class="block" id="ency-fm-flink" data-toc="ENCY-FM · Flink全貌" data-prio="p0" data-tags="flink checkpoint fullmap hardgate">
   <h2><span class="sys-id">ENCY-FM-FLINK</span>Flink 全貌：Checkpoint·水位线·反压·Sink幂等·订单实时·金融/电商/物流</h2>
+<!-- SKELETON-BANNER:ency-fm-flink -->
+  <div class="callout danger"><div class="label">骨架·待深化（v1.1 冻结 · 非金标）</div>
+    <p>本节<strong>可以当索引/提纲</strong>，但<strong>不要当作已金标完工</strong>。金标仅见 <a href="#delivery-status">#delivery-status</a> 三块。</p>
+    <p><b>缺什么（诚实）：</b></p>
+    <ul><li>CK/水位/反压骨架在</li><li>状态 TTL/EOS 分级待加深</li><li>勿背成端到端恰好一次万能</li></ul>
+  </div>
+<!-- /SKELETON-BANNER:ency-fm-flink -->
+
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>实时支付成功率/风控特征。<br><b>服务业务闭环：</b>实时数仓<br><b>挂回：</b>ENCY-BD-FLINK → FULLMAP</div>
 
   <div class="plain"><div class="label">人话版</div><b>开篇即底板：</b>有状态流计算。Checkpoint是拍照续跑；端到端exactly-once靠CK+幂等/事务Sink；事件时间治乱序。</div>
 
-  <div class="callout danger"><div class="label">HARD GATE（不合格重写）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。禁止空泛概述凑字。</div>
+  <div class="callout danger"><div class="label">骨架·待深化（非金标 · v1.1）</div>开篇原理+源码 → 全链路能力地图+≥2 mermaid → 生产配置 → 3～4 跨行业案例(场景/选型/坑/步骤/公开量级效果) → 金融vs电商vs物流小结 → ≥3 题详答。结构保留供导航；深度未达 Rocket/Polar 金标，勿背作 PASS。详见 #delivery-status。</div>
   <h3>① 全景能力地图（禁止单点）</h3>
   <table>
     <thead><tr><th>能力面</th><th>要点（必须写到）</th><th>挂正逆向</th></tr></thead>

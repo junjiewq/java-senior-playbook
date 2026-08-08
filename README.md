@@ -56,6 +56,7 @@
 | MQ 选型矩阵 | `#found-mq-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-mq-matrix |
 | 锁/一致性矩阵 | `#found-lock-matrix` | https://junjiewq.github.io/java-senior-playbook/#found-lock-matrix |
 | **大促三联** | `#x-promo-trinity` | https://junjiewq.github.io/java-senior-playbook/#x-promo-trinity |
+| **交付冻结 v1.1** | `#delivery-status` | https://junjiewq.github.io/java-senior-playbook/#delivery-status |
 | **全书去水审计** | `#doc-audit` | https://junjiewq.github.io/java-senior-playbook/#doc-audit |
 | **ENCY HARD GATE** | `#ency-fm` / `#ency-audit` | https://junjiewq.github.io/java-senior-playbook/#ency-fm |
 | PolarDB-X CN/DN/GMS/CDC | `#ency-fm-polardb-cn` … | https://junjiewq.github.io/java-senior-playbook/#ency-fm-polardb |
