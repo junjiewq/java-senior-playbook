@@ -1,9 +1,18 @@
 # 微信公众号 × 白皮书 × Studio 对话
 
-**合体入口（推荐写进公众号菜单）**  
+**合体入口（审核期间菜单先填这个）**  
 https://junjiewq.github.io/java-senior-playbook/wechat.html
 
-> 本文说明可行性与运维步骤。仓库**不会**替你完成公众号注册、认证或菜单配置。
+**自定义域就绪后（`xjj985.top` 审核通过 + DNS + Pages HTTPS）**  
+https://xjj985.top/wechat.html
+
+**Studio 目标地址**  
+https://chat.xjj985.top （见 `assets/studio-config.js` 的 `publicStudioUrl`）
+
+域名解析、A/CNAME 逐条说明 → [`DNS-xjj985.md`](./DNS-xjj985.md)
+
+> 本文说明可行性与运维步骤。仓库**不会**替你完成公众号注册、认证或菜单配置。  
+> 域名若在实名/注册审核中，`dig` 为 `NXDOMAIN` 时**不要**声称自定义域已可用。
 
 ## 能不能做？
 
@@ -13,13 +22,21 @@ https://junjiewq.github.io/java-senior-playbook/wechat.html
 | 在微信里用 iframe 嵌一整站 Studio（复杂三栏 IDE） | 体验差；用本页链出去 + Studio `?embed=1` 更合适 |
 | 用户在**公众号会话气泡**里直接跟 Agent 聊 | **另一套**：需微信消息回调 / 客服接口，不是静态 Pages |
 
+## 目标拓扑
+
+| 角色 | URL |
+|------|-----|
+| Hub（GitHub Pages + 自定义域） | `https://xjj985.top/` · `https://xjj985.top/wechat.html` |
+| Studio（cloudflared 命名隧道） | `https://chat.xjj985.top/?embed=1` |
+| 过渡期 Hub | `https://junjiewq.github.io/java-senior-playbook/wechat.html` |
+
 ## 两种嵌入方式（别混）
 
 ### 方式 1 — H5 入口（本仓库交付的）
 
-1. 公众号菜单「跳转网页」→ `wechat.html`
+1. 公众号菜单「跳转网页」→ `wechat.html`（先用 github.io，域好了再换 xjj985.top）
 2. 用户点「打开白皮书」→ Pages 上的 `index.html`
-3. 用户点「打开对话」→ 你的 **公网 Studio**（`PUBLIC_STUDIO_URL` + `?embed=1`）
+3. 用户点「打开对话」→ 公网 Studio（`publicStudioUrl` / `PUBLIC_STUDIO_URL` + `?embed=1`）
 
 需要：公网 **HTTPS**、Studio 进程在线、隧道或域名能转发 **WSS**（`/ws/agent`）。
 
@@ -33,14 +50,22 @@ https://junjiewq.github.io/java-senior-playbook/wechat.html
 1. 登录 [微信公众平台](https://mp.weixin.qq.com/)（需已有公众号；未注册请自行申请）。
 2. 自定义菜单 → 跳转网页 → URL：
 
+**现在（域名审核中）：**
+
 ```text
 https://junjiewq.github.io/java-senior-playbook/wechat.html
 ```
 
-3. 若已有**稳定** Studio 域名，可给「对话」单独做菜单项，直链：
+**DNS + Pages 自定义域 HTTPS 都 OK 后：**
 
 ```text
-https://你的域名/?embed=1
+https://xjj985.top/wechat.html
+```
+
+3. 若 `chat.xjj985.top` 隧道已在线，可给「对话」单独做菜单项：
+
+```text
+https://chat.xjj985.top/?embed=1
 ```
 
 （临时 `*.trycloudflare.com` 会变，不适合写死在菜单里长期用。）
@@ -51,18 +76,18 @@ https://你的域名/?embed=1
 
 三选一（优先级从高到低）：
 
-1. 合体页 URL：`wechat.html?studio=https://xxxx.trycloudflare.com`
+1. 合体页 URL：`wechat.html?studio=https://xxxx.trycloudflare.com`（审核期练级推荐）
 2. 合体页里粘贴地址并「保存」（写入该手机浏览器的 localStorage）
 3. 编辑仓库 [`assets/studio-config.js`](./assets/studio-config.js)：
 
 ```js
 window.PLAYBOOK_STUDIO = {
-  publicStudioUrl: "https://studio.example.com",
+  publicStudioUrl: "https://chat.xjj985.top",
   chatQuery: "embed=1",
 };
 ```
 
-改完后 `git push`，Pages 才会更新配置。
+改完后 `git push`，Pages 才会更新配置。仓库默认已指向 `https://chat.xjj985.top`；在隧道未就绪时，用 `?studio=` 或页面粘贴覆盖即可。
 
 **不要**把 `DEEPSEEK_API_KEY`、`AGENT_WS_TOKEN` 写进公开仓库。
 
@@ -78,8 +103,10 @@ bash scripts/remote-access.sh
 # 打印 https://….trycloudflare.com
 ```
 
-把该 HTTPS 填进合体页或 `studio-config.js`。  
+把该 HTTPS 填进合体页（覆盖尚未解析的 `chat.xjj985.top`）。  
 微信打开对话时会走 `wss://同一主机/ws/agent`。
+
+稳定域名绑定步骤见 [`DNS-xjj985.md`](./DNS-xjj985.md)（`cloudflared tunnel login` → 命名隧道 → `chat.xjj985.top`）。
 
 可选鉴权：`.env` 设 `AGENT_ALLOW_ANONYMOUS=false` + `AGENT_WS_TOKEN=…`，链接加 `?embed=1&token=…`（token 勿发到公开群）。
 
@@ -98,9 +125,11 @@ bash scripts/remote-access.sh
 |------|------|
 | `wechat.html` | 公众号菜单主入口（Pages） |
 | `index.html` | 完整白皮书单页（仍较大；拆章为次要优化） |
+| `CNAME` | GitHub Pages 自定义域：`xjj985.top` |
+| `DNS-xjj985.md` | 解析记录与隧道步骤 |
 | `高级Java外包-系统学习技术白皮书.txt` | **仅本地**，不上 Pages |
 | 仓库外 `../高级Java外包-系统学习技术白皮书.html` | 改为跳转 stub → Pages 合体页（不再与 index 字节同步） |
 
 ## Studio `?embed=1`
 
-打开 `https://你的Studio/?embed=1` 时隐藏左右 Explorer/Diff 重壳，偏聊天，适合微信 WebView。改静态资源后需**重启** Spring Boot。
+打开 `https://chat.xjj985.top/?embed=1`（或临时隧道 URL）时隐藏左右 Explorer/Diff 重壳，偏聊天，适合微信 WebView。改静态资源后需**重启** Spring Boot。

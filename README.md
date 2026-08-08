@@ -65,11 +65,14 @@
 
 | 项 | URL / 文件 |
 |----|------------|
-| **菜单填这个** | https://junjiewq.github.io/java-senior-playbook/wechat.html |
+| **菜单（现在 / 域名审核中）** | https://junjiewq.github.io/java-senior-playbook/wechat.html |
+| **菜单（自定义域就绪后）** | https://xjj985.top/wechat.html |
+| Studio 目标 | https://chat.xjj985.top （`publicStudioUrl`） |
 | 白皮书 | [`index.html`](./index.html)（入口 A） |
 | 对话机器人 | 链到公网 Studio（入口 B，需隧道/域名） |
-| 说明 | [`WECHAT.md`](./WECHAT.md) |
+| 说明 | [`WECHAT.md`](./WECHAT.md) · [`DNS-xjj985.md`](./DNS-xjj985.md) |
 | Studio 地址配置 | [`assets/studio-config.js`](./assets/studio-config.js)（`publicStudioUrl` ≈ `PUBLIC_STUDIO_URL`） |
+| Pages 自定义域 | 根目录 [`CNAME`](./CNAME) → `xjj985.top` |
 
 完整 TXT 仍**仅本地**：`高级Java外包-系统学习技术白皮书.txt`（不上 Pages）。
 
@@ -90,7 +93,9 @@ python3 _apply_anti_water.py         # 去水加厚 + #doc-audit（可选一键�
 ## GitHub Pages
 
 - 首页：https://junjiewq.github.io/java-senior-playbook/  
-- **公众号入口**：https://junjiewq.github.io/java-senior-playbook/wechat.html
+- **公众号入口（备用）**：https://junjiewq.github.io/java-senior-playbook/wechat.html  
+- **自定义域（审核+DNS 后）**：https://xjj985.top/ · https://xjj985.top/wechat.html  
+- 解析步骤：[`DNS-xjj985.md`](./DNS-xjj985.md)
 
 ## 声明
 

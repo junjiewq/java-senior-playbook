@@ -230,11 +230,11 @@ a:active { opacity: .85; }
 
     <div class="panel">
       <h3>配置 Studio 公网地址</h3>
-      <p>优先级：URL 参数 <code>?studio=</code> → 本机记住的地址 → <code>assets/studio-config.js</code> 里的 <code>publicStudioUrl</code>。</p>
+      <p>优先级：URL 参数 <code>?studio=</code> → 本机记住的地址 → <code>assets/studio-config.js</code> 里的 <code>publicStudioUrl</code>（默认目标 <code class="mono">https://chat.xjj985.top</code>）。域名审核中或隧道未通时，用临时 trycloudflare 地址覆盖。</p>
       <div class="field">
         <label for="studioInput">PUBLIC_STUDIO_URL（HTTPS）</label>
         <input id="studioInput" type="url" inputmode="url" autocomplete="off" spellcheck="false"
-          placeholder="https://xxxx.trycloudflare.com" />
+          placeholder="https://chat.xjj985.top 或 https://xxxx.trycloudflare.com" />
       </div>
       <div class="row">
         <button type="button" class="btn primary" id="btnSave">保存并启用</button>
@@ -248,9 +248,11 @@ a:active { opacity: .85; }
     <div class="panel">
       <h3>公众号菜单怎么填</h3>
       <ul>
-        <li>自定义菜单 → 跳转网页 → URL 填：<br><code class="mono" id="hubUrl">https://junjiewq.github.io/java-senior-playbook/wechat.html</code></li>
+        <li><b>现在（域名审核中）</b>菜单填备用：<br><code class="mono">https://junjiewq.github.io/java-senior-playbook/wechat.html</code></li>
+        <li><b>自定义域就绪后</b>可改：<br><code class="mono">https://xjj985.top/wechat.html</code></li>
+        <li>当前页地址：<br><code class="mono" id="hubUrl">https://junjiewq.github.io/java-senior-playbook/wechat.html</code></li>
         <li>自动回复也可回同一链接；用户点开即进本合体页。</li>
-        <li>这是<strong>H5 入口</strong>，不是在公众号会话气泡里直接聊 Agent。</li>
+        <li>这是<strong>H5 入口</strong>，不是在公众号会话气泡里直接聊 Agent。DNS 细节见 <a href="./DNS-xjj985.md">DNS-xjj985.md</a>。</li>
       </ul>
     </div>
 
@@ -269,13 +271,14 @@ a:active { opacity: .85; }
         <li>对话依赖 WebSocket：页面 HTTPS 时用 <code>wss://</code>；隧道要同时转发 WS。</li>
         <li>麦克风 / 通话：需安全上下文；微信 WebView 对 getUserMedia、部分 TTS 支持不稳定，文字聊天最稳。</li>
         <li>本仓库<strong>未</strong>替你注册或配置微信公众号；菜单与域名校验需在微信公众平台自行完成。</li>
-        <li>临时 trycloudflare 域名会变；对外长期用请绑稳定域名并改 <code>studio-config.js</code>。</li>
+        <li>临时 trycloudflare 域名会变；长期用 <code>chat.xjj985.top</code>（cloudflared 命名隧道），见 <a href="./DNS-xjj985.md">DNS-xjj985.md</a>。</li>
       </ul>
     </div>
 
     <p class="foot">
       白皮书：<a href="./index.html">index.html</a> ·
       说明：<a href="./WECHAT.md">WECHAT.md</a> ·
+      DNS：<a href="./DNS-xjj985.md">DNS-xjj985.md</a> ·
       Pages：<a href="https://junjiewq.github.io/java-senior-playbook/">junjiewq.github.io/java-senior-playbook</a>
     </p>
   </div>
