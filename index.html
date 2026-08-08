@@ -485,6 +485,8 @@ td { background: rgba(0,0,0,.15); }
 
 
 
+
+
 /* ENCY-SEARCH-CSS */
 .topbar { flex-wrap: wrap; gap: .55rem; align-items: center; }
 .topbar-search {
@@ -9700,6 +9702,7 @@ flowchart TD
 
 <!-- DOC-AUDIT-END -->
 
+
 <!-- ENCYCLOPEDIA-START -->
 
 <section class="block" id="ency" data-toc="ENCY · 附录索引(HARD GATE)" data-prio="p0" data-tags="ency index">
@@ -12551,6 +12554,8 @@ weekly = add_new_pit_to_cases_and_conf()
   <p>周一：重画本节架构图（含失败路径）并对照源码/组件路径。周二：把 3～4 个案例改写成「若复现，第一小时动作」。周三：核对生产配置与监控是否真在值班看板。周四：口述题库五层详答并录音自检。周五：做一次最小演练（切只读/杀节点/堆堆积/跑对账重跑，择相关项）。</p>
   <p>交付物：一页拓扑、一份配置基线、一份 Runbook、三道口述题录音纪要。缺任何一项，本节对你个人仍算未完成，与仓库是否已有 HTML 无关。</p>
 
+  <p><b>Spark 收口补强：</b>对账作业必须 explain 出 Shuffle 关键 Stage，必须有倾斜预案，必须覆盖写可重跑，必须有校验和控制表。做不到这四句，批处理对账不算过关。</p>
+
   <h3 id="cases">④ 跨行业生产案例（3～4·案例归纳）</h3>
   <div class="callout"><div class="label">出处与数据纪律</div>案例归纳自公开技术分享常见套路；效果写<strong>工程目标/公开量级</strong>，<b>禁止伪造</b>未公开精确内部指标。</div>
   <div class="company-prd" id="ency-fm-spark-case-cmb"><div class="label">Case1 · 案例归纳 · 招行类清结算（案例归纳）</div><p><b>业务场景：</b>日终对账</p><p><b>技术选型细节：</b>DF/SQL；分区覆盖写；可重跑。</p><p><b>具体坑点：</b>追加写导致双份结果。</p><p><b>解决步骤：</b>①覆盖写 ②校验和 ③失败重跑。</p><p><b>落地效果（工程目标/公开量级）：</b>对账可重跑且结果稳定（示意）。</p></div>
@@ -13504,6 +13509,8 @@ flowchart TD
       }
     });
   });
+
+
 
 
 
