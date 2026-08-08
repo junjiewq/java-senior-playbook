@@ -61,12 +61,25 @@
 | **ENCY HARD GATE** | `#ency-fm` / `#ency-audit` | https://junjiewq.github.io/java-senior-playbook/#ency-fm |
 | PolarDB-X CN/DN/GMS/CDC | `#ency-fm-polardb-cn` … | https://junjiewq.github.io/java-senior-playbook/#ency-fm-polardb |
 
+## 微信公众号合体入口（优先）
+
+| 项 | URL / 文件 |
+|----|------------|
+| **菜单填这个** | https://junjiewq.github.io/java-senior-playbook/wechat.html |
+| 白皮书 | [`index.html`](./index.html)（入口 A） |
+| 对话机器人 | 链到公网 Studio（入口 B，需隧道/域名） |
+| 说明 | [`WECHAT.md`](./WECHAT.md) |
+| Studio 地址配置 | [`assets/studio-config.js`](./assets/studio-config.js)（`publicStudioUrl` ≈ `PUBLIC_STUDIO_URL`） |
+
+完整 TXT 仍**仅本地**：`高级Java外包-系统学习技术白皮书.txt`（不上 Pages）。
+
 ## 本地打开
 
-1. [`index.html`](./index.html)（需联网 CDN）  
-2. **同内容副本**（必须 md5 一致）：`/Users/Zhuanz/Downloads/test2/高级Java外包-系统学习技术白皮书.html`  
+1. [`wechat.html`](./wechat.html) — 公众号式双入口  
+2. [`index.html`](./index.html) — 白皮书全文（需联网 CDN）  
+3. 仓库外旧镜像 `../高级Java外包-系统学习技术白皮书.html`：**改为跳转 stub → Pages 合体页**（不再要求与 index 字节一致）
 
-构建：
+构建（改内容时）：
 
 ```bash
 python3 _inject_pillars_extreme.py   # 极致章
@@ -74,11 +87,10 @@ python3 _inject_ency.py              # ENCY-FM 全貌 + 搜索
 python3 _apply_anti_water.py         # 去水加厚 + #doc-audit（可选一键）
 ```
 
-写 `index.html` 后必须与 `../高级Java外包-系统学习技术白皮书.html` md5 一致。
-
 ## GitHub Pages
 
-https://junjiewq.github.io/java-senior-playbook/
+- 首页：https://junjiewq.github.io/java-senior-playbook/  
+- **公众号入口**：https://junjiewq.github.io/java-senior-playbook/wechat.html
 
 ## 声明
 

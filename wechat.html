@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="微信入口：高级 Java 白皮书 + Studio 对话机器人（H5）">
+<title>高级 Java · 公众号入口</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg0: #0b1220;
+  --bg1: #111a2e;
+  --panel: rgba(20, 32, 54, 0.85);
+  --line: rgba(140, 180, 220, 0.18);
+  --text: #e7eef8;
+  --muted: #9aadc4;
+  --faint: #6d829c;
+  --accent: #3dcfb6;
+  --accent-2: #f0b429;
+  --accent-3: #5b9dff;
+  --danger: #ff6b7a;
+  --radius: 16px;
+  --font-display: "Syne", "Segoe UI", sans-serif;
+  --font-body: "IBM Plex Sans", "PingFang SC", "Noto Sans SC", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background:
+    radial-gradient(900px 420px at 12% -8%, rgba(61,207,182,.16), transparent 55%),
+    radial-gradient(700px 380px at 92% 8%, rgba(91,157,255,.12), transparent 50%),
+    linear-gradient(180deg, var(--bg0), var(--bg1) 55%, #0a101c);
+  line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
+}
+a { color: var(--accent); text-decoration: none; }
+a:active { opacity: .85; }
+.wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.25rem 1.1rem 2.5rem;
+  padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+}
+.brand {
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 6vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  margin: 0 0 .45rem;
+}
+.brand em {
+  font-style: normal;
+  color: var(--accent);
+}
+.lead {
+  margin: 0 0 1.25rem;
+  color: var(--muted);
+  font-size: .95rem;
+}
+.lead b { color: var(--text); font-weight: 600; }
+.actions {
+  display: grid;
+  gap: .85rem;
+  margin-bottom: 1.25rem;
+}
+.card {
+  display: block;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.05rem 1.1rem 1.15rem;
+  backdrop-filter: blur(10px);
+  transition: border-color .15s ease, transform .15s ease;
+}
+.card:active { transform: scale(.985); }
+.card .kicker {
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: .35rem;
+}
+.card h2 {
+  margin: 0 0 .35rem;
+  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+}
+.card p {
+  margin: 0;
+  font-size: .88rem;
+  color: var(--muted);
+}
+.card.primary { border-color: rgba(61,207,182,.45); }
+.card.chat { border-color: rgba(91,157,255,.4); }
+.card.chat .kicker { color: var(--accent-3); }
+.card.disabled {
+  opacity: .72;
+  pointer-events: none;
+}
+.card .go {
+  display: inline-block;
+  margin-top: .7rem;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.card.chat .go { color: var(--accent-3); }
+.panel {
+  background: rgba(15, 22, 38, 0.65);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem 1.05rem;
+  margin-bottom: 1rem;
+}
+.panel h3 {
+  margin: 0 0 .55rem;
+  font-size: .95rem;
+  font-weight: 600;
+}
+.panel p, .panel li {
+  font-size: .82rem;
+  color: var(--muted);
+  margin: 0 0 .45rem;
+}
+.panel ul { margin: 0; padding-left: 1.1rem; }
+.panel code, .mono {
+  font-family: ui-monospace, "JetBrains Mono", monospace;
+  font-size: .78rem;
+  color: #c8d9ef;
+  word-break: break-all;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin: .7rem 0 .5rem;
+}
+.field label { font-size: .78rem; color: var(--faint); }
+.field input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: #0d1524;
+  color: var(--text);
+  border-radius: 10px;
+  padding: .65rem .75rem;
+  font-size: .9rem;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.btn {
+  border: 1px solid var(--line);
+  background: #18233a;
+  color: var(--text);
+  border-radius: 10px;
+  padding: .55rem .85rem;
+  font-size: .85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn.primary {
+  background: rgba(61,207,182,.18);
+  border-color: rgba(61,207,182,.45);
+  color: var(--accent);
+}
+.btn.ghost { background: transparent; color: var(--muted); }
+.status {
+  font-size: .78rem;
+  color: var(--faint);
+  min-height: 1.2em;
+  margin-top: .35rem;
+}
+.status.ok { color: var(--accent); }
+.status.warn { color: var(--accent-2); }
+.status.err { color: var(--danger); }
+.foot {
+  margin-top: 1.25rem;
+  font-size: .75rem;
+  color: var(--faint);
+}
+.foot a { color: var(--muted); }
+.note {
+  margin: .6rem 0 0;
+  padding: .65rem .75rem;
+  border-radius: 10px;
+  background: rgba(240,180,41,.08);
+  border: 1px solid rgba(240,180,41,.28);
+  font-size: .78rem;
+  color: #e8d5a0;
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1 class="brand">高级 Java · <em>公众号入口</em></h1>
+    <p class="lead">白皮书与 Studio 对话放在同一 H5 入口。<b>菜单只填本页 HTTPS</b>；对话机器人另需本机/服务器上的公网 Studio（隧道或域名）。</p>
+
+    <div class="actions">
+      <a class="card primary" id="linkPlaybook" href="./index.html">
+        <div class="kicker">入口 A</div>
+        <h2>打开白皮书</h2>
+        <p>下单正逆向闭环 · 交付冻结 v1.1 · GitHub Pages 静态页（无需后端）。</p>
+        <span class="go">进入阅读 →</span>
+      </a>
+
+      <a class="card chat" id="linkStudio" href="#" hidden>
+        <div class="kicker">入口 B</div>
+        <h2>打开对话机器人</h2>
+        <p>Studio Agent（WebSocket）。微信内打开需公网 <b>HTTPS + WSS</b>，推荐带 <code class="mono">?embed=1</code> 轻量壳。</p>
+        <span class="go" id="studioGo">进入对话 →</span>
+      </a>
+
+      <div class="card chat disabled" id="studioPlaceholder">
+        <div class="kicker">入口 B</div>
+        <h2>对话机器人（待配置公网地址）</h2>
+        <p>localhost 不能给微信用户用。先在本机启动 Studio + 隧道，再把 HTTPS 地址粘贴到下方。</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>配置 Studio 公网地址</h3>
+      <p>优先级：URL 参数 <code>?studio=</code> → 本机记住的地址 → <code>assets/studio-config.js</code> 里的 <code>publicStudioUrl</code>。</p>
+      <div class="field">
+        <label for="studioInput">PUBLIC_STUDIO_URL（HTTPS）</label>
+        <input id="studioInput" type="url" inputmode="url" autocomplete="off" spellcheck="false"
+          placeholder="https://xxxx.trycloudflare.com" />
+      </div>
+      <div class="row">
+        <button type="button" class="btn primary" id="btnSave">保存并启用</button>
+        <button type="button" class="btn ghost" id="btnClear">清除</button>
+        <a class="btn" id="btnOpenChat" href="#" hidden>直接打开对话</a>
+      </div>
+      <p class="status" id="cfgStatus"></p>
+      <p class="note">完整 TXT 白皮书仍在仓库本地（未上 Pages）。语音/麦克风在微信内置浏览器可能受限，见下方说明。</p>
+    </div>
+
+    <div class="panel">
+      <h3>公众号菜单怎么填</h3>
+      <ul>
+        <li>自定义菜单 → 跳转网页 → URL 填：<br><code class="mono" id="hubUrl">https://junjiewq.github.io/java-senior-playbook/wechat.html</code></li>
+        <li>自动回复也可回同一链接；用户点开即进本合体页。</li>
+        <li>这是<strong>H5 入口</strong>，不是在公众号会话气泡里直接聊 Agent。</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>两种「嵌入」别搞混</h3>
+      <ul>
+        <li><b>方式 1（本页）</b>：菜单/回复打开 HTTPS H5 → 白皮书 + 链到 Studio。可行，需公网 HTTPS/WSS。</li>
+        <li><b>方式 2（真公众号消息会话）</b>：用户在聊天列表跟公众号说话 → 需微信服务器回调、接入客服/消息 API，再转发到 Agent。不是 iframe，也不是改静态页就能完成。</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>限制与还缺什么</h3>
+      <ul>
+        <li>微信不能打开 <code>localhost</code> / 局域网 HTTP；Studio 必须隧道或自有域名 HTTPS。</li>
+        <li>对话依赖 WebSocket：页面 HTTPS 时用 <code>wss://</code>；隧道要同时转发 WS。</li>
+        <li>麦克风 / 通话：需安全上下文；微信 WebView 对 getUserMedia、部分 TTS 支持不稳定，文字聊天最稳。</li>
+        <li>本仓库<strong>未</strong>替你注册或配置微信公众号；菜单与域名校验需在微信公众平台自行完成。</li>
+        <li>临时 trycloudflare 域名会变；对外长期用请绑稳定域名并改 <code>studio-config.js</code>。</li>
+      </ul>
+    </div>
+
+    <p class="foot">
+      白皮书：<a href="./index.html">index.html</a> ·
+      说明：<a href="./WECHAT.md">WECHAT.md</a> ·
+      Pages：<a href="https://junjiewq.github.io/java-senior-playbook/">junjiewq.github.io/java-senior-playbook</a>
+    </p>
+  </div>
+
+  <script src="./assets/studio-config.js"></script>
+  <script>
+  (function () {
+    var LS = "playbook.publicStudioUrl";
+    var cfg = window.PLAYBOOK_STUDIO || {};
+    var input = document.getElementById("studioInput");
+    var statusEl = document.getElementById("cfgStatus");
+    var linkStudio = document.getElementById("linkStudio");
+    var placeholder = document.getElementById("studioPlaceholder");
+    var btnOpen = document.getElementById("btnOpenChat");
+    var studioGo = document.getElementById("studioGo");
+
+    document.getElementById("hubUrl").textContent = location.href.split("?")[0].split("#")[0];
+
+    function normalize(u) {
+      if (!u) return "";
+      u = String(u).trim().replace(/\/+$/, "");
+      return u;
+    }
+
+    function fromQuery() {
+      try {
+        return normalize(new URLSearchParams(location.search).get("studio") || "");
+      } catch (_) { return ""; }
+    }
+
+    function stored() {
+      try { return normalize(localStorage.getItem(LS) || ""); } catch (_) { return ""; }
+    }
+
+    function configured() {
+      return normalize(cfg.publicStudioUrl || "");
+    }
+
+    function resolve() {
+      return fromQuery() || stored() || configured();
+    }
+
+    function chatUrl(base) {
+      var q = (cfg.chatQuery || "embed=1").replace(/^\?/, "");
+      var url = base + "/?" + q;
+      try {
+        var token = new URLSearchParams(location.search).get("token");
+        if (token) url += "&token=" + encodeURIComponent(token);
+      } catch (_) {}
+      return url;
+    }
+
+    function setStatus(msg, cls) {
+      statusEl.textContent = msg || "";
+      statusEl.className = "status" + (cls ? " " + cls : "");
+    }
+
+    function apply() {
+      var base = resolve();
+      input.value = base;
+      if (base) {
+        if (!/^https:\/\//i.test(base)) {
+          setStatus("必须是 https:// 开头的公网地址（微信不认 http/localhost）", "err");
+          linkStudio.hidden = true;
+          placeholder.hidden = false;
+          btnOpen.hidden = true;
+          return;
+        }
+        var href = chatUrl(base);
+        linkStudio.href = href;
+        linkStudio.hidden = false;
+        placeholder.hidden = true;
+        btnOpen.href = href;
+        btnOpen.hidden = false;
+        studioGo.textContent = "进入对话 → " + base.replace(/^https:\/\//i, "");
+        setStatus("已启用：" + base, "ok");
+      } else {
+        linkStudio.hidden = true;
+        placeholder.hidden = false;
+        btnOpen.hidden = true;
+        setStatus("尚未配置。本机：启动 Studio → bash scripts/remote-access.sh → 粘贴打印的 HTTPS", "warn");
+      }
+    }
+
+    document.getElementById("btnSave").onclick = function () {
+      var v = normalize(input.value);
+      if (v && !/^https:\/\//i.test(v)) {
+        setStatus("请填写 https://… 地址", "err");
+        return;
+      }
+      try {
+        if (v) localStorage.setItem(LS, v);
+        else localStorage.removeItem(LS);
+      } catch (_) {}
+      apply();
+    };
+    document.getElementById("btnClear").onclick = function () {
+      try { localStorage.removeItem(LS); } catch (_) {}
+      input.value = configured();
+      apply();
+    };
+
+    // Persist ?studio= for convenience on this device
+    var qStudio = fromQuery();
+    if (qStudio) {
+      try { localStorage.setItem(LS, qStudio); } catch (_) {}
+    }
+    apply();
+  })();
+  </script>
+</body>
+</html>
