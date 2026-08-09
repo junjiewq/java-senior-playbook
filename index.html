@@ -6553,6 +6553,7 @@ sequenceDiagram
 
 <section class="block" id="t-as-deep" data-toc="T-AS+ · AgentScope生产嵌入" data-prio="p0">
   <h2><span class="sys-id">T-AS+</span>AgentScope 生产嵌入（对照加深）</h2>
+  <div class="callout"><div class="label">深挖入口</div>源码级循环 / Toolkit / 生产拓扑与 Runbook 见附录主菜 <a href="#appx-agentscope-src">#appx-agentscope-src</a>。</div>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>框架加深；基础对照见 T-AS。<br><b>服务业务闭环：</b>Java/Python 多 Agent 运行时<br><b>挂回：</b>T-Agents → 本页 → S-Method</div>
 
   <div class="essence">
@@ -12211,7 +12212,7 @@ flowchart TD
 flowchart TB
   ENCY[ENCY 附录索引] --> FM[ENCY-FM HARD GATE 全貌]
   ENCY --> CASE[ENCY-CASE 公开案例矩阵]
-  ENCY --> APPX["APPX #appx-ops-ai-sql\nPolar/索引慢SQL/投产"]
+  ENCY --> APPX["APPX AgentScope源码+生产\n#appx-agentscope-src"]
   FM --> MQ[Rocket/Kafka/Rabbit]
   FM --> ST[Redis/MySQL/分布式库]
   FM --> RT[JVM/JUC/Spring]
@@ -12231,6 +12232,7 @@ flowchart TB
       <tr><td>Redis / MySQL</td><td><a href="#ency-fm-redis">#ency-fm-redis</a> · <a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>PASS</td></tr>
       <tr><td>PolarDB/Gauss/达梦/TDSQL</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a>…</td><td>见 <a href="#ency-audit">#ency-audit</a></td></tr>
       <tr><td>JVM/JUC/Spring/Spark/Flink</td><td><a href="#ency-fm-jvm">#ency-fm-jvm</a>…</td><td>PASS</td></tr>
+      <tr><td>APPX AgentScope 源码+生产</td><td><a href="#appx-agentscope-src">#appx-agentscope-src</a></td><td>图文主菜</td></tr>
       <tr><td>APPX 投产/Polar/索引慢SQL</td><td><a href="#appx-ops-ai-sql">#appx-ops-ai-sql</a></td><td>附录加厚</td></tr>
       <tr><td>公开公司案例矩阵</td><td><a href="#ency-case">#ency-case</a></td><td>PASS（案例归纳）</td></tr>
     </tbody>
@@ -15901,9 +15903,445 @@ flowchart TD
 
 
 
+
+<!-- APPX-AGENTSCOPE-SRC-START -->
+<section class="block" id="appx-agentscope-src" data-toc="APPX · AgentScope源码+生产图文" data-prio="p0" data-tags="agentscope react toolkit memory hook skill websocket production source">
+  <h2><span class="sys-id">APPX-AS</span>AgentScope 源码级解读与生产级使用（图文主菜）</h2>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>挂在 <a href="#t-ai-stack">#t-ai-stack</a> / <a href="#t-as-deep">#t-as-deep</a> 之后、SQL 巡检智能体之前：把「能讲边界」落到「能读源码、能上生产」。<br><b>服务业务闭环：</b>辅驾编排 / SQL 巡检 / Studio 改码副驾<br><b>挂回：</b><a href="#appx-sql-agents">#appx-sql-agents</a> · <a href="#appx-ops">#appx-ops</a> · <a href="#appx-ut">#appx-ut</a>（单测门禁）</div>
+  <div class="callout danger"><div class="label">交付纪律</div>
+    <p>主菜是<strong>源码路径 + 生产用法 + 图文</strong>；单测只是 CI 门禁，见文末短节。对照仓库 <code>agentscope-java-programmer/</code>（Studio：DeepSeek chat、Edge TTS、持久记忆目录、WS）只写真实工程结构，<strong>不编造公司 KPI / PASS 率</strong>。框架类名来自本地 Maven <code>io.agentscope:agentscope-core:2.0.0</code> sources；推断处标「示意」。</p>
+  </div>
+  <div class="plain"><div class="label">人话版</div>AgentScope 不是「包一层 ChatGPT」：<b>ReActAgent</b> 在 reasoning↔acting 之间转；<b>Toolkit</b> 把带 <code>@Tool</code> 的方法变成模型可调的 schema；<b>JsonFileAgentStateStore</b> 把多轮上下文落到磁盘；<b>Hook/Middleware</b> 管日志、超时、优雅停机；你的业务红线（沙箱路径、只读 MCP、禁止写账）必须写在 Tool/Permission 层，不能赌模型自觉。</div>
+
+  <h3 id="appx-as-toc">0. 本章导航</h3>
+  <table>
+    <thead><tr><th>锚点</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#appx-as-topo">#appx-as-topo</a></td><td>定位与生产拓扑（对照 Studio）</td></tr>
+      <tr><td><a href="#appx-as-src">#appx-as-src</a></td><td>源码级解读：ReAct / Toolkit / State / Hook / Skill</td></tr>
+      <tr><td><a href="#appx-as-prod">#appx-as-prod</a></td><td>生产级使用：配置/部署/观测/安全/故障</td></tr>
+      <tr><td><a href="#appx-as-skill-mcp">#appx-as-skill-mcp</a></td><td>Skills / MCP / RAG 分层（挂 SQL 巡检）</td></tr>
+      <tr><td><a href="#appx-as-ut-gate">#appx-as-ut-gate</a></td><td>单测只是门禁（短）</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ========== 1 TOPO ========== -->
+  <h3 id="appx-as-topo">1. 定位与生产拓扑</h3>
+  <h4 id="appx-as-roles">1.1 组件在业务闭环中的位置</h4>
+  <table>
+    <thead><tr><th>组件</th><th>职责（一句话）</th><th>框架类（AgentScope Java 2.0）</th><th>Studio 工程对照（项目代码）</th></tr></thead>
+    <tbody>
+      <tr><td>Agent</td><td>ReAct 循环：想→调工具→观察→再想</td><td><code>io.agentscope.core.ReActAgent</code></td><td><code>JavaProgrammerAgentFactory#javaProgrammerAgent</code> 装配 Bean</td></tr>
+      <tr><td>Model</td><td>LLM 流式/非流式调用</td><td><code>io.agentscope.core.model.Model</code>；扩展 <code>OpenAIChatModel</code></td><td><code>ModelFactory</code> + <code>SwappableModel</code>（对话 DeepSeek；TTS 不经此 Model）</td></tr>
+      <tr><td>Toolkit</td><td>注册工具、导出 schema、执行 tool_call</td><td><code>io.agentscope.core.tool.Toolkit</code></td><td><code>toolkit.registerTool(fileTools/…)</code></td></tr>
+      <tr><td>Session / State</td><td>多轮上下文持久化</td><td><code>AgentStateStore</code> / <code>JsonFileAgentStateStore</code></td><td><code>workspace/.agent-state/</code>；UI 历史在 <code>.agent-sessions/</code></td></tr>
+      <tr><td>Memory（业务）</td><td>跨会话长期事实（≠ agent_state）</td><td>框架有 <code>LongTermMemory*</code> / RAG Hook；Studio 自研目录记忆</td><td><code>PersonalMemoryStore</code> + <code>MemoryRagRouter</code>（只注入，不短路）</td></tr>
+      <tr><td>Hook / Middleware</td><td>拦截 reasoning/acting/modelCall</td><td><code>Hook</code>、<code>MiddlewareBase</code>、<code>GracefulShutdownMiddleware</code></td><td>Studio 侧用事件流映射 WS；框架自带优雅停机中间件</td></tr>
+      <tr><td>Skill</td><td>可动态装载的「怎么干活」说明书+工具组</td><td><code>SkillBox</code> / <code>AgentSkillRepository</code> / <code>DynamicSkillMiddleware</code></td><td>SQL 巡检方案见 <a href="#appx-sql-agents">#appx-sql-agents</a>（目录化 SKILL.md）</td></tr>
+      <tr><td>Channel</td><td>把事件推给前端</td><td>事件：<code>AgentEvent</code> 族</td><td><code>AgentWebSocketHandler</code> + <code>AgentChatService#streamChat</code></td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><div class="label">框架 vs 项目</div>
+    <p><b>框架：</b><code>io.agentscope.*</code>（Maven <code>agentscope-harness</code> / <code>agentscope-core</code> 2.0.0）。<b>项目：</b><code>com.company.javaprogrammer.*</code>。读源码时先分清：循环与中断在框架；沙箱路径、WS cancel、个人记忆 RAG、Edge TTS 在项目。</p>
+  </div>
+
+  <h4 id="appx-as-arch-diag">1.2 总架构（Studio 生产拓扑示意）</h4>
+  <div class="mermaid-wrap" id="diag-appx-as-arch">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-arch">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  UI[Studio 三栏 UI] -->|WS /ws/agent| WS[AgentWebSocketHandler]
+  UI -->|HTTP SSE 可选| HTTP[ChatController]
+  WS --> Chat[AgentChatService]
+  HTTP --> Chat
+  Chat -->|enrichWithMemory| RAG[MemoryRagRouter / PersonalMemoryStore]
+  Chat -->|streamEvents / call| RA[ReActAgent]
+  RA --> Model[SwappableModel → OpenAIChatModel<br/>DeepSeek 兼容]
+  RA --> TK[Toolkit]
+  TK --> FT[WorkspaceFileTools / SafeCompileTool]
+  TK --> MT[PersonalMemoryTools]
+  TK --> WT[WebSearchTools / ImageTools]
+  RA --> SS[JsonFileAgentStateStore<br/>.agent-state]
+  RAG --> Disk[(.agent-memory 永久记忆)]
+  FT --> Sandbox[SandboxPathGuard<br/>workspace 沙箱]
+  Voice[Edge TTS / 火山 ASR] -.->|不经 ReAct Model| UI
+    </pre>
+  </div>
+  <div class="plain"><div class="label">人话版</div>用户一句话先进 WS，再被拼上「个人长期记忆」块，然后进 <code>ReActAgent.streamEvents</code>。模型若要改文件，只能打到 Toolkit 里已注册且经 <code>SandboxPathGuard</code> 校验的工具。TTS 是旁路，别和对话 Model 混为一谈。</div>
+
+  <!-- ========== 2 SOURCE ========== -->
+  <h3 id="appx-as-src">2. 源码级解读（必须深）</h3>
+  <h4 id="appx-as-pkg">2.1 依赖与包地图</h4>
+  <table>
+    <thead><tr><th>坐标</th><th>用途</th><th>你要读的入口</th></tr></thead>
+    <tbody>
+      <tr><td><code>io.agentscope:agentscope-core:2.0.0</code></td><td>ReAct、Toolkit、State、Hook、Skill、Permission、Shutdown</td><td><code>ReActAgent.java</code>（内嵌 <code>CallExecution</code> 循环）</td></tr>
+      <tr><td><code>io.agentscope:agentscope-harness:2.0.0</code></td><td>聚合运行时（Studio pom 直接依赖）</td><td>传递依赖到 core</td></tr>
+      <tr><td><code>io.agentscope:agentscope-extensions-model-openai:2.0.0</code></td><td>OpenAI 兼容模型（DeepSeek）</td><td><code>OpenAIChatModel</code></td></tr>
+      <tr><td>Python AgentScope（生态对照）</td><td>多 Agent / 消息管道示例多</td><td>概念对齐即可；Java 中台以 Java 2.0 API 为准</td></tr>
+    </tbody>
+  </table>
+  <pre><code>// 本地读源码（示意）
+// ~/.m2/repository/io/agentscope/agentscope-core/2.0.0/agentscope-core-2.0.0-sources.jar
+// 关键包：
+//   io.agentscope.core.ReActAgent
+//   io.agentscope.core.tool.Toolkit
+//   io.agentscope.core.state.JsonFileAgentStateStore
+//   io.agentscope.core.hook.Hook
+//   io.agentscope.core.middleware.MiddlewareChain
+//   io.agentscope.core.interruption.InterruptControl
+//   io.agentscope.core.skill.SkillBox / AgentSkillRepository
+//   io.agentscope.core.shutdown.GracefulShutdownMiddleware
+//   io.agentscope.core.permission.PermissionEngine
+</code></pre>
+
+  <h4 id="appx-as-loop">2.2 Agent 循环：message → model → tool → observation</h4>
+  <p>公开注释写明：ReAct = reasoning（想/规划）+ acting（调工具）。实现上，<code>CallExecution</code> 内联类托管整轮循环：</p>
+  <ol>
+    <li><code>coreAgent()</code> → <code>executeIteration(0)</code> → <code>reasoning(iter, false)</code></li>
+    <li><code>reasoning</code>：若 <code>iter &gt;= maxIters</code> 走 <code>summarizing()</code>；否则 <code>checkInterrupted()</code> → Hook <code>firePreReasoning</code> → <code>MiddlewareChain.onReasoning</code> → <code>model.stream(...)</code></li>
+    <li>模型产出 <code>ToolUseBlock</code> → 进入 <code>acting(iter)</code>；经 <code>PermissionEngine</code> 后 <code>toolkit.callTools(...)</code></li>
+    <li>工具结果写回 context → <code>executeIteration(iter+1)</code> / 再 reasoning；无工具且完成则返回最终 <code>Msg</code></li>
+    <li>流式路径：<code>streamEvents(Msg, RuntimeContext)</code> 与 <code>call()</code> 共用 <code>buildAgentStream</code>，保证 <code>onAgent</code> 中间件只挂一次</li>
+  </ol>
+  <div class="mermaid-wrap" id="diag-appx-as-sm">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-sm">导出 PNG</button></div>
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Seed: seedSystemMsg / RuntimeContext
+  Seed --> Reasoning: executeIteration(iter)
+  Reasoning --> CheckMax: iter vs maxIters
+  CheckMax --> Summarize: iter >= maxIters
+  CheckMax --> ModelStream: model.stream + tools schema
+  ModelStream --> Interrupted: InterruptControl
+  Interrupted --> [*]: 取消/停机
+  ModelStream --> Acting: 含 ToolUseBlock
+  ModelStream --> Done: 无工具且结束
+  Acting --> Perm: PermissionEngine
+  Perm --> Deny: AllToolsDenied / 拒绝
+  Perm --> ToolExec: toolkit.callTools
+  ToolExec --> Reasoning: observation 入 context / iter+1
+  Deny --> Reasoning: 观察拒绝原因
+  Summarize --> Done
+  Done --> Persist: saveStateToSession
+  Persist --> [*]
+    </pre>
+  </div>
+  <div class="mermaid-wrap" id="diag-appx-as-callgraph">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-callgraph">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  A[ReActAgent.streamEvents] --> B[buildAgentStream]
+  B --> C[MiddlewareChain.onAgent]
+  C --> D[CallExecution.coreAgent]
+  D --> E[reasoning]
+  E --> F[reasoningStream]
+  F --> G[MiddlewareChain.onModelCall]
+  G --> H[Model.stream]
+  E --> I[acting]
+  I --> J[PermissionEngine]
+  J --> K[Toolkit.callTools]
+  K --> L[AgentTool / ReflectiveFunctionTool]
+  D --> M[saveStateToSession]
+  M --> N[AgentStateStore.save]
+    </pre>
+  </div>
+  <pre><code>// 项目装配（框架 API + 项目 Bean）— JavaProgrammerAgentFactory
+Toolkit toolkit = new Toolkit();
+toolkit.registerTool(fileTools);
+toolkit.registerTool(compileTool);
+toolkit.registerTool(imageTools);
+toolkit.registerTool(memoryTools);
+toolkit.registerTool(webSearchTools);
+Path stateRoot = workspace.resolve(".agent-state");
+return ReActAgent.builder()
+    .name(properties.getName())
+    .sysPrompt(SYSTEM_PROMPT + "沙箱绝对路径: ...")
+    .model(swappableModel)
+    .toolkit(toolkit)
+    .stateStore(new JsonFileAgentStateStore(stateRoot))
+    .defaultSessionId(properties.getDefaultSessionId())
+    .maxIters(properties.getMaxIters())  // application.yml: company.agent.max-iters
+    .build();
+</code></pre>
+
+  <h4 id="appx-as-seq">2.3 请求时序：User ↔ WS ↔ Agent ↔ LLM ↔ Tools</h4>
+  <div class="mermaid-wrap" id="diag-appx-as-seq">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-seq">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as 用户 UI
+  participant WS as AgentWebSocketHandler
+  participant S as AgentChatService
+  participant M as MemoryRagRouter
+  participant A as ReActAgent
+  participant L as OpenAIChatModel
+  participant T as Toolkit 工具
+  U->>WS: chat / multimodal JSON
+  WS->>S: streamChat(userId, sessionId, Msg)
+  S->>M: enrichWithMemory（注入【个人长期记忆】）
+  S->>A: streamEvents(outbound, RuntimeContext)
+  loop ReAct iter &lt; maxIters
+    A->>L: model.stream(messages, toolSchemas)
+    L-->>A: Text/Thinking/ToolCall*Event
+    A-->>S: AgentEvent
+    S-->>WS: token / thinking / tool_start…
+    WS-->>U: WS JSON
+    opt 有 tool_call
+      A->>T: callTools / @Tool 方法
+      T-->>A: ToolResult*
+      A-->>S: tool_end / file_change
+      S-->>WS: 推前端
+    end
+  end
+  A-->>S: AgentResultEvent
+  S-->>WS: message final
+  U->>WS: cancel
+  WS->>WS: Disposable.dispose（停订阅）
+  Note over A: 框架另有 interrupt(userId,sessionId)<br/>→ InterruptControl.trigger
+    </pre>
+  </div>
+  <table>
+    <thead><tr><th>事件（框架）</th><th>Studio 映射 type</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>ThinkingBlockDeltaEvent</code></td><td><code>thinking</code></td><td>思考流</td></tr>
+      <tr><td><code>TextBlockDeltaEvent</code></td><td><code>token</code></td><td>正文流</td></tr>
+      <tr><td><code>ToolCallStartEvent</code> / <code>ToolCallEndEvent</code></td><td><code>tool_start</code> + status</td><td>工具进度</td></tr>
+      <tr><td><code>ToolResultEndEvent</code></td><td><code>tool_end</code>（web_search 可带 preview）</td><td>工具结束</td></tr>
+      <tr><td>（项目解析 write/replace 结果）</td><td><code>file_change</code></td><td>Diff / checkpoint</td></tr>
+      <tr><td><code>AgentResultEvent</code></td><td><code>message</code> final</td><td>回合结束</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-as-toolkit">2.4 Toolkit：注册、schema、执行、分组、MCP</h4>
+  <ul>
+    <li><b>注册：</b><code>Toolkit#registerTool(Object)</code> 扫描 <code>@Tool</code> / <code>@ToolParam</code>（如 <code>WorkspaceFileTools#listFiles</code>）；也可 <code>registerAgentTool</code> / <code>registerSchema</code>（外部执行工具只挂 schema）。</li>
+    <li><b>Schema：</b><code>getToolSchemas(activatedGroups)</code> 在 reasoning 时按激活组过滤，避免一次把全部工具塞进 prompt。</li>
+    <li><b>执行：</b><code>callTool(ToolCallParam)</code> / <code>callTools(...)</code> → 内部 executor；支持 chunk callback 流式工具输出。</li>
+    <li><b>分组与 Skill：</b><code>createToolGroup</code> / <code>createSkillToolGroup</code> / <code>updateToolGroups</code>；Skill 激活时动态打开工具组。</li>
+    <li><b>MCP：</b><code>registerMcpClient(McpClientWrapper)</code>、<code>ToolRegistration#mcpClient</code>——只读库/Git 巡检应走 MCP 白名单，而不是给 Agent 写账号。</li>
+    <li><b>中断：</b>循环内多处 <code>checkInterrupted()</code>；会话级 <code>InterruptControl.trigger(InterruptSource,…)</code>。Studio 当前 cancel 以取消 Reactor <code>Disposable</code> 为主；若要对齐框架语义，应同时调 <code>agent.interrupt(userId, sessionId)</code>（示意增强点）。</li>
+  </ul>
+  <div class="mermaid-wrap" id="diag-appx-as-tool">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-tool">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant R as CallExecution.acting
+  participant P as PermissionEngine
+  participant TK as Toolkit
+  participant EX as Tool executor
+  participant Biz as @Tool 业务方法
+  R->>P: 评估 tool_call 列表
+  alt deny / ask
+    P-->>R: AllToolsDenied 或 HITL Confirm
+  else allow
+    R->>TK: callTools(toolCalls)
+    TK->>EX: execute / executeAll
+    EX->>Biz: 反射调用（如 replace_in_file）
+    Biz-->>EX: 文本/结构化结果
+    EX-->>TK: ToolResultBlock
+    TK-->>R: List&lt;ToolResultBlock&gt;
+  end
+    </pre>
+  </div>
+
+  <h4 id="appx-as-state">2.5 Memory / State / Checkpoint</h4>
+  <table>
+    <thead><tr><th>层</th><th>存什么</th><th>路径 / API</th><th>清空对话时</th></tr></thead>
+    <tbody>
+      <tr><td>Agent 多轮上下文</td><td>user/assistant/tool 消息</td><td>框架 <code>JsonFileAgentStateStore</code>：<code>&lt;root&gt;/&lt;user&gt;/&lt;session&gt;/agent_state.json</code></td><td>应删 state（Studio：<code>clearSessionMemory</code>）</td></tr>
+      <tr><td>UI 会话历史</td><td>展示用 turns</td><td>项目 <code>workspace/.agent-sessions/</code></td><td>可清；可 <code>seedMemoryFromHistory</code> 回填 state</td></tr>
+      <tr><td>永久记忆</td><td>profile / facts / docs</td><td>项目 <code>.agent-memory/</code> + <code>PersonalMemoryTools</code></td><td><b>禁止</b>随「清空对话」删除</td></tr>
+      <tr><td>文件检查点</td><td>改码前快照</td><td>项目 <code>.agent-checkpoints/</code>（工具层）</td><td>与对话解耦</td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-appx-as-mem">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-mem">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  UserMsg[本轮用户消息] --> Router{memory-rag?}
+  Router -->|false| Full[PersonalMemoryStore.buildPromptBlock]
+  Router -->|true| TopK[MemoryRagRouter top-k 片段]
+  Full --> Inject[拼【个人长期记忆】+ 用户消息]
+  TopK --> Inject
+  Inject --> Agent[ReActAgent]
+  Agent --> State[(JsonFileAgentStateStore<br/>agent_state)]
+  Agent -->|remember_fact / update_profile| PermMem[(.agent-memory)]
+  Note1[产品纪律：RAG 只注入<br/>memory-shortcircuit=false<br/>每轮仍调 LLM]
+    </pre>
+  </div>
+
+  <h4 id="appx-as-hook">2.6 Hook / Middleware / 权限 / 停机</h4>
+  <ul>
+    <li><b>Hook：</b><code>Hook#onEvent(HookEvent)</code> 统一入口；可改 <code>PreReasoningEvent</code> 输入消息、在 <code>PreActingEvent</code> 注入鉴权；priority 越小越先执行。</li>
+    <li><b>Middleware：</b><code>MiddlewareBase</code> 链 <code>onAgent</code> / <code>onReasoning</code> / <code>onModelCall</code> / <code>onActing</code>；适合超时包装、计量、强制 stop（<code>RequestStopEvent</code>）。</li>
+    <li><b>PermissionEngine：</b>工具 allow/deny/ask；生产 SQL 写工具应默认 deny，HITL 才放行。</li>
+    <li><b>GracefulShutdownMiddleware + GracefulShutdownManager：</b>JVM 停机时拒新推理、尽量收尾；配合 Spring <code>@Bean(destroyMethod="close")</code> 关闭 <code>ReActAgent</code>。</li>
+    <li><b>RAG Hook（框架）：</b><code>GenericRAGHook</code> 等可挂知识库；Studio 选择项目侧注入，避免双通道打架。</li>
+  </ul>
+
+  <h4 id="appx-as-skill-src">2.7 Skill 在框架里怎么挂上</h4>
+  <p><code>SkillBox</code> 管理 <code>AgentSkill</code> 并暴露为工具；2.0 起更推荐 <code>AgentSkillRepository</code> 加载。<code>DynamicSkillMiddleware</code> 在运行时按需激活 Skill 对应工具组；<code>Toolkit#createSkillToolGroup</code> 把 Skill 与 tool group 绑定。业务侧 SQL 巡检的「SKILL.md 目录」是工程约定，最终仍应落到「注册进 Toolkit / Repository + 红线写进 Skill 描述与 MCP 权限」。</p>
+
+  <!-- ========== 3 PROD ========== -->
+  <h3 id="appx-as-prod">3. 生产级使用（必须深）</h3>
+  <h4 id="appx-as-cfg">3.1 配置清单（对照 Studio application.yml）</h4>
+  <table>
+    <thead><tr><th>配置项</th><th>示意键</th><th>生产注意</th></tr></thead>
+    <tbody>
+      <tr><td>模型</td><td><code>AGENT_PROVIDER</code> / <code>AGENT_MODEL_NAME</code> / <code>AGENT_BASE_URL</code> + API Key 环境变量</td><td>Key 只进环境/密钥槽，禁止写进仓库与日志</td></tr>
+      <tr><td>迭代上限</td><td><code>company.agent.max-iters</code>（默认 32）</td><td>防死循环烧钱；SQL 巡检可更低</td></tr>
+      <tr><td>消息长度</td><td><code>max-message-chars</code></td><td>防单请求撑爆上下文</td></tr>
+      <tr><td>并发/串行</td><td>框架：同 Agent 实例并发 call 需理解序列化键；Studio <code>serialize-session</code></td><td>单会话串行更稳；多租户要按 session 隔离</td></tr>
+      <tr><td>工具面</td><td>显式 <code>registerTool</code> 白名单</td><td>禁止「扫描整个 classpath 自动注册危险工具」</td></tr>
+      <tr><td>记忆 RAG</td><td><code>memory-rag</code> / <code>memory-top-k</code> / <code>memory-shortcircuit=false</code></td><td>只注入；短路已禁用</td></tr>
+      <tr><td>鉴权</td><td><code>AGENT_WS_TOKEN</code> + <code>allow-anonymous=false</code></td><td>公网必须关匿名</td></tr>
+      <tr><td>超时</td><td>HTTP 客户端 / 工具内超时 / 反代 idle</td><td>模型超时 ≠ 工具超时，分开配</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-as-deploy">3.2 部署拓扑</h4>
+  <div class="mermaid-wrap" id="diag-appx-as-deploy">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-deploy">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  LB[反代 nginx/ingress<br/>TLS / 限流] --> App[非 root JVM<br/>spring-boot jar]
+  App --> WS[WS /ws/agent]
+  App --> Health[GET /health]
+  App --> Disk[(workspace<br/>.agent-state / .agent-memory)]
+  App --> LLM[DeepSeek / 兼容网关]
+  App --> Edge[Edge TTS 出站]
+  App --> ASR[火山 ASR 可选]
+  Probe[K8s probe / systemd] --> Health
+  Note[密钥: env / 文件 600<br/>日志脱敏 / 磁盘配额]
+    </pre>
+  </div>
+  <ul>
+    <li><b>进程：</b><code>java -jar</code> 或容器；用户 <code>app</code>；工作目录与记忆卷可写、代码只读。</li>
+    <li><b>探活：</b><code>GET /health</code>；就绪再加 WS 握手 + 一条强制走工具的冒烟（见 <a href="#appx-ops-health">#appx-ops-health</a>）。</li>
+    <li><b>优雅停机：</b>先摘流量 → 等进行中的 <code>streamEvents</code> 结束或 interrupt → <code>ReActAgent.close()</code>；依赖框架 <code>GracefulShutdown*</code> + Spring destroy。</li>
+    <li><b>水平扩展：</b>本地 <code>JsonFileAgentStateStore</code> 绑磁盘 → sticky session 或换 Redis/MySQL 扩展（框架有 redis/mysql 扩展模块，选型时评估一致性）。</li>
+  </ul>
+
+  <h4 id="appx-as-obs">3.3 可观测性（该打什么点）</h4>
+  <table>
+    <thead><tr><th>信号</th><th>怎么取</th><th>告警示意</th></tr></thead>
+    <tbody>
+      <tr><td>Prompt / 首 token 延迟</td><td>ModelCallStart→首个 Text/Thinking delta</td><td>P99 超阈值</td></tr>
+      <tr><td>工具延迟</td><td>ToolCallStart→ToolResultEnd</td><td>单工具 hang</td></tr>
+      <tr><td>Token / 费用</td><td><code>ChatUsage</code>（若模型返回）+ 自计费</td><td>日预算</td></tr>
+      <tr><td>错误分类</td><td>模型超时 / 4xx Key / 工具 IO / 权限拒绝 / 超 maxIters</td><td>分类计数</td></tr>
+      <tr><td>取消率</td><td>WS cancel / interrupt</td><td>异常飙升=前端或超时策略问题</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><div class="label">日志红线</div>禁止打印 API Key、Authorization、完整记忆文档、用户上传原图 Base64。工具参数只打 path/toolName/耗时，不打密钥字段。</div>
+
+  <h4 id="appx-as-safety">3.4 安全</h4>
+  <ul>
+    <li><b>工具沙箱：</b><code>SandboxPathGuard#resolveSafe</code> 拒绝 workspace 外路径；文件工具勿直接改 <code>.agent-memory</code>。</li>
+    <li><b>Allowlist：</b>只注册业务需要的 <code>@Tool</code>；SQL 场景 MCP 只读 + 语句白名单。</li>
+    <li><b>限流：</b>反代按 IP/Token；应用内按 session 并发=1；模型侧 RPM。</li>
+    <li><b>HITL：</b>框架支持确认事件（<code>RequireUserConfirmEvent</code> / ConfirmResult）；写库、打款、DDL 必须人工。</li>
+  </ul>
+
+  <h4 id="appx-as-fail">3.5 故障模式与 Runbook</h4>
+  <div class="mermaid-wrap" id="diag-appx-as-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Start[告警/用户报障] --> Sym{症状?}
+  Sym -->|无首 token| M1[查模型网关/Key/配额]
+  Sym -->|有思考无结果| M2[查 maxIters / 工具 hang]
+  Sym -->|WS 断开| M3[查反代 idle / 心跳 / 重连]
+  Sym -->|乱改文件| M4[查沙箱拒绝日志 / 回滚 checkpoint]
+  Sym -->|记忆错乱| M5[分清 .agent-state vs .agent-memory]
+  Sym -->|磁盘满| M6[清 sessions/checkpoints 配额<br/>勿盲删 memory]
+  M1 --> Act1[切换备用 base-url 或降级只读公告]
+  M2 --> Act2[cancel + interrupt / 杀慢工具 / 降 maxIters]
+  M3 --> Act3[缩短超时或启心跳；客户端自动重连]
+  M4 --> Act4[checkpoint 回滚 + 收紧工具组]
+  M5 --> Act5[seed 或清 state；保留永久记忆]
+  M6 --> Act6[扩容磁盘 + 生命周期策略]
+    </pre>
+  </div>
+  <table>
+    <thead><tr><th>故障</th><th>信号</th><th>处置（非 root）</th></tr></thead>
+    <tbody>
+      <tr><td>模型超时</td><td>无 delta、客户端报 timeout</td><td>重试一次 → 降模型/降 maxIters → 公告降级</td></tr>
+      <tr><td>工具 hang</td><td>tool_start 后无 tool_end</td><td>WS cancel；给工具硬超时；修死锁路径</td></tr>
+      <tr><td>记忆膨胀</td><td>prompt 过长、RT 升</td><td>降 top-k；截断 seed（Studio 已限约 40 turns）；归档旧 docs</td></tr>
+      <tr><td>WS 断连</td><td>半包、Broken pipe</td><td>服务端 safeSend；客户端重连续 sessionId</td></tr>
+      <tr><td>超 maxIters</td><td><code>ExceedMaxItersEvent</code> / 总结敷衍</td><td>拆任务；收工具面；查是否工具结果无信息导致空转</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ========== 4 SKILL MCP ========== -->
+  <h3 id="appx-as-skill-mcp">4. Skills / MCP / RAG 分层（对接 SQL 巡检）</h3>
+  <div class="mermaid-wrap" id="diag-appx-as-layers">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-layers">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph Prompt["RAG 层"]
+    R1[大基线 Markdown]
+    R2[小基规则 YAML]
+    R3[历史慢 SQL / 事故复盘]
+  end
+  subgraph Skill["Skills 层"]
+    S1[polar-param-inspect]
+    S2[git-sql-review]
+    S3[index-slow-audit]
+  end
+  subgraph MCP["MCP / Toolkit 层"]
+    M1[Polar 只读]
+    M2[Git Diff 只读]
+    M3[工单草稿]
+  end
+  subgraph AS["AgentScope"]
+    RA[ReActAgent]
+    TK[Toolkit + Skill 工具组]
+    Hook[Hook/Middleware 审计]
+  end
+  R1 --> RA
+  R2 --> RA
+  R3 --> RA
+  S1 --> TK
+  S2 --> TK
+  S3 --> TK
+  M1 --> TK
+  M2 --> TK
+  M3 --> TK
+  RA --> TK
+  TK --> Hook
+  Hook --> Out[结构化报告 / 阻断合并]
+    </pre>
+  </div>
+  <p>完整 Skills 清单与 CI 工作流见 <a href="#appx-sql-agents">#appx-sql-agents</a>。本节钉死分层纪律：</p>
+  <ul>
+    <li><b>RAG</b> 给条款与证据（带来源 ID），不给写权限。</li>
+    <li><b>Skill</b> 给动作剧本与输出 schema。</li>
+    <li><b>MCP/Tool</b> 给「手」——只读为主；DDL/写参只出变更单。</li>
+    <li><b>AgentScope</b> 给循环、权限、会话恢复与可观测钩子。</li>
+  </ul>
+
+  <!-- ========== 5 UT GATE ========== -->
+  <h3 id="appx-as-ut-gate">5. 单测只是门禁，不是主菜</h3>
+  <p>详测金字塔与用例表已降级到附录短节 <a href="#appx-ut">#appx-ut</a>。这里只保留门禁口径：</p>
+  <table>
+    <thead><tr><th>门禁</th><th>断言什么</th><th>不进 CI</th></tr></thead>
+    <tbody>
+      <tr><td>L0 规则纯函数</td><td>风险打分 / 路径穿越拒绝</td><td>模型文采</td></tr>
+      <tr><td>L1–L2 工具契约</td><td>Mock Model 固定 tool_call → 期望轨迹</td><td>真连生产库</td></tr>
+      <tr><td>L3 状态</td><td>stateStore 回填；清空对话不删永久记忆</td><td>开放域闲聊</td></tr>
+    </tbody>
+  </table>
+  <div class="koujue"><div class="label">口诀</div>源码认 ReAct，生产认白名单；记忆分三盘，工具不过沙箱；图先画清楚，单测只看门。</div>
+</section>
+<!-- APPX-AGENTSCOPE-SRC-END -->
+
+
 <!-- APPX-OPS-AI-SQL-START -->
-<section class="block" id="appx-ops-ai-sql" data-toc="APPX · Polar/索引慢SQL/投产应急/XXL/Kafka" data-prio="p0" data-tags="agentscope skills mcp rag polardb index slowsql xxl-job kafka ops">
-  <h2><span class="sys-id">APPX-OPS-AI-SQL</span>附录加厚：AgentScope/Skills 全量单测与投产应急 · PolarDB 原理规范深挖 · 索引与慢 SQL · SQL 巡检智能体落地 · XXL-JOB / Kafka 源码深挖</h2>
+<section class="block" id="appx-ops-ai-sql" data-toc="APPX · 投产/Polar/慢SQL/XXL/Kafka" data-prio="p0" data-tags="agentscope skills mcp rag polardb index slowsql xxl-job kafka ops">
+  <h2><span class="sys-id">APPX-OPS-AI-SQL</span>附录加厚：投产应急 · PolarDB/索引慢SQL · SQL巡检智能体 · XXL/Kafka（AgentScope 主菜见 <a href="#appx-agentscope-src">#appx-agentscope-src</a>）</h2>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>挂在 ENCY 金标之后：把「能讲」落到「能测、能发、能救、能巡检」。<br><b>服务业务闭环：</b>SQL 审核/库参巡检/调度与消息底座<br><b>挂回：</b><a href="#ency-fm-polardb">#ency-fm-polardb</a> · <a href="#t-ai-stack">#t-ai-stack</a> · <a href="#ency-fm-kafka">#ency-fm-kafka</a></div>
   <div class="callout danger"><div class="label">交付纪律</div>
     <p>PolarDB / 索引 / 慢 SQL / Skills 巡检要求<strong>可落地</strong>：有目录、有用例表、有探活命令、有非 root 操作约束、有回滚。量级仅写工程目标/示意，禁止伪造未公开 KPI。</p>
@@ -15914,7 +16352,8 @@ flowchart TD
   <table>
     <thead><tr><th>锚点</th><th>内容</th></tr></thead>
     <tbody>
-      <tr><td><a href="#appx-ut">#appx-ut</a></td><td>AgentScope + Skills 全量单元测试</td></tr>
+      <tr><td><a href="#appx-agentscope-src">#appx-agentscope-src</a></td><td><b>AgentScope 源码+生产图文（主菜）</b></td></tr>
+      <tr><td><a href="#appx-ut">#appx-ut</a></td><td>单测门禁（降级短节）</td></tr>
       <tr><td><a href="#appx-ops">#appx-ops</a></td><td>流水线投产 / 手工投产 / 应急 / 非 root / 探活</td></tr>
       <tr><td><a href="#appx-polar-deep">#appx-polar-deep</a></td><td><b>PolarDB 原理与规范深挖</b>（金标加厚）</td></tr>
       <tr><td><a href="#appx-index-slow">#appx-index-slow</a></td><td><b>索引与慢 SQL</b>（含 Polar/MySQL 巡检口径）</td></tr>
@@ -15925,53 +16364,28 @@ flowchart TD
   </table>
 
   <!-- ========== UT ========== -->
-  <h3 id="appx-ut">1. AgentScope + Skills：全量单元测试怎么做</h3>
-  <h4 id="appx-ut-pyramid">1.1 测试金字塔（智能体专用）</h4>
+    <h3 id="appx-ut">1. 单测只是门禁，不是主菜</h3>
+  <p>AgentScope <strong>源码级解读与生产级使用</strong>已迁至 <a href="#appx-agentscope-src">#appx-agentscope-src</a>（图文主菜）。本节仅保留 CI 门禁口径，避免把「会写单测」误当成「会上生产」。</p>
+  <h4 id="appx-ut-pyramid">1.1 门禁表（精简）</h4>
   <table>
-    <thead><tr><th>层</th><th>测什么</th><th>不测什么</th><th>工具示意</th></tr></thead>
+    <thead><tr><th>层</th><th>测什么</th><th>不测什么</th></tr></thead>
     <tbody>
-      <tr><td>L0 纯函数</td><td>SQL 解析/风险打分/参数阈值校验/索引建议规则</td><td>真连库</td><td>JUnit5 / pytest</td></tr>
-      <tr><td>L1 Skill 契约</td><td>SKILL.md 输入输出 schema、红线负例、超时</td><td>大模型文采</td><td>契约测试 + golden JSON</td></tr>
-      <tr><td>L2 Tool/MCP Mock</td><td>Agent 是否按序调对工具；失败重试/降级</td><td>真实 Polar</td><td>WireMock / Testcontainers(可选)</td></tr>
-      <tr><td>L3 Agent 脚本</td><td>固定 prompt 夹具 → 期望工具轨迹（tool trace）</td><td>开放域闲聊</td><td>录制回放 / snapshot</td></tr>
-      <tr><td>L4 评测集</td><td>幻觉/漏报/误报率（SQL 审核）</td><td>线上流量</td><td>离线集 + 周回归</td></tr>
+      <tr><td>L0 纯函数</td><td>SQL 风险规则 / 沙箱路径拒绝</td><td>真连库</td></tr>
+      <tr><td>L1–L2 契约</td><td>Mock <code>Model</code> 固定 tool_call → Toolkit 轨迹</td><td>模型文采</td></tr>
+      <tr><td>L3 状态</td><td>stateStore 回填；清空对话不删 <code>.agent-memory</code></td><td>开放域闲聊</td></tr>
     </tbody>
   </table>
   <div class="mermaid-wrap" id="diag-appx-ut">
     <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-ut">导出 PNG</button></div>
     <pre class="mermaid">
-flowchart TB
-  L0[L0 规则纯函数] --> L1[L1 Skill 契约]
-  L1 --> L2[L2 MCP/Tool Mock]
-  L2 --> L3[L3 Agent 轨迹回放]
-  L3 --> L4[L4 审核评测集]
-  L4 --> Gate[CI 门禁: 误报/漏报阈值]
+flowchart LR
+  Gate[CI 门禁 L0-L3] --> Main[主菜: #appx-agentscope-src]
+  Main --> Prod[投产/探活 #appx-ops]
     </pre>
   </div>
-  <h4 id="appx-ut-skills">1.2 Skills 单测清单（必须可自动化）</h4>
-  <ul>
-    <li><b>正例：</b>给定 Polar 参数快照 JSON → Skill 输出「违规项 + 依据条款 ID + 建议值」。</li>
-    <li><b>负例：</b>描述写「不要用于生产写库」时，Agent 不得调用写工具（断言 tool deny）。</li>
-    <li><b>边界：</b>空结果集、权限不足、超时、半包 SQL、多语句注入企图 → 明确错误码，不瞎编。</li>
-    <li><b>幂等：</b>同一 PR diff 连续跑 2 次，审核结论结构稳定（允许文案微调，规则命中集合不变）。</li>
-  </ul>
-  <pre><code># 示意：Skill 契约测试（伪代码）
-def test_polar_param_skill_flags_sync_binlog_off():
-    snap = {"innodb_flush_log_at_trx_commit": 2, "sync_binlog": 0}
-    out = skill_polar_param_inspect(snap, baseline="finance-rpo0")
-    assert "sync_binlog" in out.violations
-    assert out.severity[0].clause_id == "BL-FIN-003"
-</code></pre>
-  <h4 id="appx-ut-agentscope">1.3 AgentScope 单测要点</h4>
-  <ul>
-    <li>Mock <code>Model</code>：返回固定 tool_call / 最终文本，测 Toolkit 注册与 ReAct 循环上限。</li>
-    <li>Memory/RAG：注入块为空/过长/含冲突事实时，路由不得短路跳过模型（与本册 Studio 纪律一致：RAG 只注入）。</li>
-    <li>会话状态：重启后 stateStore 回填；「清空对话」不删永久记忆目录。</li>
-    <li>安全：沙箱路径穿越、危险 SQL（DROP/无 WHERE UPDATE）在 Tool 层硬拒，不依赖模型自觉。</li>
-  </ul>
-  <div class="koujue"><div class="label">口诀</div>单测口诀：规则测死、轨迹测对、评测测飘；模型文采不进 CI。</div>
+  <div class="koujue"><div class="label">口诀</div>单测口诀：规则测死、轨迹测对；文采不进 CI——主菜去读源码与生产章。</div>
 
-  <!-- ========== OPS ========== -->
+<!-- ========== OPS ========== -->
   <h3 id="appx-ops">2. 流水线投产 · 手工旁路 · 应急 · 非 root · 探活</h3>
   <h4 id="appx-ops-user">2.1 Linux 固定非 root 用户（强制）</h4>
   <table>
