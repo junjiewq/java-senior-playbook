@@ -1,18 +1,18 @@
 # 微信公众号 × 白皮书 × Studio 对话
 
-**合体入口（审核期间菜单先填这个）**  
+**合体入口（现在菜单填这个 — DNS 记录尚未添加）**  
 https://junjiewq.github.io/java-senior-playbook/wechat.html
 
-**自定义域就绪后（`xjj985.top` 审核通过 + DNS + Pages HTTPS）**  
+**自定义域（审核已通过；需你在 DNSPod 加解析 + Pages HTTPS 后再换菜单）**  
 https://xjj985.top/wechat.html
 
 **Studio 目标地址**  
-https://chat.xjj985.top （见 `assets/studio-config.js` 的 `publicStudioUrl`）
+https://chat.xjj985.top （见 `assets/studio-config.js` 的 `publicStudioUrl`；命名隧道未绑前用 `remote-access.sh` 临时 URL）
 
 域名解析、A/CNAME 逐条说明 → [`DNS-xjj985.md`](./DNS-xjj985.md)
 
 > 本文说明可行性与运维步骤。仓库**不会**替你完成公众号注册、认证或菜单配置。  
-> 域名若在实名/注册审核中，`dig` 为 `NXDOMAIN` 时**不要**声称自定义域已可用。
+> **审核通过 ≠ 解析生效**：须在 DNSPod 添加 A/CNAME；公网 `dig` 仍 NXDOMAIN / 权威无记录时，菜单继续用 github.io。
 
 ## 能不能做？
 
@@ -28,13 +28,13 @@ https://chat.xjj985.top （见 `assets/studio-config.js` 的 `publicStudioUrl`�
 |------|-----|
 | Hub（GitHub Pages + 自定义域） | `https://xjj985.top/` · `https://xjj985.top/wechat.html` |
 | Studio（cloudflared 命名隧道） | `https://chat.xjj985.top/?embed=1` |
-| 过渡期 Hub | `https://junjiewq.github.io/java-senior-playbook/wechat.html` |
+| 过渡期 Hub（**当前菜单用这个**） | `https://junjiewq.github.io/java-senior-playbook/wechat.html` |
 
 ## 两种嵌入方式（别混）
 
 ### 方式 1 — H5 入口（本仓库交付的）
 
-1. 公众号菜单「跳转网页」→ `wechat.html`（先用 github.io，域好了再换 xjj985.top）
+1. 公众号菜单「跳转网页」→ `wechat.html`（**现在仍用 github.io**；DNS+HTTPS 好了再换 xjj985.top）
 2. 用户点「打开白皮书」→ Pages 上的 `index.html`
 3. 用户点「打开对话」→ 公网 Studio（`publicStudioUrl` / `PUBLIC_STUDIO_URL` + `?embed=1`）
 
@@ -50,13 +50,13 @@ https://chat.xjj985.top （见 `assets/studio-config.js` 的 `publicStudioUrl`�
 1. 登录 [微信公众平台](https://mp.weixin.qq.com/)（需已有公众号；未注册请自行申请）。
 2. 自定义菜单 → 跳转网页 → URL：
 
-**现在（域名审核中）：**
+**现在（审核已通过，但 DNS 记录未加 / 自定义域 HTTPS 未通）：**
 
 ```text
 https://junjiewq.github.io/java-senior-playbook/wechat.html
 ```
 
-**DNS + Pages 自定义域 HTTPS 都 OK 后：**
+**DNSPod 解析生效 + Pages Enforce HTTPS 都 OK 后：**
 
 ```text
 https://xjj985.top/wechat.html
@@ -76,7 +76,7 @@ https://chat.xjj985.top/?embed=1
 
 三选一（优先级从高到低）：
 
-1. 合体页 URL：`wechat.html?studio=https://xxxx.trycloudflare.com`（审核期练级推荐）
+1. 合体页 URL：`wechat.html?studio=https://xxxx.trycloudflare.com`（隧道未绑定时练级推荐）
 2. 合体页里粘贴地址并「保存」（写入该手机浏览器的 localStorage）
 3. 编辑仓库 [`assets/studio-config.js`](./assets/studio-config.js)：
 
