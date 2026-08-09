@@ -155,12 +155,28 @@ a:hover { color: var(--accent-2); }
 }
 .chip b { color: var(--accent-2); font-weight: 600; }
 
+/* Default visible so deep-links / no-JS never show blank sections.
+   Fade-in is progressive enhancement only (html.js-animate-sections). */
 section.block {
   margin: 2.75rem 0; padding-top: .5rem;
-  opacity: 0; transform: translateY(18px);
+  opacity: 1; transform: none;
   transition: opacity .55s ease, transform .55s ease;
 }
 section.block.visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  html.js-animate-sections section.block:not(.visible) {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  section.block,
+  html.js-animate-sections section.block:not(.visible) {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
 section.block > h2 {
   font-family: var(--font-display); font-size: clamp(1.55rem, 3vw, 2rem);
   margin: 0 0 .75rem; letter-spacing: -.01em; line-height: 1.25;
@@ -16347,13 +16363,59 @@ flowchart TD
   const progressBar = document.getElementById("progressBar");
   const progressPct = document.getElementById("progressPct");
   const tocLinks = [...tocNav.querySelectorAll("a")];
+  const allBlocks = [...document.querySelectorAll("section.block")];
 
+  function revealSection(sec) {
+    if (!sec || !sec.classList) return;
+    sec.classList.add("visible");
+  }
+
+  function revealNearby(sec, radius) {
+    if (!sec) return;
+    revealSection(sec);
+    const idx = allBlocks.indexOf(sec);
+    if (idx < 0) return;
+    for (let i = Math.max(0, idx - radius); i <= Math.min(allBlocks.length - 1, idx + radius); i++) {
+      revealSection(allBlocks[i]);
+    }
+  }
+
+  /** Deep-link / in-page hash: force target (and neighbors) visible even if section is taller than viewport. */
+  function revealHashTarget() {
+    const raw = location.hash.replace(/^#/, "");
+    if (!raw) return;
+    let id = raw;
+    try { id = decodeURIComponent(raw); } catch (_) { /* keep raw */ }
+    const el = document.getElementById(id);
+    if (!el) return;
+    const sec = el.matches("section.block") ? el : el.closest("section.block");
+    revealNearby(sec, 1);
+  }
+
+  // Mark anything already in (or near) the viewport before enabling fade-in hiding.
+  allBlocks.forEach((s) => {
+    const top = s.getBoundingClientRect().top;
+    if (top < window.innerHeight * 0.92) revealSection(s);
+  });
+  revealHashTarget();
+  document.documentElement.classList.add("js-animate-sections");
+  window.addEventListener("hashchange", revealHashTarget);
+
+  // threshold 0: tall sections (e.g. APPX) often never reach 12% visible in the viewport
   const io = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
       if (e.isIntersecting) e.target.classList.add("visible");
     });
-  }, { threshold: 0.12 });
-  sections.forEach((s) => io.observe(s));
+  }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+  allBlocks.forEach((s) => io.observe(s));
+  // Re-apply after browser finishes hash scroll (layout may shift)
+  requestAnimationFrame(() => {
+    revealHashTarget();
+    allBlocks.forEach((s) => {
+      const r = s.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) revealSection(s);
+    });
+  });
 
   function onScroll() {
     const scrollTop = window.scrollY;
