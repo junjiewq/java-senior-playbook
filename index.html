@@ -6132,9 +6132,50 @@ flowchart LR
 
   <div class="reflect" data-reflect="tskills-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
+
+<h3 id="tskills-ops">生产操作：Skill 发布 / 回滚 / 多环境</h3>
+  <div class="mermaid-wrap" id="diag-tskills-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tskills-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Edit[改 SKILL.md] --> PR[PR 评审]
+  PR --> CI[评测集冒烟]
+  CI --> Pin[钉 skillVer]
+  Pin --> Stg[staging 显式触发]
+  Stg --> Prod[prod 灰度描述触发]
+  Prod --> Bad{{口径漂移?}}
+  Bad -->|是| Rollback[回滚 skillVer]
+  Bad -->|否| Keep[保留并记采纳率]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-tskills-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tskills-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Ticket[工单/用户问] --> Match[描述匹配]
+  Match --> Skill[加载步骤]
+  Skill --> MCP[只读 MCP]
+  Skill --> RAG[带 cite RAG]
+  Skill --> Draft[检查单草稿]
+  Draft --> HITL[人工]
+  HITL --> SM[状态机 API]
+    </pre>
+  </div>
+
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>同场景口径不一致</td><td>多 Skill 冲突/未版本化</td><td>审计 skillVer</td><td>合并 Skill；强制显式触发</td></tr>
+      <tr><td>跳过资损检查项</td><td>步骤非强制</td><td>输出缺字段</td><td>改 schema 门禁</td></tr>
+    </tbody>
+  </table>
+
+
 </section>
 
-<section class="block" id="t-mcp" data-toc="T-MCP · 协议与资损红线" data-prio="p0">
+
+  <section class="block" id="t-mcp" data-toc="T-MCP · 协议与资损红线" data-prio="p0">
   <h2><span class="sys-id">T-MCP</span>MCP：工具暴露、鉴权与订单/工单示例</h2>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>给 Agent 一双「受控的手」：标准协议发现工具、调用工具，权限与审计单独做死。<br><b>服务业务闭环：</b>客服查单、售后取证、值班只读排障<br><b>挂回：</b>T-Skills → 本层 → T-RAG/T-AI</div>
 
@@ -6285,9 +6326,55 @@ flowchart TB
 
   <div class="reflect" data-reflect="tmcp-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
+
+<h3 id="tmcp-ops">生产操作与数据流加深</h3>
+  <div class="mermaid-wrap" id="diag-tmcp-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tmcp-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant A as Agent
+  participant C as MCP Client
+  participant G as 工具网关
+  participant S as order.get
+  A->>C: tools/call
+  C->>G: 身份+租户+限流
+  alt 写工具
+    G-->>C: 403 拒绝+审计
+  else 只读允许
+    G->>S: 查询
+    S-->>A: 结构化脱敏结果
+  end
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-tmcp-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-tmcp-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Call[工具调用] --> Auth{鉴权}
+  Auth -->|失败| Deny[拒绝]
+  Auth -->|通过| RO{只读?}
+  RO -->|否| Block[默认阻断写]
+  RO -->|是| Exec[执行]
+  Exec --> Timeout{超时?}
+  Timeout -->|是| Deg[降级人工查后台]
+  Timeout -->|否| OK[返回]
+    </pre>
+  </div>
+
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>批量查单打满库</td><td>无限流</td><td>QPS 与慢查询</td><td>网关限流；熔断工具</td></tr>
+      <tr><td>越权看他单</td><td>身份未穿透</td><td>审计 userId 范围</td><td>修数据范围校验</td></tr>
+    </tbody>
+  </table>
+
+
 </section>
 
-<section class="block" id="t-rag" data-toc="T-RAG · 分块引用与幻觉" data-prio="p0">
+
+  <section class="block" id="t-rag" data-toc="T-RAG · 分块引用与幻觉" data-prio="p0">
   <h2><span class="sys-id">T-RAG</span>RAG：分块、更新、引用、幻觉——客服/售后/规则生产案例</h2>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>给副驾一本「带页码的最新手册」；没出处的话当没说。<br><b>服务业务闭环：</b>客服话术、售后口径、优惠规则、值班 Runbook<br><b>挂回：</b>T-MCP → 本层 → T-AI → S-Method⑤复盘</div>
 
@@ -6445,9 +6532,45 @@ flowchart LR
 
   <div class="reflect" data-reflect="trag-r1"><div class="reflect-head"><h5>我的反思与思考</h5><div class="reflect-tools"><button type="button" data-cmd="bold">B</button><button type="button" data-cmd="insertUnorderedList">•</button></div></div><div class="reflect-body" contenteditable="true" data-placeholder="用人话写：这个点解决什么疼？我项目里怎么落地？面试 30 秒怎么讲？"></div><div class="reflect-foot">已自动保存到本机 localStorage</div></div>
 
+
+<h3 id="trag-ops">RAG 数据流 / 失败降级 / 红线</h3>
+  <div class="mermaid-wrap" id="diag-trag-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-trag-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Doc[规则/Runbook] --> Chunk[分块+版本]
+  Chunk --> Emb[向量/BM25]
+  Emb --> Ret[TopK 检索]
+  Ret --> Cite[强制引用条款 ID]
+  Cite --> Gen[生成草稿]
+  Gen --> HITL[人工]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-trag-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-trag-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Q[提问] --> Hit{检索命中?}
+  Hit -->|否| Abstain[拒绝编造/转人工]
+  Hit -->|是| Conf{置信/条款有效?}
+  Conf -->|过期| Warn[提示过期+阻口径]
+  Conf -->|有效| Ans[带 cite 作答]
+  Ans --> Eval[评测集回归]
+    </pre>
+  </div>
+
+  <ul>
+    <li>无 cite 不展示退款/优惠口径。</li>
+    <li>kbVer 与 promptVer、modelId 三位钉扎发布。</li>
+    <li>幻觉退款口径=资损红线，进评测陷阱题。</li>
+  </ul>
+
+
 </section>
 
-<section class="block" id="t-agents-deep" data-toc="T-Agents · 多智能体正逆向专章" data-prio="p0">
+
+  <section class="block" id="t-agents-deep" data-toc="T-Agents · 多智能体正逆向专章" data-prio="p0">
   <h2><span class="sys-id">T-Agents</span>多智能体专章：角色分工 · 人机审批 · 禁止改账</h2>
   <div class="spine-pos"><div class="label">本节在闭环中的位置</div>编排专章：Skills/MCP/RAG 之上的多角色协作；导读见 T-AI。<br><b>服务业务闭环：</b>质检/优惠评审/复盘/用例<br><b>挂回：</b>T-RAG → 本页 → T-AS / S-Method</div>
 
@@ -12290,7 +12413,7 @@ flowchart TB
     <tbody>
       <tr><td>RocketMQ</td><td><a href="#ency-fm-rocket">#ency-fm-rocket</a></td><td><a href="#ency-fm-rocket-storage">storage</a> · flush · ha · order · dlq · tx</td><td><b>金标完成</b></td></tr>
       <tr><td>PolarDB / PolarDB-X</td><td><a href="#ency-fm-polardb">#ency-fm-polardb</a></td><td><a href="#ency-fm-polardb-cn">CN</a> · <a href="#ency-fm-polardb-dn">DN</a> · <a href="#ency-fm-polardb-gms">GMS</a> · <a href="#ency-fm-polardb-cdc">CDC</a></td><td><b>金标完成</b></td></tr>
-      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a></td><td>log · isr · eos · cg</td><td>骨架可用 · 待深化</td></tr>
+      <tr><td>Kafka</td><td><a href="#ency-fm-kafka">#ency-fm-kafka</a> · <a href="#appx-kafka-src">#appx-kafka-src</a></td><td>log · isr · eos · cg · APPX 操作/数据流/Runbook</td><td>ENCY 骨架 · <b>APPX 已加厚（非金标）</b></td></tr>
       <tr><td>RabbitMQ</td><td><a href="#ency-fm-rabbit">#ency-fm-rabbit</a></td><td>ex · ha · ttl · dlx</td><td>骨架可用 · 待深化</td></tr>
       <tr><td>Redis</td><td><a href="#ency-fm-redis">#ency-fm-redis</a></td><td>ds · expire · lock · ops</td><td>骨架可用 · 待深化</td></tr>
       <tr><td>MySQL</td><td><a href="#ency-fm-mysql">#ency-fm-mysql</a></td><td>tx · lock · idx · repl</td><td>骨架可用 · 待深化</td></tr>
@@ -12682,6 +12805,35 @@ flowchart TD
 </code></pre>
   <h4 id="ency-fm-kafka-ops2">5.6b 保留策略与位移提交（加深）</h4>
   <p>retention 与补数窗口对齐。处理完再提交位移，避免「提交了未处理完」。多租户开 ACL/SSL。</p>
+
+
+  <h4 id="ency-fm-kafka-appx-bridge">5.8 APPX 生产加厚入口（本轮）</h4>
+  <div class="callout"><div class="label">导航</div>操作图 / 数据流 / Runbook / 红线主菜已加厚到 <a href="#appx-kafka-src">#appx-kafka-src</a>。本节 ENCY 仍保留骨架索引，<b>不伪称金标</b>。</div>
+  <div class="mermaid-wrap" id="diag-fm-kafka-e2e">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-fm-kafka-e2e">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Outbox[业务 Outbox] --> P[Producer]
+  P --> L[Leader+ISR]
+  L --> CG[Consumer]
+  CG --> Idem[幂等表]
+  Idem --> SM[状态机]
+  Fail[失败] --> DLQ[DLQ]
+  DLQ --> XXL[XXL 补数]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-fm-kafka-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-fm-kafka-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Alert[ISR/Lag 告警] --> Triage[分诊]
+  Triage --> SlowBroker[修磁盘/网络/慢副本]
+  Triage --> SlowCons[扩消费者/修下游]
+  Triage --> HotKey[key 加盐]
+  Triage --> ACL[查误重置位点]
+    </pre>
+  </div>
 
 <h4 id="ency-fm-kafka-fin-ecom">金融 vs 电商 vs 物流差异小结</h4>
   <p>  <table>
@@ -13607,6 +13759,20 @@ if estimated_temp_bytes > MEM_BUDGET: spill_or_reject
 if sink.version(pk) >= ver: skip
 else upsert(pk, data, ver)
 </code></pre>
+
+
+  <h4 id="ency-fm-polardb-appx-bridge">5.10 APPX 操作/Runbook 加厚入口</h4>
+  <div class="callout"><div class="label">导航</div>金标能力面仍在本章；生产操作图、失败流、排障表加厚见 <a href="#appx-polar-deep">#appx-polar-deep</a>。</div>
+  <div class="mermaid-wrap" id="diag-fm-polar-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-fm-polar-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Window[变更窗口] --> Bak[备份确认]
+  Bak --> Act{{扩RO/切主/扩片}}
+  Act --> Probe[付后读主拨测]
+  Probe --> Close[关闭窗口]
+    </pre>
+  </div>
 
 <h4 id="ency-fm-polardb-fin-ecom">金融 vs 电商 vs 物流差异小结</h4>
   <p>  <table>
@@ -16323,6 +16489,75 @@ flowchart TB
     <li><b>AgentScope</b> 给循环、权限、会话恢复与可观测钩子。</li>
   </ul>
 
+
+  <h4 id="appx-as-ops-deep">4.1 操作图：多环境发布 / 回滚 / 扩缩</h4>
+  <div class="mermaid-wrap" id="diag-appx-as-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Dev[dev 匿名可开] --> Staging[staging 强制 Token]
+  Staging --> Canary[canary 小流量]
+  Canary --> Prod[prod allow-anonymous=false]
+  Prod --> Health[ /health + WS 冒烟]
+  Health --> Scale{{扩缩}}
+  Scale -->|加副本| Sticky[粘性会话或外置 StateStore]
+  Scale -->|缩容| Drain[interrupt 进行中会话]
+  Prod --> Roll{{回滚}}
+  Roll -->|坏模型/提示| Pin[钉回 model+prompt+kb 版本]
+  Roll -->|坏工具| Disable[下线工具组 + checkpoint 指引]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-appx-as-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  U[用户] --> WS[WS chat]
+  WS --> Mem[注入个人记忆块]
+  Mem --> RA[ReActAgent]
+  RA --> LLM[DeepSeek]
+  RA --> Tools[Toolkit 白名单]
+  Tools --> Sandbox[SandboxPathGuard]
+  Tools --> RO[只读 MCP/Polar]
+  Tools -.->|拒绝| WriteDB[写库/打款]
+  RA --> State[(agent_state)]
+  RA --> Audit[审计事件流]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-appx-as-mcp-deny">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-as-mcp-deny">导出 PNG</button></div>
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> ToolCall
+  ToolCall --> PermissionCheck
+  PermissionCheck --> Allow: 白名单只读
+  PermissionCheck --> Deny: 写库/打款/DDL
+  Allow --> Execute
+  Execute --> Observe
+  Deny --> ObserveDeny: 写入观察「拒绝原因」
+  Observe --> [*]
+  ObserveDeny --> [*]
+    </pre>
+  </div>
+
+  <h4 id="appx-as-runbook-deep">4.2 AI 支柱排障表（补强）</h4>
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>模型建议退款并要调工具</td><td>写工具误注册</td><td>Toolkit 列表 / Permission 日志</td><td>物理下线写工具；复盘 Skill</td></tr>
+      <tr><td>口径与过期规则一致</td><td>RAG kbVer 未钉扎</td><td>审计中的 kbVer</td><td>回滚知识版本；评测门禁</td></tr>
+      <tr><td>改码越出沙箱</td><td>路径校验绕过</td><td>Sandbox 拒绝日志</td><td>修 Guard；吊销会话</td></tr>
+      <tr><td>公网匿名滥用</td><td>allow-anonymous=true</td><td>配置与限流计数</td><td>关匿名+Token；收紧限流</td></tr>
+    </tbody>
+  </table>
+  <h4 id="appx-as-redline">4.3 AI 红线汇总</h4>
+  <ul>
+    <li>MCP/Tool <b>禁止</b>生产写库、打款、改分摊；只出草稿+HITL。</li>
+    <li>Studio 对照：真实接线为 DeepSeek + Edge TTS + <code>SandboxPathGuard</code> + 三盘记忆；不编造 KPI。</li>
+    <li>评测集不过禁止升 kb/prompt；大促可降级关闭 Agent 写意图通道。</li>
+  </ul>
+
   <!-- ========== 5 UT GATE ========== -->
   <h3 id="appx-as-ut-gate">5. 单测只是门禁，不是主菜</h3>
   <p>详测金字塔与用例表已降级到附录短节 <a href="#appx-ut">#appx-ut</a>。这里只保留门禁口径：</p>
@@ -16355,11 +16590,11 @@ flowchart TB
       <tr><td><a href="#appx-agentscope-src">#appx-agentscope-src</a></td><td><b>AgentScope 源码+生产图文（主菜）</b></td></tr>
       <tr><td><a href="#appx-ut">#appx-ut</a></td><td>单测门禁（降级短节）</td></tr>
       <tr><td><a href="#appx-ops">#appx-ops</a></td><td>流水线投产 / 手工投产 / 应急 / 非 root / 探活</td></tr>
-      <tr><td><a href="#appx-polar-deep">#appx-polar-deep</a></td><td><b>PolarDB 原理与规范深挖</b>（金标加厚）</td></tr>
+      <tr><td><a href="#appx-polar-deep">#appx-polar-deep</a></td><td><b>PolarDB 金标上再加厚</b>（操作/数据流/Runbook/红线）</td></tr>
       <tr><td><a href="#appx-index-slow">#appx-index-slow</a></td><td><b>索引与慢 SQL</b>（含 Polar/MySQL 巡检口径）</td></tr>
       <tr><td><a href="#appx-sql-agents">#appx-sql-agents</a></td><td>SQL 巡检/审核智能体完整方案（Skills/MCP/RAG）</td></tr>
-      <tr><td><a href="#appx-xxl">#appx-xxl</a></td><td>XXL-JOB 用法与原理深挖</td></tr>
-      <tr><td><a href="#appx-kafka-src">#appx-kafka-src</a></td><td>Kafka 用法/原理/底层源码深挖</td></tr>
+      <tr><td><a href="#appx-xxl">#appx-xxl</a></td><td><b>XXL-JOB 生产+源码加厚</b>（操作/数据流/Runbook）</td></tr>
+      <tr><td><a href="#appx-kafka-src">#appx-kafka-src</a></td><td><b>Kafka 生产+源码加厚</b>（非 ENCY 金标）</td></tr>
     </tbody>
   </table>
 
@@ -16445,9 +16680,37 @@ mysql --defaults-file=~/.my.cnf.ro -e 'SELECT 1'
   <div class="callout"><div class="label">应急原则</div>先止血（降级/限流/只读）再修根因；先应用回滚再动数据；数据修数必须工单+双人。</div>
 
   <!-- ========== POLAR DEEP ========== -->
-  <h3 id="appx-polar-deep">3. PolarDB 原理与规范深挖（在金标上再加厚）</h3>
-  <p>金标底座见 <a href="#ency-fm-polardb">#ency-fm-polardb</a>（CN/DN/GMS/CDC）。本节补<strong>原理机制、参数规范、巡检口径</strong>，供 SQL 智能体当「可执行知识」。</p>
-  <h4 id="appx-polar-product">3.1 产品边界（再钉一次）</h4>
+  <h3 id="appx-polar-deep">3. PolarDB 原理与规范深挖（生产+源码加厚）</h3>
+  <div class="plain"><div class="label">人话版</div>订单库先分清两款产品：<b>PolarDB 共享存储</b>=一写多读扩读；<b>PolarDB-X</b>=CN/DN/GMS 扩写。付后读己之写打主；CDC 旁路入湖，资损权威仍在库+Outbox。金标底座见 <a href="#ency-fm-polardb">#ency-fm-polardb</a>。</div>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>正逆向 OLTP：下单写主、详情读扩展、售后对账、CDC 喂搜推。<br><b>服务业务闭环：</b>支付回跳一致性 / 分片热点 / DDL 窗口<br><b>挂回：</b><a href="#ency-fm-polardb">ENCY 金标</a> · <a href="#appx-sql-agents">SQL 智能体</a> · <a href="#appx-kafka-src">Kafka CDC</a></div>
+  <div class="callout"><div class="label">交付诚实</div>本节为「金标上再加厚」：补操作图、数据流、失败流、Runbook、红线。量级仅工程目标/示意，禁止伪造未公开 KPI。</div>
+
+  <h4 id="appx-polar-pos">3.0 定位：在下单正逆向闭环里干什么</h4>
+  <table>
+    <thead><tr><th>链路步骤</th><th>Polar 角色</th><th>红线</th></tr></thead>
+    <tbody>
+      <tr><td>下单/支付写</td><td>Primary / 单分片 DN 本地事务</td><td>短事务；禁止长事务锁库存行</td></tr>
+      <tr><td>付后详情</td><td>读主或 sticky；RO 仅非关键读</td><td>禁止「已付仍待支付」客诉窗口</td></tr>
+      <tr><td>售后/对账</td><td>主库权威；报表可 RO</td><td>修数双人+工单</td></tr>
+      <tr><td>搜推/数仓</td><td>CDC → Kafka/MQ</td><td>CDC≠账本；乱序/重复常态</td></tr>
+    </tbody>
+  </table>
+  <div class="mermaid-wrap" id="diag-appx-polar-spine">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-spine">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Pay[支付回调] --> W[写 Primary/DN]
+  W --> Outbox[(Outbox/本地消息)]
+  W --> Detail[付后读主]
+  W --> CDC[CDC 旁路]
+  CDC --> K[Kafka/搜推]
+  RO[RO/报表] -.->|延迟窗口| Detail
+  Outbox -->|资损优先| Fulfill[履约]
+    </pre>
+  </div>
+
+
+  <h4 id="appx-polar-product">3.1 产品边界</h4>
   <table>
     <thead><tr><th>产品</th><th>架构本质</th><th>扩展方式</th><th>典型误用</th></tr></thead>
     <tbody>
@@ -16471,38 +16734,169 @@ flowchart LR
   Calc --> CDC[CDC 旁路]
     </pre>
   </div>
-  <h4 id="appx-polar-mech">3.2 关键原理（共享存储 PolarDB）</h4>
+
+
+  <h4 id="appx-polar-src">3.2 原理/源码级路径（框架认知 · 示意）</h4>
+  <p><b>共享存储 PolarDB（认知路径）：</b>Primary 写事务日志 → 共享存储多副本落盘 → RO 按 redo/位点追可见页。缓冲池与 InnoDB 同源思路；规格不足先表现为 RT 毛刺与 RO 追不上。</p>
+  <p><b>PolarDB-X（认知路径）：</b></p>
+  <pre><code>// 示意（非某一闭源文件字面量）
+Client → CN.Frontend → Parser → Optimizer(meta←GMS)
+      → Scheduler.scatter → DN.local_engine(begin/exec/commit|2PC)
+      → Gather / 跨片协调
+CDC ← DN binlog/redo 旁路（乱序/重复/DDL 暂停窗口）
+</code></pre>
   <ul>
-    <li><b>RW/RO：</b>RO 读共享页与 redo 位点；存在物理复制延迟窗口 → <b>付后读己之写必须打主</b>。</li>
-    <li><b>缓冲池与刷脏：</b>与 InnoDB 同源思路；规格不足时首先表现为 RT 毛刺与 RO 追不上。</li>
-    <li><b>并行查询/优化器：</b>大查询可走并行，但 OLTP 短事务被大查询挤占时要资源隔离（读写分离、限流、SQL 审核）。</li>
-    <li><b>备份与 PITR：</b>规范要求定期恢复演练；智能体巡检应检查「最近成功备份时间」类指标（只读权限）。</li>
+    <li><b>CN：</b>无状态入口；扩 CN ≠ 解 DN 热点。</li>
+    <li><b>DN：</b>本地行锁/MVCC/redo；热点片=单 DN 打满。</li>
+    <li><b>GMS：</b>schema_version / topology；DDL 后 CN 缓存失效。</li>
+    <li><b>应用侧：</b>读写路由中间件 / 双数据源（项目代码）决定「何时打主」——框架不替你保付后一致。</li>
   </ul>
-  <h4 id="appx-polar-x">3.3 PolarDB-X 原理要点</h4>
-  <ul>
-    <li><b>CN：</b>SQL 解析/优化/路由/聚合；跨分片事务与单分片事务成本差一个数量级。</li>
-    <li><b>DN：</b>本地 InnoDB 事务；热点分片=单 DN 打满。</li>
-    <li><b>GMS：</b>元数据与 DDL；DDL 变更窗口要门禁。</li>
-    <li><b>CDC：</b>旁路同步；乱序/重复/DDL 是常态；资损链路仍 Outbox。</li>
-  </ul>
-  <h4 id="appx-polar-spec">3.4 参数与规范（大基线 / 小基规则）</h4>
-  <p><b>大基线（集群级，少变）：</b>如金融向 <code>innodb_flush_log_at_trx_commit</code>、<code>sync_binlog</code>、超时、连接上限、慢日志阈值、只读账号权限模型。<b>小基规则（库/业务级，常变）：</b>如单表行数告警、禁止无 WHERE UPDATE、强制分片键等值、禁止 SELECT * 大宽表。</p>
+  <div class="mermaid-wrap" id="diag-appx-polar-cn-path">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-cn-path">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant App as 应用/JDBC
+  participant CN as CN
+  participant GMS as GMS
+  participant DN as DN分片
+  App->>CN: SQL
+  CN->>GMS: 取 topology/schema_ver
+  CN->>CN: 优化/路由计划
+  alt 单片
+    CN->>DN: 本地事务
+    DN-->>CN: OK
+  else 跨片
+    CN->>DN: 2PC prepare/commit
+  end
+  CN-->>App: 结果集/错误
+    </pre>
+  </div>
+
+
+  <h4 id="appx-polar-dataflow">3.3 数据流图：写入 / 复制 / CDC</h4>
+  <div class="mermaid-wrap" id="diag-appx-polar-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph Shared["PolarDB 共享存储"]
+    W1[App 写] --> P[Primary]
+    P --> S[(Shared Storage)]
+    P -->|redo/位点| RO[RO]
+    RO --> R1[报表/搜索读]
+  end
+  subgraph X["PolarDB-X"]
+    W2[App 写] --> CN2[CN]
+    CN2 --> DN[(DN 分片)]
+    DN --> Bin[本地日志]
+    Bin --> CDC2[CDC]
+    CDC2 --> Bus[Kafka/MQ]
+  end
+  P -.->|可选 CDC| Bus
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-appx-polar-readpath">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-readpath">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Req[读请求] --> Need{写后读己 / 事务内?}
+  Need -->|是| Primary[强制 Primary]
+  Need -->|否| Lag{RO lag &lt; SLA?}
+  Lag -->|是| RO[RO]
+  Lag -->|否| Primary
+  Primary --> OK[返回]
+  RO --> OK
+    </pre>
+  </div>
+
+
+  <h4 id="appx-polar-ops">3.4 操作图：部署 / 扩缩 / 切换 / 巡检</h4>
+  <div class="mermaid-wrap" id="diag-appx-polar-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Deploy[变更窗口] --> Backup[确认最近成功备份/PITR]
+  Backup --> Canary[只读探活 + 拨测付后读主]
+  Canary --> Scale{动作?}
+  Scale -->|加 RO| AddRO[挂载 RO → 观察 lag]
+  Scale -->|升规格| Resize[滚动计算节点]
+  Scale -->|切主/HA| HA[演练切换 → 应用重连]
+  Scale -->|扩 DN 片| Rebal[数据再均衡 + SQL 审核]
+  AddRO --> Inspect[巡检]
+  Resize --> Inspect
+  HA --> Inspect
+  Rebal --> Inspect
+  Inspect --> Done[签字关闭窗口]
+    </pre>
+  </div>
+
+  <ol>
+    <li><b>部署/变更前：</b>备份成功时间、参数快照 vs 大基线差分、只读账号探活。</li>
+    <li><b>扩 RO：</b>观察复制延迟与连接串权重；关键业务拨测「付后读主」未改错。</li>
+    <li><b>故障切换：</b>应用池重连/超时；禁止人工乱改 VIP 无演练。</li>
+    <li><b>巡检命令级（只读示意）：</b></li>
+  </ol>
+  <pre><code>-- 参数/连接（只读账号）
+SHOW GLOBAL VARIABLES WHERE Variable_name IN
+ ('innodb_flush_log_at_trx_commit','sync_binlog','long_query_time','max_connections');
+SHOW GLOBAL STATUS LIKE 'Threads_connected';
+-- 复制延迟：以云监控/DAS 的 RO lag 为准（产品面板）；应用侧拨测付后读主
+-- PolarDB-X：看跨片比例、热点 DN CPU、GMS 健康（控制台指标）
+</code></pre>
+
+  <h4 id="appx-polar-flow">3.5 流程图：正常路径 + 失败/降级</h4>
+  <div class="mermaid-wrap" id="diag-appx-polar-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-polar-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  OK[正常写主] --> Commit[提交成功]
+  Commit --> Read[读主确认]
+  Commit --> Async[CDC/异步]
+  Fail[写入失败/超时] --> Retry{可重试?}
+  Retry -->|幂等键命中| Idem[返回原结果]
+  Retry -->|是| Backoff[退避重试]
+  Retry -->|否| Degrade[降级公告/排队]
+  LagSpike[RO 延迟尖刺] --> ForcePrimary[关键读切主]
+  CrossShard[跨片拖垮] --> Block[SQL 审核阻断 + 改分片键]
+  CDCBad[CDC 乱序重复] --> Upsert[下游幂等 upsert + 对账]
+    </pre>
+  </div>
+
+
+  <h4 id="appx-polar-spec">3.6 生产配置与规范</h4>
+  <p><b>大基线（集群级，少变）：</b>金融向 flush/sync、超时、连接上限、慢日志阈值、只读权限。<b>小基规则（库/业务级）：</b>单表行数告警、禁止无 WHERE UPDATE、强制分片键等值、禁止 SELECT * 大宽表。</p>
   <table>
     <thead><tr><th>规范域</th><th>示例条款</th><th>巡检方式</th></tr></thead>
     <tbody>
       <tr><td>持久化</td><td>金融：flush/sync 取向 RPO≈0；电商可分级</td><td>参数快照 vs 大基线</td></tr>
-      <tr><td>连接</td><td>max_connections 与池总和匹配；禁止应用 root</td><td>SHOW VARIABLES + 进程列表抽样</td></tr>
+      <tr><td>连接</td><td>max_connections 与池总和匹配；禁止应用 root</td><td>SHOW VARIABLES + 进程列表</td></tr>
       <tr><td>复制/RO</td><td>延迟阈值；读写分离策略文档化</td><td>延迟指标 + 连接串审计</td></tr>
-      <tr><td>SQL</td><td>慢日志 ON；long_query_time 分级</td><td>变量 + 慢日志落地检查</td></tr>
+      <tr><td>SQL</td><td>慢日志 ON；long_query_time 分级</td><td>变量 + 慢日志落地</td></tr>
       <tr><td>对象</td><td>主键、必要二级索引、禁止无端日期大扫</td><td>information_schema + EXPLAIN</td></tr>
+      <tr><td>X 分片</td><td>过滤必带分片键或合法拓扑</td><td>SQL 审核 + 跨片比看板</td></tr>
     </tbody>
   </table>
-  <pre><code>-- 只读巡检示意（权限最小化）
-SHOW GLOBAL VARIABLES WHERE Variable_name IN
- ('innodb_flush_log_at_trx_commit','sync_binlog','long_query_time','max_connections');
-SHOW GLOBAL STATUS LIKE 'Threads_connected';
-</code></pre>
-  <h4 id="appx-polar-fail">3.5 线上故障模式（案例归纳）</h4>
+
+  <h4 id="appx-polar-runbook">3.7 排障 Runbook</h4>
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>付后详情仍「待支付」</td><td>读到 RO 延迟窗口</td><td>对比主/RO 同行；看 lag</td><td>关键读切主；修路由中间件</td></tr>
+      <tr><td>CN CPU 满、DN 空闲</td><td>大量跨片/广播计划</td><td>看计划类型与跨片比</td><td>补分片键；审核拦截；热点拆分</td></tr>
+      <tr><td>单 DN 打满</td><td>热点买家/商品片</td><td>DN 负载与分片统计</td><td>加盐/隔离热点；限流写</td></tr>
+      <tr><td>错片/找不到表</td><td>GMS 与 CN 缓存版本不一致</td><td>对 schema_version / 拓扑</td><td>失效 CN 缓存；DDL 窗口重做</td></tr>
+      <tr><td>CDC 下游双记</td><td>重复投递当插入</td><td>查幂等键/位点</td><td>upsert；权威回库对账</td></tr>
+      <tr><td>连接打满</td><td>池泄漏或 max_connections 过小</td><td>Threads_connected + 池监控</td><td>杀泄漏；调池与上限匹配</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-polar-redline">3.8 红线（一致性/资损）</h4>
+  <ul>
+    <li>付后读己之写必须打主；RO 延迟不是「偶发可接受」对支付回跳。</li>
+    <li>PolarDB-X 无分片键设计禁止上生产写路径。</li>
+    <li>CDC/Kafka 不得替代 Outbox 做资损权威。</li>
+    <li>修数/DDL/改参：工单+双人；Agent/MCP 禁止写账号。</li>
+  </ul>
   <div class="company-prd" id="appx-polar-case-1"><div class="label">Polar · 付后读 RO（案例归纳）</div>
     <p><b>完整业务场景：</b>支付成功后详情页读到旧订单态，客服以为未支付。</p>
     <p><b>技术落地配置：</b>交易读主；报表/搜索走 RO；连接串或中间件强制策略。</p>
@@ -16517,6 +16911,7 @@ SHOW GLOBAL STATUS LIKE 'Threads_connected';
     <p><b>分步优化：</b>1) 审核门禁 2) 热点片拆分 3) 压测回放。</p>
     <p><b>落地效果数据：</b>工程目标：跨片比例下降、P99 回落（示意）。</p>
   </div>
+  <div class="koujue"><div class="label">口诀</div>Polar 口诀：先分产品，付后读主；跨片先审，CDC 旁路；权威在库，修数双人。</div>
 
   <!-- ========== INDEX / SLOW SQL ========== -->
   <h3 id="appx-index-slow">4. 索引与慢 SQL（深挖 · 可巡检）</h3>
@@ -16581,6 +16976,7 @@ SHOW INDEX FROM order_info;
 
   <!-- ========== SQL AGENTS ========== -->
   <h3 id="appx-sql-agents">5. SQL 方向智能体完整落地（AgentScope + Skills + MCP + RAG）</h3>
+  <div class="plain"><div class="label">人话版</div>SQL 智能体=用 AI 做「审核员/巡检员」：RAG 给条款 ID，Skill 给动作剧本，MCP 给只读手；写库只出变更单。主菜运行时见 <a href="#appx-agentscope-src">#appx-agentscope-src</a>。</div>
   <h4 id="appx-sql-arch">5.1 总架构</h4>
   <div class="mermaid-wrap" id="diag-appx-sql-agent">
     <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-sql-agent">导出 PNG</button></div>
@@ -16594,7 +16990,39 @@ flowchart TB
   Report --> Gate[CI/合并门禁]
     </pre>
   </div>
-  <h4 id="appx-sql-skills">5.2 建议落地的 Skills 清单（可直接建目录）</h4>
+
+  <div class="mermaid-wrap" id="diag-appx-sql-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-sql-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Diff[PR Diff] --> Review[git-sql-review]
+  Slow[慢日志 TopN] --> Audit[index-slow-audit]
+  Snap[参数快照] --> Param[polar-param-inspect]
+  Review --> Cite[条款 ID 引用]
+  Audit --> Cite
+  Param --> Cite
+  Cite --> Draft[变更单草稿]
+  Draft --> HITL[人工/DBA]
+  HITL -->|通过| Change[变更窗口执行]
+  HITL -.->|拒绝| Back[回评测集]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-appx-sql-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-sql-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Run[Agent 巡检] --> Risk{高危?}
+  Risk -->|无 WHERE DELETE/UPDATE| Block[阻断合并]
+  Risk -->|拟 DDL| DraftOnly[只出草稿禁止执行]
+  Risk -->|证据不足| Ask[追问/转人工]
+  Risk -->|MCP 超时| Degrade[降级: 仅静态规则]
+  Block --> AuditLog[审计]
+  DraftOnly --> AuditLog
+    </pre>
+  </div>
+
+  <h4 id="appx-sql-skills">5.2 Skills 清单</h4>
   <table>
     <thead><tr><th>Skill</th><th>输入</th><th>输出</th><th>红线</th></tr></thead>
     <tbody>
@@ -16606,19 +17034,28 @@ flowchart TB
       <tr><td><code>index-slow-audit</code></td><td>慢日志+EXPLAIN</td><td>指纹治理清单</td><td>DDL 只出草稿</td></tr>
     </tbody>
   </table>
-  <h4 id="appx-sql-mcp-rag">5.3 MCP 与 RAG 怎么配</h4>
+  <h4 id="appx-sql-mcp-rag">5.3 MCP 与 RAG</h4>
   <ul>
     <li><b>MCP-Polar-RO：</b>只读账号；语句白名单（SHOW/SELECT/EXPLAIN）；超时与行数上限。</li>
     <li><b>MCP-Git：</b>读 PR diff / 文件；不写仓库。</li>
     <li><b>MCP-Ticket：</b>创建变更单草稿（可选）。</li>
     <li><b>RAG 语料：</b>大基线 Markdown、小基规则 YAML、历史慢 SQL 指纹库、事故复盘；版本化；检索要带来源条款 ID。</li>
   </ul>
-  <h4 id="appx-sql-workflow">5.4 推荐工作流（Git SQL 审核）</h4>
+  <h4 id="appx-sql-runbook">5.4 排障 / 红线</h4>
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>Agent「建议直接 ALTER」</td><td>Skill 红线缺失</td><td>查 SKILL.md 禁止项</td><td>改 Skill；CI 断言无执行动词</td></tr>
+      <tr><td>条款无来源 ID</td><td>RAG 未命中仍下结论</td><td>报告字段 cite</td><td>强制 cite 或标「证据不足」</td></tr>
+      <tr><td>连上写账号</td><td>MCP 配错</td><td>账号权限审计</td><td>立刻撤写权限；事故复盘</td></tr>
+    </tbody>
+  </table>
+  <h4 id="appx-sql-workflow">5.5 工作流</h4>
   <ol>
-    <li>CI 触发 Agent：拉取 diff → <code>git-sql-review</code>。</li>
-    <li>命中高危（无 WHERE DELETE/UPDATE、盲下大索引）→ <b>阻断合并</b>。</li>
+    <li>CI 触发：拉取 diff → <code>git-sql-review</code>。</li>
+    <li>命中高危 → <b>阻断合并</b>。</li>
     <li>中危 → 评论区结构化意见 + 人工确认。</li>
-    <li>周批：慢日志 TopN → <code>index-slow-audit</code> → 输出治理看板。</li>
+    <li>周批：慢日志 TopN → <code>index-slow-audit</code> → 治理看板。</li>
   </ol>
   <pre><code># skills/git-sql-review/SKILL.md（示意片段）
 名称: git-sql-review
@@ -16627,85 +17064,296 @@ flowchart TB
 </code></pre>
   <div class="koujue"><div class="label">口诀</div>SQL 智能体：RAG 给条款，Skill 给动作，MCP 给只读手；写库只出单。</div>
 
+
+  <h4 id="appx-sql-ops">5.6 操作图：CI / 周批 / 回滚</h4>
+  <div class="mermaid-wrap" id="diag-appx-sql-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-sql-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  PR[PR 打开] --> CI[CI: git-sql-review]
+  CI -->|阻断| Fix[研发修改]
+  CI -->|通过/人工| Merge[合并]
+  Week[周批 XXL] --> Slow[慢日志 TopN]
+  Slow --> Audit[index-slow-audit]
+  Audit --> Board[治理看板]
+  Board --> Change[变更窗口]
+  Change --> Rollback{回滚?}
+  Rollback -->|是| DropIdx[回滚 DDL/参数]
+    </pre>
+  </div>
+  <div class="mermaid-wrap" id="diag-appx-sql-c4">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-sql-c4">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Dev[研发] --> Agent[SQL Agent]
+  Agent --> RAG[条款 RAG]
+  Agent --> MCP[Polar RO MCP]
+  Agent --> DBA[DBA HITL]
+  DBA --> Polar[(Polar)]
+    </pre>
+  </div>
+
   <!-- ========== XXL-JOB ========== -->
-  <h3 id="appx-xxl">6. XXL-JOB 用法与原理深挖</h3>
-  <h4 id="appx-xxl-arch">6.1 架构</h4>
+  <h3 id="appx-xxl">6. XXL-JOB 用法与原理深挖（生产+源码）</h3>
+  <div class="plain"><div class="label">人话版</div>XXL-JOB=「谁在几点跑哪段业务」的调度台：Admin 负责触发与路由，Executor 嵌在业务 JVM 真正干活。调度至少一次 → Job 内必须业务幂等（对账/补数/关单/巡检同纪律）。</div>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>正逆向批处理：关单、对账、补数、缓存预热、SQL 巡检批、CDC 缺口回补。<br><b>服务业务闭环：</b>支付未知态对账 / 售后补偿 / 库存校准<br><b>挂回：</b><a href="#appx-kafka-src">Kafka 补数</a> · <a href="#appx-sql-agents">SQL Agent 批</a> · <a href="#ency-fm-polardb">Polar 权威库</a></div>
+
+  <h4 id="appx-xxl-pos">6.0 定位</h4>
+  <table>
+    <thead><tr><th>闭环场景</th><th>XXL 干什么</th><th>不干什么</th></tr></thead>
+    <tbody>
+      <tr><td>支付未知态</td><td>按窗口拉渠道对账、写对账表</td><td>直接改余额无工单</td></tr>
+      <tr><td>关单/超时取消</td><td>扫描过期预占 → 调状态机</td><td>无幂等盲更新</td></tr>
+      <tr><td>售后补偿</td><td>失败补偿重试批</td><td>绕过状态机打款</td></tr>
+      <tr><td>SQL/参数巡检</td><td>触发只读 Agent 批</td><td>自动 DDL/改参</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-xxl-arch">6.1 架构与源码级路径</h4>
   <ul>
-    <li><b>Admin：</b>调度中心（UI、触发、日志、路由）。</li>
-    <li><b>Executor：</b>执行器嵌在业务 JVM；注册、拉任务、回调日志。</li>
-    <li><b>调度 ≠ 执行：</b>Admin 触发，业务在 Executor；网络分区时要靠失败重试与告警。</li>
+    <li><b>Admin（调度中心）：</b>UI、任务配置、触发、日志、报警、执行器管理。</li>
+    <li><b>Executor（执行器）：</b>嵌业务进程；注册、接收派发、跑 <code>IJobHandler</code>、回调日志。</li>
+    <li><b>调度 ≠ 执行：</b>重业务禁止塞进 Admin 进程。</li>
   </ul>
+  <pre><code>// 源码阅读地图（开源 xxl-job，版本以你们依赖为准 · 示意包名）
+// admin:  JobScheduleHelper（调度线程扫描）
+//         JobTriggerPoolHelper（触发线程池）
+//         ExecutorBizClient（HTTP 调执行器）
+// executor: XxlJobExecutor / EmbedServer
+//           JobThread + TriggerCallbackThread
+//           注解 @XxlJob → 方法级 Handler
+// 存储:  xxl_job_info / xxl_job_log / xxl_job_registry（Admin DB）
+</code></pre>
   <div class="mermaid-wrap" id="diag-appx-xxl">
     <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl">导出 PNG</button></div>
     <pre class="mermaid">
 sequenceDiagram
-  participant Cron as 调度线程
+  participant Cron as JobScheduleHelper
+  participant Pool as TriggerPool
   participant Admin as XXL-Admin
-  participant Ex as Executor
-  participant Biz as 业务方法
-  Cron->>Admin: 触发
-  Admin->>Ex: HTTP/RPC 派发
-  Ex->>Biz: 执行 JobHandler
-  Biz-->>Ex: 结果
-  Ex-->>Admin: 回调日志
+  participant Ex as Executor EmbedServer
+  participant Biz as @XxlJob Handler
+  Cron->>Pool: 到期任务
+  Pool->>Admin: 选路由/写日志
+  Admin->>Ex: HTTP run
+  Ex->>Biz: 执行业务
+  Biz-->>Ex: 成功/失败
+  Ex-->>Admin: callback 日志
     </pre>
   </div>
-  <h4 id="appx-xxl-principle">6.2 原理要点</h4>
-  <ul>
-    <li><b>时间轮/线程池：</b>调度线程扫描到期任务；避免在 Admin 跑重业务。</li>
-    <li><b>路由策略：</b>第一个、轮询、故障转移、分片广播——分片要与数据分片键一致。</li>
-    <li><b>阻塞处理：</b>单机串行/丢弃后续/覆盖；慢 Job 选错会堆积或互踩。</li>
-    <li><b>日志：</b>执行日志落库/文件；排障先看 Admin 日志再看业务日志。</li>
-    <li><b>幂等：</b>调度至少一次语义；Job 内必须业务幂等（与 MQ 同一纪律）。</li>
-  </ul>
-  <h4 id="appx-xxl-prod">6.3 生产用法规范</h4>
+
+  <div class="mermaid-wrap" id="diag-appx-xxl-threads">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-threads">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph AdminJVM
+    S[调度线程时间轮/扫描] --> T[触发线程池]
+    T --> R[路由策略]
+    R --> H[HTTP 派发]
+    CB[回调接收] --> Log[(xxl_job_log)]
+  end
+  subgraph ExecJVM
+    Reg[注册心跳] --> AdminJVM
+    Emb[EmbedServer] --> JT[JobThread 队列]
+    JT --> Hdl[JobHandler]
+    Hdl --> CBout[CallbackThread]
+    CBout --> CB
+  end
+    </pre>
+  </div>
+
+
+  <h4 id="appx-xxl-dataflow">6.2 数据流：触发 → 业务 → 落库/MQ</h4>
+  <div class="mermaid-wrap" id="diag-appx-xxl-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Fire[调度触发] --> Admin[Admin 路由]
+  Admin --> Ex[Executor]
+  Ex --> Lock{幂等锁/runId}
+  Lock -->|已跑| Skip[跳过]
+  Lock -->|未跑| Biz[业务]
+  Biz --> DB[(Polar 权威表)]
+  Biz --> MQ[发 Kafka/Rocket 补偿]
+  Biz --> Report[对账/巡检报告]
+  Ex --> Log[回调 Admin 日志]
+    </pre>
+  </div>
+
+
+  <h4 id="appx-xxl-flow">6.3 正常 / 失败 / 重试 / 「死信」</h4>
+  <div class="mermaid-wrap" id="diag-appx-xxl-flow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-flow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Trig[触发] --> Run[Executor 执行]
+  Run --> OK{成功?}
+  OK -->|是| CB1[回调成功]
+  OK -->|否| Retry{失败重试策略}
+  Retry -->|可重试| Wait[退避/下次调度]
+  Retry -->|超限| Alarm[告警+工单]
+  Alarm --> Manual[人工补跑/修数]
+  Block{阻塞策略} -->|单机串行| Queue[排队]
+  Block -->|丢弃后续| Drop[记日志]
+  Block -->|覆盖| KillPrev[终止前次·慎用]
+    </pre>
+  </div>
+
+  <p>XXL 无 Kafka 式 DLQ 主题；「死信」=失败超限日志+告警+人工。对账类必须可按 <code>runId</code> 重跑且幂等。</p>
+
+  <h4 id="appx-xxl-ops">6.4 操作图：部署 / 扩缩 / 发布 / 巡检</h4>
+  <div class="mermaid-wrap" id="diag-appx-xxl-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Prep[非 root 部署 Admin+Executor] --> Health[探活 Admin UI / 执行器注册]
+  Health --> Canary[灰度 1 台 Executor]
+  Canary --> Full[扩容注册更多 Executor]
+  Full --> Job[启停任务/改 Cron]
+  Job --> Roll{发布?}
+  Roll -->|业务发版| Drain[先停分片任务 → 发版 → 注册 → 试跑]
+  Roll -->|回滚| Prev[回滚包 + 禁危险任务]
+  Full --> Inspect[巡检: 失败率/耗时/注册丢失]
+    </pre>
+  </div>
+
+  <ol>
+    <li><b>部署：</b>Admin、Executor 均非 root；Admin DB 独立；访问控制+登录审计。</li>
+    <li><b>扩容：</b>加 Executor 实例自动注册；分片广播任务分片数与实例数匹配。</li>
+    <li><b>发布：</b>先停长任务/锁分片 → 发版 → 注册成功 → 手工触发试跑 → 再开 Cron。</li>
+    <li><b>巡检：</b></li>
+  </ol>
+  <pre><code># 示意
+curl -fsS http://127.0.0.1:8080/xxl-job-admin/  # 需登录态/内网
+# Admin DB
+SELECT trigger_code, handle_code, COUNT(*) FROM xxl_job_log
+ WHERE trigger_time &gt; NOW() - INTERVAL 1 HOUR GROUP BY 1,2;
+# 执行器进程
+jps | grep -i xxl
+# 业务侧：对账表按 fireTime 缺口；禁止 root 启停
+</code></pre>
+
+  <h4 id="appx-xxl-prod">6.5 生产配置清单</h4>
   <table>
-    <thead><tr><th>场景</th><th>建议</th></tr></thead>
+    <thead><tr><th>项</th><th>建议</th><th>说明</th></tr></thead>
     <tbody>
-      <tr><td>对账/补数</td><td>分片广播按模；失败可重跑；写对账表</td></tr>
-      <tr><td>缓存预热</td><td>低峰；超时告警；禁止高峰全量</td></tr>
-      <tr><td>SQL 巡检 Agent</td><td>XXL 触发 Agent 批任务；只读；结果进报告库</td></tr>
-      <tr><td>配置</td><td>Admin/Executor 非 root；令牌；访问控制</td></tr>
+      <tr><td>路由</td><td>故障转移 / 分片广播</td><td>分片键与数据分片一致</td></tr>
+      <tr><td>阻塞</td><td>单机串行（对账）</td><td>慢 Job 勿「覆盖」乱杀</td></tr>
+      <tr><td>超时</td><td>按 SLA 设；超时告警</td><td>超时≠自动幂等成功</td></tr>
+      <tr><td>权限</td><td>按执行器组授权</td><td>生产改 Cron 走变更单</td></tr>
+      <tr><td>多环境</td><td>Admin 隔离；Job 命名带 env</td><td>禁止测网打生产库</td></tr>
+      <tr><td>监控</td><td>失败率、耗时 P99、注册数</td><td>注册丢失=静默停调度</td></tr>
     </tbody>
   </table>
   <pre><code>// 示意：Job 幂等键
 String runId = jobId + ":" + shardIndex + ":" + fireTime;
 if (!lock.try(runId)) return; // 已跑过
+try { doBiz(); } finally { /* 成功才标完成；失败可重跑 */ }
 </code></pre>
 
-  <!-- ========== KAFKA SRC ========== -->
-  <h3 id="appx-kafka-src">7. Kafka 用法 / 原理 / 底层源码深挖</h3>
-  <p>全貌金标骨架见 <a href="#ency-fm-kafka">#ency-fm-kafka</a>。本节补<strong>源码级路径与生产用法</strong>。</p>
-  <h4 id="appx-kafka-log">7.1 日志存储源码路径（心智模型）</h4>
+  <h4 id="appx-xxl-runbook">6.6 排障 Runbook</h4>
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>任务不触发</td><td>Cron/调度线程/注册丢失</td><td>Admin 下次触发时间；registry 表</td><td>修注册；检查 Admin 时钟</td></tr>
+      <tr><td>重复执行双记</td><td>无幂等 + 失败重试</td><td>对账表唯一键冲突</td><td>补 runId 锁；修数工单</td></tr>
+      <tr><td>大面积超时</td><td>下游库/接口慢</td><td>Job 日志 RT；DB 慢查询</td><td>降并发；切只读；扩容</td></tr>
+      <tr><td>分片漏数据</td><td>分片数与模不一致</td><td>抽样缺口</td><td>对齐分片；全量补跑窗口</td></tr>
+      <tr><td>执行器都挂</td><td>发版未注册 / 端口</td><td>registry 空</td><td>拉起 Executor；临时 Admin 禁任务</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-xxl-redline">6.7 红线</h4>
   <ul>
-    <li><b>Partition = 有序日志：</b>segment 文件（*.log）+ 偏移索引（*.index）+ 时间索引（*.timeindex）。</li>
-    <li><b>顺序写：</b>操作系统页缓存 + 顺序 append；吞吐来自顺序 I/O 而非「神秘零拷贝一句背完」。</li>
-    <li><b>零拷贝：</b>热路径用 <code>transferTo</code>/sendfile 思想减少用户态拷贝；冷读/转换场景不总是零拷贝。</li>
-    <li><b>高水位 HW / LEO：</b>ISR 内最小 LEO 推进 HW；消费者可见性由 HW 约束。</li>
+    <li><b>重复执行：</b>调度至少一次；无幂等=双扣/双补风险。</li>
+    <li><b>覆盖杀任务：</b>可能留下半成功状态；金融批禁用。</li>
+    <li><b>Admin 跑重业务：</b>拖垮调度中心=全域静默。</li>
+    <li><b>测网 Job 打生产：</b>环境隔离与账号隔离必须物理分开。</li>
   </ul>
-  <pre><code>// 源码阅读地图（Apache Kafka，版本以你们依赖为准）
-// core: Log / LogSegment / OffsetIndex
-// replica: Partition / ReplicaManager / ISR 收缩与膨胀
-// group: GroupCoordinator / 消费位移 __consumer_offsets
+  <div class="mermaid-wrap" id="diag-appx-xxl-c4">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-c4">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  subgraph People
+    Ops[值班/DBA]
+  end
+  subgraph System
+    Admin[XXL-Admin]
+    Exec[业务 Executor]
+    BizAPI[订单/对账状态机]
+    DB[(Polar)]
+  end
+  Ops --> Admin
+  Admin -->|派发| Exec
+  Exec --> BizAPI
+  BizAPI --> DB
+  Exec -->|禁止直改账| Ledger[(支付账本)]
+    </pre>
+  </div>
+
+  <div class="koujue"><div class="label">口诀</div>XXL 口诀：Admin 只调度，业务在 Executor；分片对齐，runId 幂等；失败告警，修数走工单。</div>
+
+
+  <h4 id="appx-xxl-recon">6.8 对账批状态机（示意）</h4>
+  <div class="mermaid-wrap" id="diag-appx-xxl-recon">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-recon">导出 PNG</button></div>
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Scheduled
+  Scheduled --> Running: 触发
+  Running --> Success: 幂等完成
+  Running --> RetryWait: 失败可重试
+  RetryWait --> Running: 下次火
+  Running --> Dead: 超限
+  Dead --> Manual: 工单
+  Manual --> Success: 补跑成功
+  Success --> [*]
+    </pre>
+  </div>
+  <div class="mermaid-wrap" id="diag-appx-xxl-shard">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-xxl-shard">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  Admin[分片广播] --> E0[Executor shard0]
+  Admin --> E1[Executor shard1]
+  Admin --> E2[Executor shard2]
+  E0 --> T0[(数据模 0)]
+  E1 --> T1[(数据模 1)]
+  E2 --> T2[(数据模 2)]
+    </pre>
+  </div>
+
+  <!-- ========== KAFKA SRC ========== -->
+  <h3 id="appx-kafka-src">7. Kafka 用法 / 原理 / 底层源码深挖（生产加厚）</h3>
+  <div class="plain"><div class="label">人话版</div>Kafka=分布式提交日志：按分区并行写、ISR 保副本、消费者组读进度。恰好一次有边界——跨出 Kafka 进 Polar 仍靠外储幂等+对账。全貌索引见 <a href="#ency-fm-kafka">#ency-fm-kafka</a>（ENCY 仍标骨架；<b>本节为生产+源码加厚主菜</b>）。</div>
+  <div class="spine-pos"><div class="label">本节在闭环中的位置</div>轨迹/CDC/对账/画像高吞吐事件总线；与 Rocket 事务消息分工不同。<br><b>服务业务闭环：</b>物流轨迹、清结算流水、搜推入湖、补数回放<br><b>挂回：</b><a href="#ency-fm-polardb">Polar CDC</a> · <a href="#appx-xxl">XXL 补数</a> · Outbox</div>
+  <div class="callout danger"><div class="label">诚实门禁</div>ENCY-FM-Kafka 未宣称金标；本 APPX 节补齐操作/数据流/失败流/Runbook。勿把本节写成「全书 Kafka 已金标」。</div>
+
+  <h4 id="appx-kafka-pos">7.0 定位</h4>
+  <table>
+    <thead><tr><th>场景</th><th>Kafka 角色</th><th>权威仍在</th></tr></thead>
+    <tbody>
+      <tr><td>运单轨迹</td><td>按 waybillId 保序投递</td><td>轨迹 upsert 表</td></tr>
+      <tr><td>CDC 入湖</td><td>变更总线</td><td>OLTP 库 / Outbox</td></tr>
+      <tr><td>清结算流水</td><td>隔离 topic 高可靠投递</td><td>分户账+日终对账</td></tr>
+      <tr><td>画像点击</td><td>高吞吐可丢窗口+补数</td><td>补数任务/数仓校验</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-kafka-log">7.1 日志存储源码路径</h4>
+  <ul>
+    <li><b>Partition = 有序日志：</b>*.log + *.index + *.timeindex。</li>
+    <li><b>顺序写：</b>页缓存 + append；吞吐来自顺序 I/O。</li>
+    <li><b>零拷贝：</b>热路径 sendfile/transferTo 思想；冷读不总是。</li>
+    <li><b>HW / LEO：</b>ISR 内最小 LEO 推进 HW；消费者可见性≤HW。</li>
+  </ul>
+  <pre><code>// Apache Kafka 源码地图（版本以依赖为准）
+// produce: KafkaProducer.doSend → RecordAccumulator → Sender
+// broker:  ReplicaManager.appendRecords → UnifiedLog / LogSegment
+// replica: Partition / ISR 收缩膨胀 / ReplicaFetcherThread
+// group:   GroupCoordinator / __consumer_offsets
 // network: SocketServer / KafkaChannel
 </code></pre>
-  <h4 id="appx-kafka-isr">7.2 复制与 ISR</h4>
-  <ul>
-    <li>Leader 维护 ISR；落后超过 <code>replica.lag.time.max.ms</code> 等条件踢出。</li>
-    <li><code>acks=all</code> + <code>min.insync.replicas</code>：无足够 ISR 时拒绝写入 → 宁可失败不可暗丢。</li>
-    <li>控制器（Controller）负责 Leader 选举；ZK/KRaft 元数据路径要分清你们集群模式。</li>
-  </ul>
-  <h4 id="appx-kafka-eos">7.3 幂等生产与 EOS</h4>
-  <ul>
-    <li>PID + 序号：Broker 去重；仅保证「同一分区生产者会话内」。</li>
-    <li>事务：跨分区原子可见；<b>不等于</b>下游 DB 恰好一次——外部系统仍要幂等表。</li>
-  </ul>
-  <h4 id="appx-kafka-cg">7.4 消费者组与 rebalance</h4>
-  <ul>
-    <li>加入/心跳/同步：旧协议 Stop-the-world；新分区分配策略降低停顿。</li>
-    <li>位移提交：自动提交易重复/丢失；生产用手动提交 + 业务幂等。</li>
-    <li>Lag：按组监控；落后时扩消费者或修慢处理，不是只加分区（分区有上限与热点键问题）。</li>
-  </ul>
   <div class="mermaid-wrap" id="diag-appx-kafka-src">
     <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-src">导出 PNG</button></div>
     <pre class="mermaid">
@@ -16717,22 +17365,168 @@ flowchart TB
   Cons --> Coord[GroupCoordinator]
     </pre>
   </div>
-  <h4 id="appx-kafka-ops">7.5 生产用法清单</h4>
+
+  <div class="mermaid-wrap" id="diag-appx-kafka-produce-path">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-produce-path">导出 PNG</button></div>
+    <pre class="mermaid">
+sequenceDiagram
+  participant P as KafkaProducer
+  participant Acc as Accumulator
+  participant Br as Broker Leader
+  participant ISR as ISR Followers
+  P->>Acc: doSend/分区/批次
+  Acc->>Br: ProduceRequest
+  Br->>Br: append LogSegment
+  Br->>ISR: 复制
+  alt acks=all 且 ISR 足够
+    Br-->>P: 成功 offset
+  else ISR &lt; min.insync
+    Br-->>P: NotEnoughReplicas
+  end
+    </pre>
+  </div>
+
+
+  <h4 id="appx-kafka-dataflow">7.2 端到端数据流</h4>
+  <div class="mermaid-wrap" id="diag-appx-kafka-dataflow">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-dataflow">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart LR
+  App[业务写 Polar] --> OB[Outbox]
+  OB --> Prod[Producer key=orderId]
+  Prod --> T[Topic-Partition]
+  T --> ISR[ISR 复制]
+  T --> CG[Consumer Group]
+  CG --> Idem[(幂等表)]
+  CG --> Down[履约/搜推/数仓]
+  CDC[Polar CDC] -.->|旁路| T2[cdc topic]
+  T2 --> Lake[入湖]
+    </pre>
+  </div>
+
+  <div class="mermaid-wrap" id="diag-appx-kafka-consume">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-consume">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Poll[poll] --> Proc[处理业务]
+  Proc --> OK{成功?}
+  OK -->|是| Commit[commitSync 位移]
+  OK -->|否| Retry[重试/退避]
+  Retry -->|超限| DLQ[死信 topic 或旁路表]
+  DLQ --> Alert[告警+XXL 补数]
+  Note[禁止: 先提交后处理]
+    </pre>
+  </div>
+
+
+  <h4 id="appx-kafka-flow">7.3 正常 / 失败 / 重试 / 死信 / 降级</h4>
+  <div class="mermaid-wrap" id="diag-appx-kafka-fail">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-fail">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TD
+  Write[生产] --> WOK{写入成功?}
+  WOK -->|ISR 不足| WFail[失败可重试/告警]
+  WOK -->|是| Avail[HW 可见]
+  Avail --> Cons[消费]
+  Cons --> COK{处理成功?}
+  COK -->|是| Commit[提交位移]
+  COK -->|可重试| R1[不提交 · 重试]
+  COK -->|毒消息| DLQ[DLQ + 跳过提交策略]
+  Rebalance[频繁 rebalance] --> Fix[降处理时长/调 max.poll.interval]
+  Hot[单分区热点] --> Salt[key 加盐/扩分区]
+    </pre>
+  </div>
+
+
+  <h4 id="appx-kafka-ops">7.4 操作图：部署 / 扩缩 / 切换 / 巡检</h4>
+  <div class="mermaid-wrap" id="diag-appx-kafka-ops">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-ops">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  Deploy[ZK/KRaft 集群部署] --> Topic[建 Topic RF/min.insync]
+  Topic --> ACL[ACL/SSL 多环境隔离]
+  ACL --> Scale{扩缩?}
+  Scale -->|加 Broker| Reassign[分区再分配]
+  Scale -->|扩分区| Warn[注意 key 保序历史]
+  Scale -->|控副本| Prefer[优先副本选举]
+  Scale --> Inspect[巡检]
+  Inspect --> Lag[消费组 lag]
+  Inspect --> ISR[ISR 不足告警]
+  Inspect --> Disk[磁盘/保留]
+    </pre>
+  </div>
+
+  <pre><code># 命令级巡检示意（路径/脚本按发行版调整）
+kafka-topics.sh --bootstrap-server $BS --describe --topic order_event
+kafka-consumer-groups.sh --bootstrap-server $BS --describe --group fulfill_cg
+# 关注: LAG、LOG-END-OFFSET、成员数、分区分配
+# 生产拒绝: 无变更单重置位点；无隔离共集群挤 ISR
+</code></pre>
+
+  <h4 id="appx-kafka-isr">7.5 复制 ISR / EOS / 消费者组</h4>
   <ul>
-    <li>键：轨迹/订单用业务键保序；监控无键占比。</li>
-    <li>副本：RF=3，min.insync=2（示意基线）。</li>
-    <li>保留：覆盖补数窗口；与 CDC 对齐。</li>
-    <li>与 Polar CDC：Kafka 是总线，账务权威仍在库/Outbox。</li>
+    <li><code>acks=all</code> + <code>min.insync.replicas</code>：ISR 不足拒绝写入。</li>
+    <li>PID+序号：会话内防重试双写；<b>不等于</b>下游 DB 恰好一次。</li>
+    <li>事务/EOS：链路内原子可见；外系统仍要幂等表+对账。</li>
+    <li>位移：手动提交；先处理成功再提交。</li>
   </ul>
+
+  <h4 id="appx-kafka-ops-cfg">7.6 生产配置清单</h4>
+  <table>
+    <thead><tr><th>层</th><th>基线（示意）</th><th>注意</th></tr></thead>
+    <tbody>
+      <tr><td>Topic</td><td>RF=3，min.insync=2</td><td>金融与营销隔离</td></tr>
+      <tr><td>Producer</td><td>acks=all，idempotence=true</td><td>业务 key 保序</td></tr>
+      <tr><td>Consumer</td><td>auto.commit=false</td><td>幂等外储</td></tr>
+      <tr><td>保留</td><td>覆盖补数窗口</td><td>与 CDC/对账对齐</td></tr>
+      <tr><td>监控</td><td>ISR、lag、UnderReplicated</td><td>进值班看板</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-kafka-runbook">7.7 排障 Runbook</h4>
+  <table>
+    <thead><tr><th>症状</th><th>假设</th><th>验证</th><th>动作</th></tr></thead>
+    <tbody>
+      <tr><td>轨迹乱序</td><td>无 key / 错分区</td><td>看消息 key 与分区</td><td>强制业务 key；消费 seq upsert</td></tr>
+      <tr><td>生产报错 NotEnoughReplicas</td><td>ISR&lt;min.insync</td><td>描述 topic ISR</td><td>修慢副本/磁盘；勿盲目降 min.insync</td></tr>
+      <tr><td>lag 飙升</td><td>消费慢/下游挂</td><td>组 describe + 下游 RT</td><td>扩消费者；修下游；临时限产</td></tr>
+      <tr><td>重复入账</td><td>吹 EOS 无外储幂等</td><td>唯一键冲突/对账差</td><td>补幂等表；对账修数</td></tr>
+      <tr><td>频繁 rebalance</td><td>处理超 max.poll.interval</td><td>成员反复加入退出</td><td>降批或提间隔；查 GC</td></tr>
+    </tbody>
+  </table>
+
+  <h4 id="appx-kafka-redline">7.8 红线</h4>
+  <ul>
+    <li>无 key 却要求业务有序 → 轨迹回退/客诉。</li>
+    <li>EOS 当跨系统账本 → 双记资损。</li>
+    <li>先提交位移后处理 → 丢更新。</li>
+    <li>清结算与营销高吞吐共挤 ISR → RPO 事故。</li>
+  </ul>
+  <div class="mermaid-wrap" id="diag-appx-kafka-c4">
+    <div class="diag-actions"><button class="btn" type="button" data-png="diag-appx-kafka-c4">导出 PNG</button></div>
+    <pre class="mermaid">
+flowchart TB
+  ProdSys[订单/轨迹服务] --> KP[KafkaProducer]
+  KP --> Cluster[Kafka Cluster]
+  Cluster --> Fulfill[履约消费组]
+  Cluster --> Lake[CDC/入湖]
+  Cluster --> Recon[对账消费组]
+  Fulfill --> Polar[(Polar 幂等/状态机)]
+  Recon --> XXL[XXL 缺口补数]
+    </pre>
+  </div>
+
+  <div class="koujue"><div class="label">口诀</div>Kafka 口诀：认 HW/ISR，key 保序；位移后置，幂等外储；EOS 不跨库，对账收口。</div>
 
   <h3 id="appx-close">8. 收口：今天怎么用这章</h3>
   <ol>
-    <li>先把 Polar 大基线/小基规则写成 RAG 语料 + 条款 ID。</li>
-    <li>落地 2 个 Skill：<code>git-sql-review</code> + <code>index-slow-audit</code>，挂 CI。</li>
-    <li>XXL 周批跑参数巡检；报告进工单，不自动改参。</li>
-    <li>Kafka/Polar 探活与非 root 启停写进值班 Runbook。</li>
+    <li>Polar：大基线/小基规则进 RAG；付后读主拨测进发布门禁；深挖见 <a href="#appx-polar-deep">#appx-polar-deep</a>。</li>
+    <li>落地 Skill：<code>git-sql-review</code> + <code>index-slow-audit</code> 挂 CI；MCP 只读。</li>
+    <li>XXL：对账/补数 Job 必须 runId 幂等；周批巡检只出报告；见 <a href="#appx-xxl">#appx-xxl</a>。</li>
+    <li>Kafka：关键 topic RF/ISR 基线 + lag 看板；EOS 不跨库；见 <a href="#appx-kafka-src">#appx-kafka-src</a>。</li>
+    <li>AI：Studio 白名单工具 + HITL；主菜 <a href="#appx-agentscope-src">#appx-agentscope-src</a>。</li>
   </ol>
-  <div class="koujue"><div class="label">口诀</div>Polar 分产品，索引看回表，慢 SQL 看指纹；Agent 只读手，条款必带来源；调度幂等，Kafka 认 HW/ISR。</div>
+  <div class="koujue"><div class="label">口诀</div>Polar 分产品付后读主；XXL 幂等；Kafka 认 HW/ISR；Agent 只读手，条款必 cite。</div>
 </section>
 <!-- APPX-OPS-AI-SQL-END -->
 
